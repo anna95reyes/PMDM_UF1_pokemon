@@ -20,7 +20,8 @@ public class Pokemon {
     private List<Ability> abilities = new ArrayList<>(); //abilities/0/ability/name i //abilities/0/is_hidden
     private List<Stat> stats = new ArrayList<>(); //stats/0/base_stats i stats/0/stat/name
     private int totalStats; // camp calculat
-    private Pokemon evolution; //evolution_chain/url
+    private Pokemon previousEvolution;
+    private List<Pokemon> nextEvolution = new ArrayList<>();
 
     private Bitmap bitmap;
     private boolean selected;
@@ -41,7 +42,7 @@ public class Pokemon {
     }
 
     public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
-                   int height, int weight, List<Ability> abilities, List<Stat> stats, Pokemon evolution) {
+                   int height, int weight, List<Ability> abilities, List<Stat> stats, Pokemon previousEvolution) {
         this.id = id;
         this.name = name;
         this.imageURL = imageURL;
@@ -52,7 +53,24 @@ public class Pokemon {
         this.weight = weight;
         this.abilities = abilities;
         this.stats = stats;
-        this.evolution = evolution;
+        this.previousEvolution = previousEvolution;
+    }
+
+    public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
+                   int height, int weight, List<Ability> abilities, List<Stat> stats, Pokemon previousEvolution,
+                   List<Pokemon> nextEvolution) {
+        this.id = id;
+        this.name = name;
+        this.imageURL = imageURL;
+        this.types = types;
+        this.favorite = favorite;
+        this.definition = definition;
+        this.height = height;
+        this.weight = weight;
+        this.abilities = abilities;
+        this.stats = stats;
+        this.previousEvolution = previousEvolution;
+        this.nextEvolution = nextEvolution;
     }
 
     public static List<Pokemon> getPokemons(){
@@ -152,12 +170,20 @@ public class Pokemon {
         this.totalStats = totalStats;
     }
 
-    public Pokemon getEvolution() {
-        return evolution;
+    public Pokemon getPreviousEvolution() {
+        return previousEvolution;
     }
 
-    public void setEvolution(Pokemon evolution) {
-        this.evolution = evolution;
+    public void setPreviousEvolution(Pokemon previousEvolution) {
+        this.previousEvolution = previousEvolution;
+    }
+
+    public List<Pokemon> getNextEvolution() {
+        return nextEvolution;
+    }
+
+    public void setNextEvolution(List<Pokemon> nextEvolution) {
+        this.nextEvolution = nextEvolution;
     }
 
     public Bitmap getBitmap() {
