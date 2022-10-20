@@ -32,20 +32,21 @@ public class Pokemon {
             _pokemons = new ArrayList<>();
             _pokemons.add(new Pokemon(1,"bulbasaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-                    new ArrayList<Type>(Arrays.asList(Type.getType("grass"),
+                    new ArrayList<Type>(Arrays.asList(
+                            Type.getType("grass"),
                             Type.getType("poison"))), false,
                     "A strange seed was\nplanted on its\nback at birth.\fThe plant sprouts\nand grows with\nthis POKéMON.",
                     7,69,
-                    new ArrayList<Ability>(Arrays.asList(new Ability("overgrow", false),
+                    new ArrayList<Ability>(Arrays.asList(
+                            new Ability("overgrow", false),
                             new Ability("chlorophyll", true))),
-                    new ArrayList<Stat>(Arrays.asList(new Stat("hp",45),
+                    new ArrayList<Stat>(Arrays.asList(
+                            new Stat("hp",45),
                             new Stat("attack",49),
                             new Stat("defense",49),
                             new Stat("special-attack",65),
                             new Stat("special-defense",65),
-                            new Stat("speed",45),
-                            new Stat("grass",45),
-                            new Stat("poison",45)
+                            new Stat("speed",45)
                             ))));
         }
 
