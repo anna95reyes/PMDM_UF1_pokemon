@@ -3,6 +3,7 @@ package com.example.pokedexapp.model;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Pokemon {
@@ -12,19 +13,44 @@ public class Pokemon {
     private int id; //id
     private String name; //name
     private String imageURL; //sprites/front_default
-    private List<Type> types = new ArrayList<>(); //types/0/type/name
+    private List<Type> types; //types/0/type/name
     private boolean favorite;
     private String definition; //species/url -> flavor_text_entries/0/flavor_text
     private int height; //height
     private int weight; //weight
-    private List<Ability> abilities = new ArrayList<>(); //abilities/0/ability/name i //abilities/0/is_hidden
-    private List<Stat> stats = new ArrayList<>(); //stats/0/base_stats i stats/0/stat/name
-    private int totalStats; // camp calculat
-    private Pokemon previousEvolution;
-    private List<Pokemon> nextEvolution = new ArrayList<>();
+    private List<Ability> abilities; //abilities/0/ability/name i //abilities/0/is_hidden
+    private List<Stat> stats; //stats/0/base_stats i stats/0/stat/name
+    private int totalStats; // -- camp calculat
+    private Pokemon previousEvolution; //species/url -> evolution_chain/url --> chain/species/name
+    private List<Pokemon> nextEvolution; //species/url -> evolution_chain/url --> species/name
 
     private Bitmap bitmap;
     private boolean selected;
+
+    public static List<Pokemon> getPokemons(){
+        if (_pokemons==null) {
+            _pokemons = new ArrayList<>();
+            _pokemons.add(new Pokemon(1,"bulbasaur",
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+                    new ArrayList<Type>(Arrays.asList(Type.getType("grass"),
+                            Type.getType("poison"))), false,
+                    "A strange seed was\nplanted on its\nback at birth.\fThe plant sprouts\nand grows with\nthis POKéMON.",
+                    7,69,
+                    new ArrayList<Ability>(Arrays.asList(new Ability("overgrow", false),
+                            new Ability("chlorophyll", true))),
+                    new ArrayList<Stat>(Arrays.asList(new Stat("hp",45),
+                            new Stat("attack",49),
+                            new Stat("defense",49),
+                            new Stat("special-attack",65),
+                            new Stat("special-defense",65),
+                            new Stat("speed",45),
+                            new Stat("grass",45),
+                            new Stat("poison",45)
+                            ))));
+        }
+
+        return _pokemons;
+    }
 
 
     public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
@@ -73,14 +99,7 @@ public class Pokemon {
         this.nextEvolution = nextEvolution;
     }
 
-    public static List<Pokemon> getPokemons(){
-        if (_pokemons==null) {
-            _pokemons = new ArrayList<>();
-            //_pokemons.add(new Pokemon());
-        }
 
-        return _pokemons;
-    }
 
     public int getId() {
         return id;
@@ -163,7 +182,11 @@ public class Pokemon {
     }
 
     public int getTotalStats() {
-        return totalStats;
+        int total = 0;
+        for (int i = 0; i < stats.size(); i++){
+            total += stats.get(i).getBase_stat();
+        }
+        return total;
     }
 
     private void setTotalStats(int totalStats) {
