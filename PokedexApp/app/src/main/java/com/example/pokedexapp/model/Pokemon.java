@@ -288,15 +288,11 @@ public class Pokemon {
     }
 
     public int getTotalStats() {
-        int total = 0;
+        totalStats = 0;
         for (int i = 0; i < stats.size(); i++){
-            total += stats.get(i).getBase_stat();
+            totalStats += stats.get(i).getBase_stat();
         }
-        return total;
-    }
-
-    private void setTotalStats(int totalStats) {
-        this.totalStats = totalStats;
+        return totalStats;
     }
 
     public Pokemon getPreviousEvolution() {
