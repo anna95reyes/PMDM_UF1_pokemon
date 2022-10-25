@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Pokemon {
 
@@ -29,12 +30,10 @@ public class Pokemon {
 
     public static List<Pokemon> getPokemons(){
         if (_pokemons==null) {
-            _pokemons = new ArrayList<>();
+            _pokemons = new ArrayList<Pokemon>();
             _pokemons.add(new Pokemon(1,"bulbasaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("grass"),
-                            Type.getType("poison"))), false,
+                    Arrays.asList(Type.getType("grass"), Type.getType("poison")), false,
                     "A strange seed was\nplanted on its\nback at birth.\fThe plant sprouts\nand grows with\nthis POKéMON.",
                     7,69,
                     new ArrayList<Ability>(Arrays.asList(
@@ -46,13 +45,11 @@ public class Pokemon {
                             new Stat("defense",49),
                             new Stat("special-attack",65),
                             new Stat("special-defense",65),
-                            new Stat("speed",45))),
-                    new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(1)))));
+                            new Stat("speed",45)))/*,
+                    new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(1)))*/));
             _pokemons.add(new Pokemon(2,"ivysaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("grass"),
-                            Type.getType("poison"))), false,
+                    Arrays.asList(Type.getType("grass"), Type.getType("poison")), false,
                     "When the bulb on\\nits back grows\\nlarge, it appears\\fto lose the\\nability to stand\\non its hind legs.",
                     10,130,
                     new ArrayList<Ability>(Arrays.asList(
@@ -64,13 +61,11 @@ public class Pokemon {
                             new Stat("defense",63),
                             new Stat("special-attack",80),
                             new Stat("special-defense",80),
-                            new Stat("speed",60))),
-                    Pokemon.getPokemons().get(0), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(2)))));
+                            new Stat("speed",60)))/*,
+                    Pokemon.getPokemons().get(0), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(2)))*/));
             _pokemons.add(new Pokemon(3,"venusaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("grass"),
-                            Type.getType("poison"))), false,
+                    Arrays.asList(Type.getType("grass"),Type.getType("poison")), false,
                     "The plant blooms\\nwhen it is\\nabsorbing solar\\fenergy. It stays\\non the move to\\nseek sunlight.",
                     20,1000,
                     new ArrayList<Ability>(Arrays.asList(
@@ -82,12 +77,11 @@ public class Pokemon {
                             new Stat("defense",83),
                             new Stat("special-attack",100),
                             new Stat("special-defense",100),
-                            new Stat("speed",80))),
-                    Pokemon.getPokemons().get(1)));
+                            new Stat("speed",80)))/*,
+                    Pokemon.getPokemons().get(1)*/));
             _pokemons.add(new Pokemon(4,"charmander",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("fire"))), false,
+                    Arrays.asList(Type.getType("fire")), false,
                     "Obviously prefers\\nhot places. When\\nit rains, steam\\fis said to spout\\nfrom the tip of\\nits tail.",
                     6,85,
                     new ArrayList<Ability>(Arrays.asList(
@@ -99,13 +93,11 @@ public class Pokemon {
                             new Stat("defense",43),
                             new Stat("special-attack",60),
                             new Stat("special-defense",50),
-                            new Stat("speed",65))),
-                    new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(4)))
-                    ));
+                            new Stat("speed",65)))/*,
+                    new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(4)))*/));
             _pokemons.add(new Pokemon(5,"charmeleon",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("fire"))), false,
+                    Arrays.asList(Type.getType("fire")), false,
                     "",
                     11,190,
                     new ArrayList<Ability>(Arrays.asList(
@@ -117,13 +109,11 @@ public class Pokemon {
                             new Stat("defense",58),
                             new Stat("special-attack",80),
                             new Stat("special-defense",65),
-                            new Stat("speed",80))),
-                    Pokemon.getPokemons().get(3), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(5)))));
+                            new Stat("speed",80)))/*,
+                    Pokemon.getPokemons().get(3), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(5)))*/));
             _pokemons.add(new Pokemon(6,"charizard",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-                    new ArrayList<Type>(Arrays.asList(
-                            Type.getType("fire"),
-                            Type.getType("flying"))), false,
+                    Arrays.asList(Type.getType("fire"), Type.getType("flying")), false,
                     "Spits fire that\\nis hot enough to\\nmelt boulders.\\fKnown to cause\\nforest fires\\nunintentionally.",
                     17,905,
                     new ArrayList<Ability>(Arrays.asList(
@@ -135,8 +125,8 @@ public class Pokemon {
                             new Stat("defense",78),
                             new Stat("special-attack",109),
                             new Stat("special-defense",85),
-                            new Stat("speed",100))),
-                    Pokemon.getPokemons().get(4)));
+                            new Stat("speed",100)))/*,
+                    Pokemon.getPokemons().get(4)*/));
 
         }
 
@@ -328,5 +318,16 @@ public class Pokemon {
         this.selected = selected;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pokemon pokemon = (Pokemon) o;
+        return id == pokemon.id && favorite == pokemon.favorite && height == pokemon.height && weight == pokemon.weight && totalStats == pokemon.totalStats && name.equals(pokemon.name) && imageURL.equals(pokemon.imageURL) && types.equals(pokemon.types) && definition.equals(pokemon.definition) && abilities.equals(pokemon.abilities) && stats.equals(pokemon.stats) && Objects.equals(previousEvolution, pokemon.previousEvolution) && Objects.equals(nextEvolution, pokemon.nextEvolution);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, imageURL, types, favorite, definition, height, weight, abilities, stats, totalStats, previousEvolution, nextEvolution);
+    }
 }

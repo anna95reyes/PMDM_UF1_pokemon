@@ -2,6 +2,7 @@ package com.example.pokedexapp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Stat {
     private String name;
@@ -26,5 +27,18 @@ public class Stat {
 
     public void setBase_stat(int base_stat) {
         this.base_stat = base_stat;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stat stat = (Stat) o;
+        return base_stat == stat.base_stat && name.equals(stat.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, base_stat);
     }
 }

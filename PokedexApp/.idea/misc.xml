@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23125" />
+        <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23125" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_pokemon_pokedex.xml" value="0.25" />
       </map>

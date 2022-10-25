@@ -1,7 +1,11 @@
 package com.example.pokedexapp.model;
 
+import android.os.Debug;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Type {
     private String name;
@@ -22,7 +26,7 @@ public class Type {
 
     public static List<Type> getTypes() {
         if (_types == null) {
-            _types = new ArrayList<>();
+            _types = new ArrayList<Type>();
             _types.add(new Type("normal"));
             _types.add(new Type("fighting"));
             _types.add(new Type("flying"));
@@ -49,6 +53,19 @@ public class Type {
     }
 
     public static Type getType (String type){
-        return _types.get(_types.indexOf(type));
+        return getTypes().get(getTypes().indexOf(new Type(type)));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Type type = (Type) o;
+        return name.equals(type.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
