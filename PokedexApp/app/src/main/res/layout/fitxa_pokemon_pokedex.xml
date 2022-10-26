@@ -10,8 +10,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="8"
-        android:columnCount="3"
-        android:rowCount="3"
         android:layout_gravity="center_vertical"
         android:padding="5dp">
 
@@ -20,30 +18,34 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="0"
-            android:padding="5dp"
-            android:text="#001"/>
+            android:padding="10dp"
+            android:text="#001"
+            android:layout_gravity="left"/>
 
         <TextView android:id="@+id/txvNamePokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="0"
-            android:padding="5dp"
-            android:text="Bulbasaur"/>
+            android:padding="10dp"
+            android:text="Bulbasaur"
+            android:layout_gravity="left"/>
 
-        <RadioButton android:id="@+id/rdbFavoritePokemon"
+        <RadioButton
+            android:id="@+id/rdbFavoritePokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="2"
             android:layout_row="0"
-            android:layout_gravity="right"
-            android:padding="5dp"/>
+            android:layout_column="2"
+            android:padding="10dp"
+            android:layout_gravity="right" />
 
         <LinearLayout android:id="@+id/llyAbilityPokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="1"
+            android:layout_columnSpan="3"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
             android:padding="5dp">
@@ -51,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GRASS"/>
+                android:text="GRASS" />
 
         </LinearLayout>
 
