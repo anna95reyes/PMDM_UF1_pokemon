@@ -3,33 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/green"
-    android:orientation="horizontal">
+    android:background="@drawable/capseta_fila_pokemon_pokedex"
+    android:backgroundTintMode="add"
+    android:orientation="horizontal"
+    android:layout_marginTop="5dp">
 
     <GridLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="8"
         android:layout_gravity="center_vertical"
+        android:layout_weight="8"
         android:padding="5dp">
 
-        <TextView android:id="@+id/txvIdPokemon"
+        <TextView
+            android:id="@+id/txvIdPokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_row="0"
             android:layout_column="0"
-            android:layout_row="0"
-            android:padding="10dp"
-            android:text="#001"
-            android:layout_gravity="left"/>
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/gray"
+            android:text="#001" />
 
-        <TextView android:id="@+id/txvNamePokemon"
+        <TextView
+            android:id="@+id/txvNamePokemon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
             android:layout_row="0"
-            android:padding="10dp"
-            android:text="Bulbasaur"
-            android:layout_gravity="left"/>
+            android:layout_column="1"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:textSize="18dp"
+            android:textColor="@color/gray"
+            android:text="Bulbasaur" />
 
         <RadioButton
             android:id="@+id/rdbFavoritePokemon"
@@ -37,37 +45,31 @@
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="2"
-            android:padding="10dp"
-            android:layout_gravity="right" />
+            android:textColor="@color/gray"
+            android:layout_gravity="right"/>
 
-        <LinearLayout android:id="@+id/llyAbilityPokemon"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llyAbilityPokemon"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_column="0"
             android:layout_row="1"
+            android:layout_column="0"
             android:layout_columnSpan="3"
-            android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GRASS" />
-
-        </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_margin="5dp"/>
 
     </GridLayout>
 
-
     <ImageView android:id="@+id/imvImagePokemon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
         android:layout_weight="2"
         android:layout_gravity="center_vertical"
         android:layout_column="3"
         android:layout_row="0"
         android:layout_rowSpan="2"
-        android:src="@drawable/pokedex"/>
+        android:src="@drawable/pokeball"
+        android:background="@drawable/fons_fila_logo_pokemon"/>
 
 </LinearLayout>

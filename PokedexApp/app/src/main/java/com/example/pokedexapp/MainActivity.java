@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
         DisplayImageOptions options =
                 new DisplayImageOptions.Builder()
-                        .showImageOnLoading(R.drawable.pokedex)
-                        .showImageForEmptyUri(R.drawable.pokedex)
-                        .showImageOnFail(R.drawable.pokedex)
+                        .showImageOnLoading(R.drawable.pokeball)
+                        .showImageForEmptyUri(R.drawable.pokeball)
+                        .showImageOnFail(R.drawable.pokeball)
                         .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding.rcyPokemons.hasFixedSize();
 
         //Creació de l'adapter
-        adapter = new PokemonAdapter(Pokemon.getPokemons());
+        adapter = new PokemonAdapter(Pokemon.getPokemons(), this);
         binding.rcyPokemons.setAdapter(adapter);
 
     }

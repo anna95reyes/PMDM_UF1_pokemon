@@ -1,7 +1,11 @@
 package com.example.pokedexapp.adapters;
 
+import static com.example.pokedexapp.R.color.all_types;
+import static com.example.pokedexapp.R.color.purple_200;
+
 import android.content.Context;
-import android.renderscript.ScriptGroup;
+import android.content.res.ColorStateList;
+import android.graphics.BlendMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,26 +15,25 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.R;
-import com.example.pokedexapp.databinding.ActivityMainBinding;
-import com.example.pokedexapp.databinding.FitxaPokemonPokedexBinding;
 import com.example.pokedexapp.model.Pokemon;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
 
     private List<Pokemon> mPokemons;
     private ImageLoader mImageLoader;
+    private Context mContext;
 
-    public PokemonAdapter(List<Pokemon> pokemons) {
+    public PokemonAdapter(List<Pokemon> pokemons, Context context) {
         mImageLoader = ImageLoader.getInstance();
         this.mPokemons = pokemons;
+        mContext = context;
     }
 
     @NonNull
@@ -50,19 +53,24 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.txvNamePokemon.setText(getPokemonActualName(pokemonActual));
         holder.rdbFavoritePokemon.setChecked(pokemonActual.isFavorite());
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 10, 10, 10);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        params.setMargins(7, 5, 7, 5);
 
-        for (int i = 0; i < pokemonActual.getAbilities().size(); i++) {
+        for (int i = 0; i < pokemonActual.getTypes().size(); i++) {
             TextView textView = new TextView(holder.llyAbilityPokemon.getContext());
-            textView.setText(pokemonActual.getAbilities().get(i).getName());
-
-            textView.setLayoutParams(lp);
-
+            textView.setText(pokemonActual.getTypes().get(i).getName().toUpperCase());
+            textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            textView.setLayoutParams(params);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
             holder.llyAbilityPokemon.addView(textView);
+
         }
+        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, all_types));
 
     }
+
+
 
     private String getPokemonActualId(Pokemon pokemonActual) {
         String text;
