@@ -66,7 +66,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             holder.llyAbilityPokemon.addView(textView);
 
         }
-        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, all_types));
+        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, R.color.fire));
 
     }
 
