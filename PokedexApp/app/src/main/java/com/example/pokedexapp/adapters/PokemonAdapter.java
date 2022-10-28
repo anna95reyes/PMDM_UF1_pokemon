@@ -6,6 +6,7 @@ import static com.example.pokedexapp.R.color.purple_200;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.BlendMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             holder.llyAbilityPokemon.addView(textView);
 
         }
-        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, R.color.fire));
+        int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
+        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
 
     }
 

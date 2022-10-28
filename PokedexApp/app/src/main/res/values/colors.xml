@@ -12,26 +12,26 @@
     <color name="gray">#806C6C6C</color>
     <color name="fons_pokemon">#80DBDBDB</color>
 
-    <color name="all_types">#FFFFFF</color>
-    <color name="normal">#A4ACAF</color>
-    <color name="fighting">#D56723</color>
-    <color name="flying">#96BDC9</color>
-    <color name="poison">#FFB97FC9</color>
-    <color name="ground">#C5B041</color>
-    <color name="rock">#A98C21</color>
-    <color name="bug">#729F3F</color>
-    <color name="ghost">#7B62A3</color>
-    <color name="steel">#9EB7B8</color>
-    <color name="fire">#FFFD7D24</color>
-    <color name="water">#4592C4</color>
-    <color name="grass">#FF9BCC50</color>
-    <color name="electric">#EED535</color>
-    <color name="psychic">#FFF366B9</color>
-    <color name="ice">#FF51C4E7</color>
-    <color name="dragon">#948E9E</color>
-    <color name="dark">#707070</color>
-    <color name="fairy">#FDB9E9</color>
-    <color name="unknown">#68A090</color>
-    <color name="shadow">#736573</color>
+    <color name="all_types">#CCFFFFFF</color>
+    <color name="normal">#CCA4ACAF</color>
+    <color name="fighting">#CCD56723</color>
+    <color name="flying">#CC96BDC9</color>
+    <color name="poison">#CCB97FC9</color>
+    <color name="ground">#CCC5B041</color>
+    <color name="rock">#CCA98C21</color>
+    <color name="bug">#CC729F3F</color>
+    <color name="ghost">#CC7B62A3</color>
+    <color name="steel">#CC9EB7B8</color>
+    <color name="fire">#CCFD7D24</color>
+    <color name="water">#CC4592C4</color>
+    <color name="grass">#CC9BCC50</color>
+    <color name="electric">#CCEED535</color>
+    <color name="psychic">#CCF366B9</color>
+    <color name="ice">#CC51C4E7</color>
+    <color name="dragon">#CC948E9E</color>
+    <color name="dark">#CC707070</color>
+    <color name="fairy">#CCFDB9E9</color>
+    <color name="unknown">#CC68A090</color>
+    <color name="shadow">#CC736573</color>
 
 </resources>
