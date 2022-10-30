@@ -1,6 +1,8 @@
 package com.example.pokedexapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
@@ -8,14 +10,18 @@ import android.os.Bundle;
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.databinding.ActivityMainBinding;
 import com.example.pokedexapp.model.Pokemon;
+import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private PokemonAdapter adapter;
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +50,16 @@ public class MainActivity extends AppCompatActivity {
         binding.rcyPokemons.setLayoutManager(new LinearLayoutManager(this));
         binding.rcyPokemons.hasFixedSize();
 
-        //Creació de l'adapter
-        adapter = new PokemonAdapter(Pokemon.getPokemons(), this);
-        binding.rcyPokemons.setAdapter(adapter);
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
+        viewModel.getPokemons();
+        viewModel.mGetPokemons.observe(this, new Observer<List<Pokemon>>() {
+            @Override
+            public void onChanged(List<Pokemon> pokemons) {
+                //Creació de l'adapter
+                adapter = new PokemonAdapter(pokemons, MainActivity.this);
+                binding.rcyPokemons.setAdapter(adapter);
+            }
+        });
     }
 }

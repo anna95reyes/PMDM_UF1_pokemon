@@ -23,9 +23,9 @@
             android:layout_column="0"
             android:layout_gravity="left"
             android:paddingLeft="10dp"
-            android:textSize="18dp"
+            android:text="#001"
             android:textColor="@color/gray"
-            android:text="#001" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/txvNamePokemon"
