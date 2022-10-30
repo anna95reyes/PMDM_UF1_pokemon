@@ -33,7 +33,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
     public PokemonAdapter(List<Pokemon> pokemons, Context context) {
         mImageLoader = ImageLoader.getInstance();
-        this.mPokemons = pokemons;
+        mPokemons = pokemons;
         mContext = context;
     }
 

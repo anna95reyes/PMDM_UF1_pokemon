@@ -15,7 +15,9 @@ import java.util.List;
 public class MainActivityViewModel extends ViewModel {
 
     public MutableLiveData<List<Pokemon>> mGetPokemons;
+    public MutableLiveData<List<Type>> mGetTypes;
     private static List<Pokemon> mLlistapokemons;
+    private static List<Type> mLlistaTypes;
 
     public MainActivityViewModel () {
         mGetPokemons = new MutableLiveData<List<Pokemon>>();
@@ -26,7 +28,7 @@ public class MainActivityViewModel extends ViewModel {
             mLlistapokemons = new ArrayList<Pokemon>();
             mLlistapokemons.add(new Pokemon(1,"bulbasaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-                    Arrays.asList(Type.getType("grass"), Type.getType("poison")), false,
+                    Arrays.asList(getType("grass"), getType("poison")), false,
                     "A strange seed was\nplanted on its\nback at birth.\fThe plant sprouts\nand grows with\nthis POKéMON.",
                     7,69,
                     new ArrayList<Ability>(Arrays.asList(
@@ -42,7 +44,7 @@ public class MainActivityViewModel extends ViewModel {
                     new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(1)))*/));
             mLlistapokemons.add(new Pokemon(2,"ivysaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
-                    Arrays.asList(Type.getType("grass"), Type.getType("poison")), false,
+                    Arrays.asList(getType("grass"), getType("poison")), false,
                     "When the bulb on\\nits back grows\\nlarge, it appears\\fto lose the\\nability to stand\\non its hind legs.",
                     10,130,
                     new ArrayList<Ability>(Arrays.asList(
@@ -58,7 +60,7 @@ public class MainActivityViewModel extends ViewModel {
                     Pokemon.getPokemons().get(0), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(2)))*/));
             mLlistapokemons.add(new Pokemon(3,"venusaur",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
-                    Arrays.asList(Type.getType("grass"),Type.getType("poison")), false,
+                    Arrays.asList(getType("grass"),getType("poison")), false,
                     "The plant blooms\\nwhen it is\\nabsorbing solar\\fenergy. It stays\\non the move to\\nseek sunlight.",
                     20,1000,
                     new ArrayList<Ability>(Arrays.asList(
@@ -74,7 +76,7 @@ public class MainActivityViewModel extends ViewModel {
                     Pokemon.getPokemons().get(1)*/));
             mLlistapokemons.add(new Pokemon(4,"charmander",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
-                    Arrays.asList(Type.getType("fire")), false,
+                    Arrays.asList(getType("fire")), false,
                     "Obviously prefers\\nhot places. When\\nit rains, steam\\fis said to spout\\nfrom the tip of\\nits tail.",
                     6,85,
                     new ArrayList<Ability>(Arrays.asList(
@@ -90,7 +92,7 @@ public class MainActivityViewModel extends ViewModel {
                     new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(4)))*/));
             mLlistapokemons.add(new Pokemon(5,"charmeleon",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
-                    Arrays.asList(Type.getType("fire")), false,
+                    Arrays.asList(getType("fire")), false,
                     "",
                     11,190,
                     new ArrayList<Ability>(Arrays.asList(
@@ -106,7 +108,7 @@ public class MainActivityViewModel extends ViewModel {
                     Pokemon.getPokemons().get(3), new ArrayList<Pokemon>(Arrays.asList(Pokemon.getPokemons().get(5)))*/));
             mLlistapokemons.add(new Pokemon(6,"charizard",
                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-                    Arrays.asList(Type.getType("fire"), Type.getType("flying")), false,
+                    Arrays.asList(getType("fire"), getType("flying")), false,
                     "Spits fire that\\nis hot enough to\\nmelt boulders.\\fKnown to cause\\nforest fires\\nunintentionally.",
                     17,905,
                     new ArrayList<Ability>(Arrays.asList(
@@ -125,6 +127,39 @@ public class MainActivityViewModel extends ViewModel {
 
         mGetPokemons.postValue(mLlistapokemons);
         return mLlistapokemons;
+    }
+
+    public List<Type> getTypes() {
+        if (mLlistaTypes == null) {
+            mLlistaTypes = new ArrayList<Type>();
+            mLlistaTypes.add(new Type("normal"));
+            mLlistaTypes.add(new Type("fighting"));
+            mLlistaTypes.add(new Type("flying"));
+            mLlistaTypes.add(new Type("poison"));
+            mLlistaTypes.add(new Type("ground"));
+            mLlistaTypes.add(new Type("rock"));
+            mLlistaTypes.add(new Type("bug"));
+            mLlistaTypes.add(new Type("ghost"));
+            mLlistaTypes.add(new Type("steel"));
+            mLlistaTypes.add(new Type("fire"));
+            mLlistaTypes.add(new Type("water"));
+            mLlistaTypes.add(new Type("grass"));
+            mLlistaTypes.add(new Type("electric"));
+            mLlistaTypes.add(new Type("psychic"));
+            mLlistaTypes.add(new Type("ice"));
+            mLlistaTypes.add(new Type("dragon"));
+            mLlistaTypes.add(new Type("dark"));
+            mLlistaTypes.add(new Type("fairy"));
+            mLlistaTypes.add(new Type("unknown"));
+            mLlistaTypes.add(new Type("shadow"));
+        }
+
+        mGetTypes.postValue(mLlistaTypes);
+        return mLlistaTypes;
+    }
+
+    private Type getType (String type){
+        return getTypes().get(getTypes().indexOf(new Type(type)));
     }
 
 }

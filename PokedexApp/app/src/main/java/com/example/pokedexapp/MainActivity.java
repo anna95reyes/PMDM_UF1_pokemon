@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
+import com.example.pokedexapp.adapters.TypeAdapter;
 import com.example.pokedexapp.databinding.ActivityMainBinding;
 import com.example.pokedexapp.model.Pokemon;
+import com.example.pokedexapp.model.Type;
 import com.example.pokedexapp.viewmodel.MainActivityViewModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -21,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private PokemonAdapter adapter;
+    private TypeAdapter adapterType;
     private MainActivityViewModel viewModel;
 
     @Override
@@ -61,5 +68,35 @@ public class MainActivity extends AppCompatActivity {
                 binding.rcyPokemons.setAdapter(adapter);
             }
         });
+        
+        binding.btnFilterTypes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomSheetDialog();
+            }
+        });
+    }
+
+    private void showBottomSheetDialog() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+
+        RecyclerView rcyTypes = bottomSheetDialog.findViewById(R.id.rcyTypes);
+
+        // Configuració del RecyclerView
+        rcyTypes.setLayoutManager(new LinearLayoutManager(this));
+        rcyTypes.hasFixedSize();
+
+        viewModel.getTypes();
+        viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
+            @Override
+            public void onChanged(List<Type> types) {
+                //Creació de l'adapter
+                adapterType = new TypeAdapter(types, MainActivity.this);
+                rcyTypes.setAdapter(adapterType);
+            }
+        });
+
+        bottomSheetDialog.show();
     }
 }

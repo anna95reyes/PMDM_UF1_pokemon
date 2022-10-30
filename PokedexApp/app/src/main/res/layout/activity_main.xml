@@ -11,21 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <EditText android:id="@+id/edtFilterNameOrNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/search_gray"
             android:hint="Enter name or number"
             />
 
-        <ImageButton
+        <ImageButton android:id="@+id/btnFilterFavorites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/cheack_all_gray"
             android:background="@color/white"
             android:layout_margin="10dp"/>
 
-
+        <Button android:id="@+id/btnFilterTypes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All type" />
 
     </LinearLayout>
 
