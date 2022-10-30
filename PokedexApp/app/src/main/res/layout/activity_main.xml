@@ -1,40 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    android:id="@+id/dwlDrawer">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nvwNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/menu_header"
+        app:menu="@menu/main_menu"
+        app:itemIconTint="@drawable/drawer_selector"
+        app:itemTextColor="@drawable/drawer_selector"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText android:id="@+id/edtFilterNameOrNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/search_gray"
-            android:hint="Enter name or number"
-            />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mtbToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
 
-        <ImageButton android:id="@+id/btnFilterFavorites"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/cheack_all_gray"
-            android:background="@color/white"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp">
 
-        <Button android:id="@+id/btnFilterTypes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="All type" />
+            <EditText android:id="@+id/edtFilterNameOrNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:drawableLeft="@drawable/search_gray"
+                android:hint="Enter name or number"
+                android:textColorHint="@color/gray"
+                />
+
+            <ImageButton android:id="@+id/btnFilterFavorites"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/cheack_all_gray"
+                android:background="@color/white"
+                android:layout_gravity="center"/>
+
+            <Button android:id="@+id/btnFilterTypes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:src="@drawable/capseta_fila_pokemon_pokedex"
+                android:backgroundTint="@color/all_types"
+                android:text="All type"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcyPokemons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcyPokemons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -54,4 +54,9 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+
+    //DrawerLayout i NavigationView
+    //implementation 'com.android.support:design:27.0.2'
+    //implementation 'com.android.support:support-v4:27.0.2'
+
 }

@@ -1,12 +1,17 @@
 package com.example.pokedexapp;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -17,13 +22,16 @@ import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Type;
 import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import io.reactivex.rxjava3.annotations.NonNull;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
     private PokemonAdapter adapter;
@@ -52,6 +60,19 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         ImageLoader.getInstance().init(config);
+
+
+        //Navigation Drawer
+        setSupportActionBar((Toolbar) binding.mtbToolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.dwlDrawer, binding.mtbToolbar,
+                R.string.app_name, R.string.app_name);
+        binding.dwlDrawer.addDrawerListener(toggle);
+        toggle.syncState();
+        binding.nvwNavigationView.setNavigationItemSelectedListener(this);
+
+        MenuItem menuItem = binding.nvwNavigationView.getMenu().getItem(0);
+        onNavigationItemSelected(menuItem);
+        menuItem.setChecked(true);
 
         // Configuració del RecyclerView
         binding.rcyPokemons.setLayoutManager(new LinearLayoutManager(this));
@@ -99,4 +120,36 @@ public class MainActivity extends AppCompatActivity {
 
         bottomSheetDialog.show();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        if (binding.dwlDrawer.isDrawerOpen(GravityCompat.START)) {
+            binding.dwlDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch (menuItem.getItemId()){
+            case R.id.mniPokedex:
+                //TODO: t'ha de portar a la finestra de la pokedex
+                break;
+            case R.id.mniTeamBuilder:
+                //TODO: t'ha de portat a la finestra dels equips
+                break;
+            default:
+                throw new IllegalArgumentException("menu option not implemented!");
+        }
+
+        binding.dwlDrawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+
+
 }

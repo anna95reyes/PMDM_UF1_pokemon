@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/mniPokedex"
+        android:icon="@drawable/pokeball_icon"
+        android:title="Pokedex"
+        app:showAsAction="never"/>
+    <item android:id="@+id/mniTeamBuilder"
+        android:icon="@drawable/user_account"
+        android:title="Team Builder"
+        app:showAsAction="never"/>
+</menu>

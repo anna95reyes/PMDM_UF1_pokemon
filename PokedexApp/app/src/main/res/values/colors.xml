@@ -8,9 +8,9 @@
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#FF8ACDB4</color>
     <color name="gray">#806C6C6C</color>
     <color name="fons_pokemon">#80DBDBDB</color>
+    <color name="red">#FF4C4C</color>
 
     <color name="all_types">#CC595858</color>
     <color name="normal">#CCA4ACAF</color>
