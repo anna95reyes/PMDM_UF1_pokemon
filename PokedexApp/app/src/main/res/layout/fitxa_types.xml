@@ -7,7 +7,7 @@
     android:backgroundTintMode="add"
     android:orientation="horizontal"
     android:layout_marginTop="5dp"
-    android:backgroundTint="@color/gray">
+    android:backgroundTint="@color/all_types">
 
     <TextView android:id="@+id/txvNameType"
         android:layout_width="match_parent"

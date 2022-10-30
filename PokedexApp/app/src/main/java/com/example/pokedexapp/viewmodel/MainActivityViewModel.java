@@ -16,11 +16,15 @@ public class MainActivityViewModel extends ViewModel {
 
     public MutableLiveData<List<Pokemon>> mGetPokemons;
     public MutableLiveData<List<Type>> mGetTypes;
+    public MutableLiveData<List<Type>> mGetTypesFiltre;
     private static List<Pokemon> mLlistapokemons;
     private static List<Type> mLlistaTypes;
+    private static List<Type> mLlistaTypesFiltre;
 
     public MainActivityViewModel () {
         mGetPokemons = new MutableLiveData<List<Pokemon>>();
+        mGetTypes = new MutableLiveData<List<Type>>();
+        mGetTypesFiltre = new MutableLiveData<List<Type>>();
     }
 
     public List<Pokemon> getPokemons(){
@@ -157,6 +161,20 @@ public class MainActivityViewModel extends ViewModel {
         mGetTypes.postValue(mLlistaTypes);
         return mLlistaTypes;
     }
+
+    public List<Type> getTypesFiltre() {
+        if (mLlistaTypesFiltre == null) {
+            mLlistaTypesFiltre = new ArrayList<Type>();
+            mLlistaTypesFiltre.add(new Type("all types"));
+            for (int i = 0; i < mLlistaTypes.size(); i++){
+                mLlistaTypesFiltre.add(mLlistaTypes.get(i));
+            }
+        }
+
+        mGetTypesFiltre.postValue(mLlistaTypesFiltre);
+        return mLlistaTypesFiltre;
+    }
+
 
     private Type getType (String type){
         return getTypes().get(getTypes().indexOf(new Type(type)));

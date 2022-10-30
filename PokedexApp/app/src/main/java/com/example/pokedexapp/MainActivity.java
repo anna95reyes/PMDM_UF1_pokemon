@@ -87,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
         rcyTypes.setLayoutManager(new LinearLayoutManager(this));
         rcyTypes.hasFixedSize();
 
-        viewModel.getTypes();
-        viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
+        viewModel.getTypesFiltre();
+        viewModel.mGetTypesFiltre.observe(this, new Observer<List<Type>>() {
             @Override
-            public void onChanged(List<Type> types) {
+            public void onChanged(List<Type> typesFiltre) {
                 //Creació de l'adapter
-                adapterType = new TypeAdapter(types, MainActivity.this);
+                adapterType = new TypeAdapter(typesFiltre, MainActivity.this);
                 rcyTypes.setAdapter(adapterType);
             }
         });
