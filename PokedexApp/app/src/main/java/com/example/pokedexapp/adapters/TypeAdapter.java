@@ -36,6 +36,13 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         View viewFila = LayoutInflater.from(parent.getContext()).inflate(R.layout.fitxa_types, parent, false);
         ViewHolder vh = new ViewHolder(viewFila);
 
+        viewFila.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return vh;
     }
 

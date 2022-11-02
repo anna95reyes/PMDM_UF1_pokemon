@@ -43,6 +43,13 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         View viewFila = LayoutInflater.from(parent.getContext()).inflate(R.layout.fitxa_pokemon_pokedex, parent, false);
         ViewHolder vh = new ViewHolder(viewFila);
 
+        viewFila.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return vh;
     }
 
@@ -53,6 +60,16 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.txvIdPokemon.setText(getPokemonActualId(pokemonActual));
         holder.txvNamePokemon.setText(getPokemonActualName(pokemonActual));
         holder.rdbFavoritePokemon.setChecked(pokemonActual.isFavorite());
+
+        holder.rdbFavoritePokemon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pokemonActual.isFavorite()) {
+                    holder.rdbFavoritePokemon.setChecked(false);
+                }
+                pokemonActual.setFavorite(holder.rdbFavoritePokemon.isChecked());
+            }
+        });
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         params.setMargins(7, 5, 7, 5);
