@@ -10,7 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,7 +40,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PokemonAdapter adapter;
     private TypeAdapter adapterType;
     private MainActivityViewModel viewModel;
-    BottomSheetDialog bottomSheetDialog = null;
+    private BottomSheetDialog bottomSheetDialog = null;
+    private Boolean botoFavoritsClicat = false;
+    private Boolean botoFavoritsAbansClicat = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 showBottomSheetDialog();
+            }
+        });
+
+
+
+        binding.btnFilterFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                botoFavoritsClicat = true;
+                binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_gray);
+                if (botoFavoritsClicat == botoFavoritsAbansClicat) {
+                    binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_black);
+                    botoFavoritsClicat = false;
+                    //TODO: treure filtre per als favorits
+                } else {
+                    //TODO: fer filtre per als favorits
+                }
+                botoFavoritsAbansClicat = botoFavoritsClicat;
+
+            }
+        });
+
+        binding.edtFilterNameOrNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //TODO: fer filtre per a la id i el nom
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -154,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void canviarFiltreType (String text, int idColor) {
         binding.btnFilterTypes.setText(text);
         binding.btnFilterTypes.getBackground().setTint(ContextCompat.getColor(this,idColor));
+        // TODO: agefir filtre del tipus
         bottomSheetDialog.dismiss();
     }
 

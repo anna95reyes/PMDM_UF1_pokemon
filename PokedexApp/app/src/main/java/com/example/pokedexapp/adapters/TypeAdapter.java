@@ -58,13 +58,13 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         Type actual = mTypes.get(position);
         holder.txvNameType.setText(actual.getName().toUpperCase());
         String nomActual = actual.getName();
-        if (nomActual.contains(" ")){
-            nomActual = nomActual.replace(" ", "_");
-        }
         holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, getIdColor(nomActual)));
     }
 
     private int getIdColor(String nomActual) {
+        if (nomActual.contains(" ")){
+            nomActual = nomActual.replace(" ", "_");
+        }
         int idColor = mContext.getResources().getIdentifier(nomActual, "color", mContext.getPackageName());
         return idColor;
     }
