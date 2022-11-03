@@ -56,8 +56,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:src="@drawable/capseta_fila_pokemon_pokedex"
+                android:background="@drawable/capseta_fila_pokemon_pokedex"
                 android:backgroundTint="@color/all_types"
+                android:backgroundTintMode="add"
                 android:text="All type"
                 android:textColor="@color/black"/>
 

@@ -1,5 +1,6 @@
 package com.example.pokedexapp.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Debug;
 import android.util.Log;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pokedexapp.MainActivity;
 import com.example.pokedexapp.R;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Type;
@@ -24,10 +26,12 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
 
     private List<Type> mTypes;
     private Context mContext;
+    private MainActivity mActivity;
 
-    public TypeAdapter(List<Type> types, Context context){
+    public TypeAdapter(List<Type> types, Context context, MainActivity activity){
         mTypes = types;
         mContext = context;
+        mActivity = activity;
     }
 
     @NonNull
@@ -39,9 +43,12 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         viewFila.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String nameType = vh.txvNameType.getText().toString();
+                mActivity.canviarFiltreType(nameType,  getIdColor(nameType.toLowerCase()));
 
             }
         });
+
 
         return vh;
     }
@@ -54,8 +61,12 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         if (nomActual.contains(" ")){
             nomActual = nomActual.replace(" ", "_");
         }
+        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, getIdColor(nomActual)));
+    }
+
+    private int getIdColor(String nomActual) {
         int idColor = mContext.getResources().getIdentifier(nomActual, "color", mContext.getPackageName());
-        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
+        return idColor;
     }
 
     @Override
@@ -70,6 +81,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txvNameType = itemView.findViewById(R.id.txvNameType);
+
         }
     }
 }

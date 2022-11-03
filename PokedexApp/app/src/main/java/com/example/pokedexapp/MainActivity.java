@@ -3,8 +3,8 @@ package com.example.pokedexapp;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PokemonAdapter adapter;
     private TypeAdapter adapterType;
     private MainActivityViewModel viewModel;
+    BottomSheetDialog bottomSheetDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showBottomSheetDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
 
         RecyclerView rcyTypes = bottomSheetDialog.findViewById(R.id.rcyTypes);
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onChanged(List<Type> typesFiltre) {
                 //Creació de l'adapter
-                adapterType = new TypeAdapter(typesFiltre, MainActivity.this);
+                adapterType = new TypeAdapter(typesFiltre, MainActivity.this, MainActivity.this);
                 rcyTypes.setAdapter(adapterType);
             }
         });
@@ -150,6 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
+    public void canviarFiltreType (String text, int idColor) {
+        binding.btnFilterTypes.setText(text);
+        binding.btnFilterTypes.getBackground().setTint(ContextCompat.getColor(this,idColor));
+        bottomSheetDialog.dismiss();
+    }
 
 
 }
