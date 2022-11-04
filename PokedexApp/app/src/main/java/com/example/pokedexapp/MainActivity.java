@@ -86,7 +86,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        viewModel.getPokemons();
+        viewModel.getTypes();
+        viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
+            @Override
+            public void onChanged(List<Type> types) {
+                viewModel.getPokemons();
+            }
+        });
+
         viewModel.mGetPokemons.observe(this, new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
