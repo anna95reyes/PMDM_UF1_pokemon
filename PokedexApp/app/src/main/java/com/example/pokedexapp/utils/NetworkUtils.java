@@ -31,13 +31,9 @@ public class NetworkUtils {
                 String aux;
                 while((aux = buffer.readLine()) != null) {
                     json += aux;
-                    Log.d("POKEMON", "JSON ARXIU: " + json);
                 }
-                Log.d("POKEMON", "JSON: " + json);
             }
             if (!arxiuCache.exists() || json.length() == 0) {
-                Log.d("POKEMON", "PASSO json --> " + json);
-                Log.d("POKEMON", "PASSO json.length --> " + json.length());
                 fos = new BufferedOutputStream(new FileOutputStream(arxiuCache));
                 BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
