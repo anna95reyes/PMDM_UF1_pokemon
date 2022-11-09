@@ -30,6 +30,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -86,11 +87,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        viewModel.getTypes();
+        //Creacio d'una carpeta dins de la carpeta de l'aplicació
+        File jsonFolder = new File(this.getFilesDir(), "jsons");
+        jsonFolder.mkdirs(); //per crear la carpeta explicitament
+
+        binding.pgrDownload.setVisibility(View.VISIBLE);
+
+        //descarregar els tipus de pokemons
+        viewModel.getTypes(jsonFolder); //Li paso la carpeta a la funcio de descarrega
         viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
             @Override
             public void onChanged(List<Type> types) {
-                viewModel.getPokemons();
+                binding.pgrDownload.setVisibility(View.INVISIBLE); //TODO
+
+                //descarregar els pokemons
+                //viewModel.getPokemons(jsonFolder);
             }
         });
 
@@ -100,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //Creació de l'adapter
                 adapter = new PokemonAdapter(pokemons, MainActivity.this);
                 binding.rcyPokemons.setAdapter(adapter);
+                //binding.pgrDownload.setVisibility(View.INVISIBLE);
             }
         });
         

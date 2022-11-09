@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +18,13 @@ public class TypeApi {
 
     private static List<Type> llistaTypes;
 
-    public static List<Type> getLlistaTypes() {
+    public static List<Type> getLlistaTypes(File jsonFolder) {
+
         llistaTypes = new ArrayList<Type>();
 
-        String json = NetworkUtils.getJSon("https://pokeapi.co/api/v2/type");
+        String json = NetworkUtils.getJSon(jsonFolder, "types.json","https://pokeapi.co/api/v2/type");
+
+        Log.d("POKEMON", "JSON: " + json);
 
         try {
             JSONObject typeObj = new JSONObject(json);
@@ -30,10 +34,9 @@ public class TypeApi {
                 Type t = new Type(type.getString("name"));
                 llistaTypes.add(t);
             }
-            Log.d("APP", results.length() + "");
 
         } catch (JSONException e) {
-            Log.d("APP", "error en el JSON");
+            Log.e("POKEMON", "error en el JSON");
         }
 
         return llistaTypes;
