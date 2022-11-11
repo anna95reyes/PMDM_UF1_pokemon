@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PokemonApi {
 
-    private static Integer maxPokemons = 30;
+    private static Integer maxPokemons = 1154;
     private static List<Pokemon> llistaPokemons;
     private static Pokemon pokemon;
 
@@ -27,7 +27,7 @@ public class PokemonApi {
         llistaPokemons = new ArrayList<Pokemon>();
         Integer qtatPokemons = 0;
 
-        /*String jsonNumPokemons = NetworkUtils.getJSon(jsonFolder, "qtat_pokemons.json","https://pokeapi.co/api/v2/pokemon");
+        String jsonNumPokemons = NetworkUtils.getJSon(jsonFolder, "qtat_pokemons.json","https://pokeapi.co/api/v2/pokemon");
         try {
             JSONObject typeObj = new JSONObject(jsonNumPokemons);
             qtatPokemons = typeObj.getInt("count");
@@ -42,7 +42,7 @@ public class PokemonApi {
                 arxiuCache.delete();
             }
             maxPokemons = qtatPokemons;
-        }*/
+        }
 
         String json = NetworkUtils.getJSon(jsonFolder, "pokemons.json","https://pokeapi.co/api/v2/pokemon?offset=0&limit="+maxPokemons);
 
