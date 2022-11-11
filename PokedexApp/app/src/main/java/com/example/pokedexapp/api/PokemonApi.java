@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PokemonApi {
 
-    private static Integer maxPokemons = 1154;
+    private static Integer maxPokemons = 386; //Fins a la tecera generacio de pokemons
     private static List<Pokemon> llistaPokemons;
     private static Pokemon pokemon;
 
@@ -29,6 +29,8 @@ public class PokemonApi {
         //Quan al json hi haiguin mes pokemons dels que hi actualment, la llista de pokemons s'actualitzara
         //ja que mira si ha aumentat el numero de pokemons i si es aixi torna a descarregar el json dels pokemons
 
+        //Ho deixo comentat perque si no ha de descarregar mols pokemons i triga bastant encara que estigui els jsons el local
+        /*
         Integer qtatPokemons = 0;
 
         String jsonNumPokemons = NetworkUtils.getJSon(jsonFolder, "qtat_pokemons.json","https://pokeapi.co/api/v2/pokemon");
@@ -47,7 +49,7 @@ public class PokemonApi {
             }
             maxPokemons = qtatPokemons;
         }
-
+        */
         String json = NetworkUtils.getJSon(jsonFolder, "pokemons.json","https://pokeapi.co/api/v2/pokemon?offset=0&limit="+maxPokemons);
 
         //Log.d("POKEMON", "JSON: " + json);
