@@ -24,8 +24,6 @@ public class TypeApi {
 
         String json = NetworkUtils.getJSon(jsonFolder, "types.json","https://pokeapi.co/api/v2/type");
 
-        Log.d("POKEMON", "JSON: " + json);
-
         try {
             JSONObject typeObj = new JSONObject(json);
             JSONArray results = typeObj.getJSONArray("results");
@@ -41,4 +39,9 @@ public class TypeApi {
 
         return llistaTypes;
     }
+
+    public static Type getType (String type){
+        return llistaTypes.get(llistaTypes.indexOf(new Type(type)));
+    }
+
 }

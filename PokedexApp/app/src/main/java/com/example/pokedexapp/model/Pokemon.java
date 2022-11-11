@@ -22,8 +22,7 @@ public class Pokemon {
     private List<Ability> abilities; //abilities/0/ability/name i //abilities/0/is_hidden
     private List<Stat> stats; //stats/0/base_stats i stats/0/stat/name
     private int totalStats; // -- camp calculat
-    private Pokemon previousEvolution; //species/url -> evolution_chain/url --> chain/species/name
-    private List<Pokemon> nextEvolution; //species/url -> evolution_chain/url --> species/name
+    private List<Pokemon> evolutions; //species/url -> evolution_chain/url --> species/name
 
     private Bitmap bitmap;
     private boolean selected;
@@ -41,55 +40,6 @@ public class Pokemon {
         this.abilities = abilities;
         this.stats = stats;
     }
-
-    public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
-                   int height, int weight, List<Ability> abilities, List<Stat> stats, Pokemon previousEvolution) {
-        this.id = id;
-        this.name = name;
-        this.imageURL = imageURL;
-        this.types = types;
-        this.favorite = favorite;
-        this.definition = definition;
-        this.height = height;
-        this.weight = weight;
-        this.abilities = abilities;
-        this.stats = stats;
-        this.previousEvolution = previousEvolution;
-    }
-
-    public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
-                   int height, int weight, List<Ability> abilities, List<Stat> stats, List<Pokemon> nextEvolution) {
-        this.id = id;
-        this.name = name;
-        this.imageURL = imageURL;
-        this.types = types;
-        this.favorite = favorite;
-        this.definition = definition;
-        this.height = height;
-        this.weight = weight;
-        this.abilities = abilities;
-        this.stats = stats;
-        this.nextEvolution = nextEvolution;
-    }
-
-    public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
-                   int height, int weight, List<Ability> abilities, List<Stat> stats, Pokemon previousEvolution,
-                   List<Pokemon> nextEvolution) {
-        this.id = id;
-        this.name = name;
-        this.imageURL = imageURL;
-        this.types = types;
-        this.favorite = favorite;
-        this.definition = definition;
-        this.height = height;
-        this.weight = weight;
-        this.abilities = abilities;
-        this.stats = stats;
-        this.previousEvolution = previousEvolution;
-        this.nextEvolution = nextEvolution;
-    }
-
-
 
     public int getId() {
         return id;
@@ -179,20 +129,12 @@ public class Pokemon {
         return totalStats;
     }
 
-    public Pokemon getPreviousEvolution() {
-        return previousEvolution;
+    public List<Pokemon> getEvolutions() {
+        return evolutions;
     }
 
-    public void setPreviousEvolution(Pokemon previousEvolution) {
-        this.previousEvolution = previousEvolution;
-    }
-
-    public List<Pokemon> getNextEvolution() {
-        return nextEvolution;
-    }
-
-    public void setNextEvolution(List<Pokemon> nextEvolution) {
-        this.nextEvolution = nextEvolution;
+    public void setEvolutions(List<Pokemon> evolutions) {
+        this.evolutions = evolutions;
     }
 
     public Bitmap getBitmap() {
@@ -217,11 +159,31 @@ public class Pokemon {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pokemon pokemon = (Pokemon) o;
-        return id == pokemon.id && favorite == pokemon.favorite && height == pokemon.height && weight == pokemon.weight && totalStats == pokemon.totalStats && name.equals(pokemon.name) && imageURL.equals(pokemon.imageURL) && types.equals(pokemon.types) && definition.equals(pokemon.definition) && abilities.equals(pokemon.abilities) && stats.equals(pokemon.stats) && Objects.equals(previousEvolution, pokemon.previousEvolution) && Objects.equals(nextEvolution, pokemon.nextEvolution);
+        return id == pokemon.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, imageURL, types, favorite, definition, height, weight, abilities, stats, totalStats, previousEvolution, nextEvolution);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Pokemon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", types=" + types +
+                ", favorite=" + favorite +
+                ", definition='" + definition + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", abilities=" + abilities +
+                ", stats=" + stats +
+                ", totalStats=" + totalStats +
+                ", evolutions=" + evolutions +
+                ", bitmap=" + bitmap +
+                ", selected=" + selected +
+                '}';
     }
 }

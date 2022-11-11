@@ -34,4 +34,11 @@ public class Type {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    @Override
+    public String toString() {
+        return "Type{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

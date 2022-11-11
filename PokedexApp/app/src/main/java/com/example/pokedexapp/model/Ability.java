@@ -39,4 +39,12 @@ public class Ability {
     public int hashCode() {
         return Objects.hash(name, is_hidden);
     }
+
+    @Override
+    public String toString() {
+        return "Ability{" +
+                "name='" + name + '\'' +
+                ", is_hidden=" + is_hidden +
+                '}';
+    }
 }

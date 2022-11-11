@@ -41,4 +41,12 @@ public class Stat {
     public int hashCode() {
         return Objects.hash(name, base_stat);
     }
+
+    @Override
+    public String toString() {
+        return "Stat{" +
+                "name='" + name + '\'' +
+                ", base_stat=" + base_stat +
+                '}';
+    }
 }

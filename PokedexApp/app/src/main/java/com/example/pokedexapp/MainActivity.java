@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.lifecycle.LifecycleRegistryOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
+import java.security.acl.Owner;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -87,21 +89,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
+        binding.pgrDownload.setVisibility(View.VISIBLE);
+
         //Creacio d'una carpeta dins de la carpeta de l'aplicació
         File jsonFolder = new File(this.getFilesDir(), "jsons");
         jsonFolder.mkdirs(); //per crear la carpeta explicitament
-
-        binding.pgrDownload.setVisibility(View.VISIBLE);
 
         //descarregar els tipus de pokemons
         viewModel.getTypes(jsonFolder); //Li paso la carpeta a la funcio de descarrega
         viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
             @Override
             public void onChanged(List<Type> types) {
-                binding.pgrDownload.setVisibility(View.INVISIBLE); //TODO
-
                 //descarregar els pokemons
-                //viewModel.getPokemons(jsonFolder);
+                viewModel.getPokemons(jsonFolder);
             }
         });
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //Creació de l'adapter
                 adapter = new PokemonAdapter(pokemons, MainActivity.this);
                 binding.rcyPokemons.setAdapter(adapter);
-                //binding.pgrDownload.setVisibility(View.INVISIBLE);
+                binding.pgrDownload.setVisibility(View.INVISIBLE);
             }
         });
         
@@ -121,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showBottomSheetDialog();
             }
         });
-
-
 
         binding.btnFilterFavorites.setOnClickListener(new View.OnClickListener() {
             @Override

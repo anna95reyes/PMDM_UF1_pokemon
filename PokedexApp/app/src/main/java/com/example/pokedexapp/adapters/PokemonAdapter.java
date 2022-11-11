@@ -82,7 +82,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             textView.setLayoutParams(params);
             textView.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
             holder.llyAbilityPokemon.addView(textView);
-
         }
         int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
         holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, idColor));

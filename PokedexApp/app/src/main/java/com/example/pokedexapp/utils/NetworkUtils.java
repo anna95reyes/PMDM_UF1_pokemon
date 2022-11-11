@@ -45,6 +45,7 @@ public class NetworkUtils {
                 }
                 json =  new String(stream.toByteArray());
             }
+
             return json;
         } catch (Exception e) {
             Log.e("POKEMON","Error descarregant JSON", e);
