@@ -25,6 +25,10 @@ public class PokemonApi {
     public static List<Pokemon> getLlistaPokemons(File jsonFolder) {
 
         llistaPokemons = new ArrayList<Pokemon>();
+
+        //Quan al json hi haiguin mes pokemons dels que hi actualment, la llista de pokemons s'actualitzara
+        //ja que mira si ha aumentat el numero de pokemons i si es aixi torna a descarregar el json dels pokemons
+
         Integer qtatPokemons = 0;
 
         String jsonNumPokemons = NetworkUtils.getJSon(jsonFolder, "qtat_pokemons.json","https://pokeapi.co/api/v2/pokemon");
