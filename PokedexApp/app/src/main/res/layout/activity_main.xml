@@ -12,8 +12,6 @@
         tools:openDrawer="start"
         android:id="@+id/dwlDrawer">
 
-
-
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nvwNavigationView"
             android:layout_width="wrap_content"
