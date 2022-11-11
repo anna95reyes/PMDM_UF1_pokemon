@@ -74,14 +74,15 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         params.setMargins(7, 5, 7, 5);
 
+        holder.llyAbilityPokemon.removeAllViews();
         for (int i = 0; i < pokemonActual.getTypes().size(); i++) {
-            TextView textView = new TextView(holder.llyAbilityPokemon.getContext());
-            textView.setText(pokemonActual.getTypes().get(i).getName().toUpperCase());
-            textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
-            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            textView.setLayoutParams(params);
-            textView.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
-            holder.llyAbilityPokemon.addView(textView);
+                TextView textView = new TextView(holder.llyAbilityPokemon.getContext());
+                textView.setText(pokemonActual.getTypes().get(i).getName().toUpperCase());
+                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                textView.setLayoutParams(params);
+                textView.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
+                holder.llyAbilityPokemon.addView(textView);
         }
         int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
         holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
