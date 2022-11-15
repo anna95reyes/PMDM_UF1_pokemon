@@ -55,21 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Configuració del Universal Image Loader
-
-        DisplayImageOptions options =
-                new DisplayImageOptions.Builder()
-                        .showImageOnLoading(R.drawable.pokeball)
-                        .showImageForEmptyUri(R.drawable.pokeball)
-                        .showImageOnFail(R.drawable.pokeball)
-                        .build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-
+        inicialitzarImageLoader();
 
         //Navigation Drawer
         setSupportActionBar((Toolbar) binding.mtbToolbar);
@@ -155,6 +141,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+    private void inicialitzarImageLoader() {
+        // Configuració del Universal Image Loader
+
+        DisplayImageOptions options =
+                new DisplayImageOptions.Builder()
+                        .showImageOnLoading(R.drawable.pokeball)
+                        .showImageForEmptyUri(R.drawable.pokeball)
+                        .showImageOnFail(R.drawable.pokeball)
+                        .build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .defaultDisplayImageOptions(options)
+                .build();
+
+        ImageLoader.getInstance().init(config);
     }
 
     private void showBottomSheetDialog() {
