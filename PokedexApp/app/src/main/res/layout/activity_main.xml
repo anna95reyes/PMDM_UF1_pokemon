@@ -62,7 +62,7 @@
                     android:background="@drawable/capseta_fila_pokemon_pokedex"
                     android:backgroundTint="@color/all_types"
                     android:backgroundTintMode="add"
-                    android:text="All type"
+                    android:text="All types"
                     android:textColor="@color/black"/>
 
             </LinearLayout>

@@ -33,7 +33,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
 import java.security.acl.Owner;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -44,8 +46,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TypeAdapter adapterType;
     private MainActivityViewModel viewModel;
     private BottomSheetDialog bottomSheetDialog = null;
+    private List<Pokemon> pokemonsFiltrats;
     private Boolean botoFavoritsClicat = false;
     private Boolean botoFavoritsAbansClicat = false;
+    private String nameOrIdFiltre = "";
+    private String nameTypeFiltre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
+        nameTypeFiltre = binding.btnFilterTypes.getText().toString().toLowerCase(Locale.ROOT);
+
         binding.pgrDownload.setVisibility(View.VISIBLE);
 
         //Creacio d'una carpeta dins de la carpeta de l'aplicació
@@ -100,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 binding.pgrDownload.setVisibility(View.INVISIBLE);
             }
         });
-        
+
         binding.btnFilterTypes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,10 +123,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (botoFavoritsClicat == botoFavoritsAbansClicat) {
                     binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_black);
                     botoFavoritsClicat = false;
-                    //TODO: treure filtre per als favorits
-                } else {
-                    //TODO: fer filtre per als favorits
                 }
+                filtratgeLlistaPokemons();
                 botoFavoritsAbansClicat = botoFavoritsClicat;
 
             }
@@ -134,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //TODO: fer filtre per a la id i el nom
+                nameOrIdFiltre = s.toString();
+                filtratgeLlistaPokemons();
             }
 
             @Override
@@ -141,6 +148,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+    // Esta molt a lo guarro, pero funciona 😂
+    private void filtratgeLlistaPokemons() {
+        List <Pokemon> pokemonsSenseFiltrar = viewModel.mGetPokemons.getValue();
+        pokemonsFiltrats = new ArrayList<Pokemon>();
+        if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && (nameTypeFiltre.equals("all types"))) {
+            pokemonsFiltrats = pokemonsSenseFiltrar;
+        } else {
+            for (Pokemon p : pokemonsSenseFiltrar) {
+
+                if (!nameOrIdFiltre.equals("") && ((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                }
+                if (botoFavoritsClicat && p.isFavorite()) {
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                }
+                if (!nameTypeFiltre.equals("all types")){
+                    for (Type t : p.getTypes()) {
+                        if (nameTypeFiltre.equals(t.getName())) {
+                            if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                        }
+                    }
+                }
+                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat) {
+                    if (!((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre)) || !p.isFavorite()) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (!nameOrIdFiltre.equals("") && !nameTypeFiltre.equals("all types")) {
+                    if (!((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
+                    if (!p.isFavorite()) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
+                    if (!p.isFavorite() || !((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+
+
+            }
+        }
+        adapter = new PokemonAdapter(pokemonsFiltrats, MainActivity.this);
+        binding.rcyPokemons.setAdapter(adapter);
     }
 
     private void inicialitzarImageLoader() {
@@ -217,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.btnFilterTypes.setText(text);
         binding.btnFilterTypes.getBackground().setTint(ContextCompat.getColor(this,idColor));
         // TODO: agefir filtre del tipus
+        nameTypeFiltre = text.toLowerCase();
+        filtratgeLlistaPokemons();
         bottomSheetDialog.dismiss();
     }
 

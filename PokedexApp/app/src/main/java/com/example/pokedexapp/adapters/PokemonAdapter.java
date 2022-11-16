@@ -79,6 +79,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
                 TextView textView = new TextView(holder.llyAbilityPokemon.getContext());
                 textView.setText(pokemonActual.getTypes().get(i).getName().toUpperCase());
                 textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+                textView.setTextSize(14);
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 textView.setLayoutParams(params);
                 textView.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
