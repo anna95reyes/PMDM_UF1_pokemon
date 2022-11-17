@@ -44,7 +44,6 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             public void onClick(View v) {
                 String nameType = vh.txvNameType.getText().toString();
                 mActivity.canviarFiltreType(nameType,  getIdColor(nameType.toLowerCase()));
-
             }
         });
 
