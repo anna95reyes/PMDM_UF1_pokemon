@@ -150,45 +150,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    // Esta molt a lo guarro, pero funciona 😂
+    //Esta a lo guarro pero funciona
     private void filtratgeLlistaPokemons() {
         List <Pokemon> pokemonsSenseFiltrar = viewModel.mGetPokemons.getValue();
         pokemonsFiltrats = new ArrayList<Pokemon>();
-        if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && (nameTypeFiltre.equals("all types"))) {
+        if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && nameTypeFiltre.equals("all types")) {
             pokemonsFiltrats = pokemonsSenseFiltrar;
         } else {
             for (Pokemon p : pokemonsSenseFiltrar) {
+                boolean filtreNameOrId = (p.getId() + "").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre);
+                boolean filtreFavorits = p.isFavorite();
+                boolean filtreTypes = p.getTypes().contains(new Type(nameTypeFiltre));
 
-                if (!nameOrIdFiltre.equals("") && ((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                if (!nameOrIdFiltre.equals("") && filtreNameOrId) {
                     if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
                 }
-                if (botoFavoritsClicat && p.isFavorite()) {
+
+                if (botoFavoritsClicat && filtreFavorits) {
                     if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
                 }
-                if (!nameTypeFiltre.equals("all types")){
-                    for (Type t : p.getTypes()) {
-                        if (nameTypeFiltre.equals(t.getName())) {
-                            if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
-                        }
-                    }
+
+                if (!nameTypeFiltre.equals("all types") && filtreTypes){
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
                 }
                 if (!nameOrIdFiltre.equals("") && botoFavoritsClicat) {
-                    if (!((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre)) || !p.isFavorite()) {
+                    if (!filtreNameOrId || !filtreFavorits) {
                         if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
                     }
                 }
                 if (!nameOrIdFiltre.equals("") && !nameTypeFiltre.equals("all types")) {
-                    if (!((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                    if (!filtreNameOrId) {
                         if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
                     }
                 }
                 if (botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
-                    if (!p.isFavorite()) {
+                    if (!filtreFavorits || !filtreTypes) {
                         if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
                     }
                 }
                 if (!nameOrIdFiltre.equals("") && botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
-                    if (!p.isFavorite() || !((p.getId()+"").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre))) {
+                    if (!filtreFavorits || !filtreNameOrId || !filtreTypes) {
                         if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
                     }
                 }
