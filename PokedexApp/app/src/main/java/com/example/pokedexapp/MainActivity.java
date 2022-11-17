@@ -5,13 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleRegistryOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +16,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
@@ -48,6 +42,15 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+    private PokemonAdapter adapter;
+    private TypeAdapter adapterType;
+    private MainActivityViewModel viewModel;
+    private BottomSheetDialog bottomSheetDialog = null;
+    private List<Pokemon> pokemonsFiltrats;
+    private Boolean botoFavoritsClicat = false;
+    private Boolean botoFavoritsAbansClicat = false;
+    private String nameOrIdFiltre = "";
+    private String nameTypeFiltre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,131 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         onNavigationItemSelected(menuItem);
         menuItem.setChecked(true);
 
+        // Configuració del RecyclerView
+        binding.rcyPokemons.setLayoutManager(new LinearLayoutManager(this));
+        binding.rcyPokemons.hasFixedSize();
+
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        nameTypeFiltre = binding.btnFilterTypes.getText().toString().toLowerCase(Locale.ROOT);
+
+        binding.pgrDownload.setVisibility(View.VISIBLE);
+
+        //Creacio d'una carpeta dins de la carpeta de l'aplicació
+        File jsonFolder = new File(this.getFilesDir(), "jsons");
+        jsonFolder.mkdirs(); //per crear la carpeta explicitament
+
+        //descarregar els tipus de pokemons
+        viewModel.getTypes(jsonFolder); //Li paso la carpeta a la funcio de descarrega
+        viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
+            @Override
+            public void onChanged(List<Type> types) {
+                //descarregar els pokemons
+                viewModel.getPokemons(jsonFolder);
+            }
+        });
+
+        viewModel.mGetPokemons.observe(this, new Observer<List<Pokemon>>() {
+            @Override
+            public void onChanged(List<Pokemon> pokemons) {
+                //Creació de l'adapter
+                adapter = new PokemonAdapter(pokemons, MainActivity.this);
+                binding.rcyPokemons.setAdapter(adapter);
+                binding.pgrDownload.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        binding.btnFilterTypes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomSheetDialog();
+            }
+        });
+
+        binding.btnFilterFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                botoFavoritsClicat = true;
+                binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_gray);
+                if (botoFavoritsClicat == botoFavoritsAbansClicat) {
+                    binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_black);
+                    botoFavoritsClicat = false;
+                }
+                filtratgeLlistaPokemons();
+                botoFavoritsAbansClicat = botoFavoritsClicat;
+
+            }
+        });
+
+        binding.edtFilterNameOrNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //TODO: fer filtre per a la id i el nom
+                nameOrIdFiltre = s.toString();
+                filtratgeLlistaPokemons();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    //Esta a lo guarro pero funciona
+    private void filtratgeLlistaPokemons() {
+        List <Pokemon> pokemonsSenseFiltrar = viewModel.mGetPokemons.getValue();
+        pokemonsFiltrats = new ArrayList<Pokemon>();
+        if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && nameTypeFiltre.equals("all types")) {
+            pokemonsFiltrats = pokemonsSenseFiltrar;
+        } else {
+            for (Pokemon p : pokemonsSenseFiltrar) {
+                boolean filtreNameOrId = (p.getId() + "").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre);
+                boolean filtreFavorits = p.isFavorite();
+                boolean filtreTypes = p.getTypes().contains(new Type(nameTypeFiltre));
+
+                if (!nameOrIdFiltre.equals("") && filtreNameOrId) {
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                }
+
+                if (botoFavoritsClicat && filtreFavorits) {
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                }
+
+                if (!nameTypeFiltre.equals("all types") && filtreTypes){
+                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
+                }
+                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat) {
+                    if (!filtreNameOrId || !filtreFavorits) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (!nameOrIdFiltre.equals("") && !nameTypeFiltre.equals("all types")) {
+                    if (!filtreNameOrId) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
+                    if (!filtreFavorits || !filtreTypes) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
+                    if (!filtreFavorits || !filtreNameOrId || !filtreTypes) {
+                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
+                    }
+                }
+
+
+            }
+        }
+        adapter = new PokemonAdapter(pokemonsFiltrats, MainActivity.this);
+        binding.rcyPokemons.setAdapter(adapter);
     }
 
     private void inicialitzarImageLoader() {
@@ -90,6 +218,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageLoader.getInstance().init(config);
     }
 
+    private void showBottomSheetDialog() {
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+
+        RecyclerView rcyTypes = bottomSheetDialog.findViewById(R.id.rcyTypes);
+
+        // Configuració del RecyclerView
+        rcyTypes.setLayoutManager(new LinearLayoutManager(this));
+        rcyTypes.hasFixedSize();
+
+        viewModel.getTypesFiltre();
+        viewModel.mGetTypesFiltre.observe(this, new Observer<List<Type>>() {
+            @Override
+            public void onChanged(List<Type> typesFiltre) {
+                //Creació de l'adapter
+                adapterType = new TypeAdapter(typesFiltre, MainActivity.this, MainActivity.this);
+                rcyTypes.setAdapter(adapterType);
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
+
+
     @Override
     public void onBackPressed() {
         if (binding.dwlDrawer.isDrawerOpen(GravityCompat.START)) {
@@ -102,38 +254,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        Fragment fragment = null;
-        Class fragmentClass;
-
         switch (menuItem.getItemId()){
             case R.id.mniPokedex:
                 //TODO: t'ha de portar a la finestra de la pokedex
-
-                fragmentClass = PokedexFragment.class;
-
                 break;
             case R.id.mniTeamBuilder:
                 //TODO: t'ha de portat a la finestra dels equips
-
-                fragmentClass = null;
-
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
-
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
+
+
+    public void canviarFiltreType (String text, int idColor) {
+        binding.btnFilterTypes.setText(text);
+        binding.btnFilterTypes.getBackground().setTint(ContextCompat.getColor(this,idColor));
+        // TODO: agefir filtre del tipus
+        nameTypeFiltre = text.toLowerCase();
+        filtratgeLlistaPokemons();
+        bottomSheetDialog.dismiss();
+    }
+
 
 }

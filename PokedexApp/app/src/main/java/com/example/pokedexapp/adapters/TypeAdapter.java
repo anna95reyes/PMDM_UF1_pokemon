@@ -15,9 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.MainActivity;
-import com.example.pokedexapp.PokedexFragment;
 import com.example.pokedexapp.R;
-import com.example.pokedexapp.databinding.FragmentPokedexBinding;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Type;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -28,12 +26,12 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
 
     private List<Type> mTypes;
     private Context mContext;
-    private PokedexFragment mFragment;
+    private MainActivity mActivity;
 
-    public TypeAdapter(List<Type> types, Context context, PokedexFragment fragment){
+    public TypeAdapter(List<Type> types, Context context, MainActivity activity){
         mTypes = types;
         mContext = context;
-        mFragment = fragment;
+        mActivity = activity;
     }
 
     @NonNull
@@ -45,7 +43,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 String nameType = vh.txvNameType.getText().toString();
-                mFragment.canviarFiltreType(nameType,  getIdColor(nameType.toLowerCase()));
+                mActivity.canviarFiltreType(nameType,  getIdColor(nameType.toLowerCase()));
             }
         });
 
