@@ -1,10 +1,11 @@
 package com.example.pokedexapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Stat {
+public class Stat implements Serializable {
     private String name;
     private int base_stat;
 

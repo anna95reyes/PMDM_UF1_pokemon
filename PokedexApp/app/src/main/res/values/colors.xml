@@ -12,26 +12,51 @@
     <color name="fons_pokemon">#80DBDBDB</color>
     <color name="red">#FF4C4C</color>
 
-    <color name="all_types">#CC595858</color>
-    <color name="normal">#CCA4ACAF</color>
-    <color name="fighting">#CCD56723</color>
-    <color name="flying">#CC96BDC9</color>
-    <color name="poison">#CCB97FC9</color>
-    <color name="ground">#CCC5B041</color>
-    <color name="rock">#CCA98C21</color>
-    <color name="bug">#CC729F3F</color>
-    <color name="ghost">#CC7B62A3</color>
-    <color name="steel">#CC9EB7B8</color>
-    <color name="fire">#CCFD7D24</color>
-    <color name="water">#CC4592C4</color>
-    <color name="grass">#CC9BCC50</color>
-    <color name="electric">#CCEED535</color>
-    <color name="psychic">#CCF366B9</color>
-    <color name="ice">#CC51C4E7</color>
-    <color name="dragon">#CC948E9E</color>
-    <color name="dark">#CC707070</color>
-    <color name="fairy">#CCFDB9E9</color>
-    <color name="unknown">#CC68A090</color>
-    <color name="shadow">#CC736573</color>
+    <color name="mig_transparent">#66FFFFFF</color>
+
+    <color name="all_types">#99595858</color>
+    <color name="normal">#99A4ACAF</color>
+    <color name="fighting">#99D56723</color>
+    <color name="flying">#9996BDC9</color>
+    <color name="poison">#99B97FC9</color>
+    <color name="ground">#99C5B041</color>
+    <color name="rock">#99A98C21</color>
+    <color name="bug">#99729F3F</color>
+    <color name="ghost">#997B62A3</color>
+    <color name="steel">#999EB7B8</color>
+    <color name="fire">#99FD7D24</color>
+    <color name="water">#994592C4</color>
+    <color name="grass">#999BCC50</color>
+    <color name="electric">#99EED535</color>
+    <color name="psychic">#99F366B9</color>
+    <color name="ice">#9951C4E7</color>
+    <color name="dragon">#99948E9E</color>
+    <color name="dark">#99707070</color>
+    <color name="fairy">#99FDB9E9</color>
+    <color name="unknown">#9968A090</color>
+    <color name="shadow">#99736573</color>
+
+    <color name="background_all_types">#FF595858</color>
+    <color name="background_normal">#FFA4ACAF</color>
+    <color name="background_fighting">#FFD56723</color>
+    <color name="background_flying">#FF96BDC9</color>
+    <color name="background_poison">#FFB97FC9</color>
+    <color name="background_ground">#FFC5B041</color>
+    <color name="background_rock">#FFA98C21</color>
+    <color name="background_bug">#FF729F3F</color>
+    <color name="background_ghost">#FF7B62A3</color>
+    <color name="background_steel">#FF9EB7B8</color>
+    <color name="background_fire">#FFFD7D24</color>
+    <color name="background_water">#FF4592C4</color>
+    <color name="background_grass">#FF9BCC50</color>
+    <color name="background_electric">#FFEED535</color>
+    <color name="background_psychic">#FFF366B9</color>
+    <color name="background_ice">#FF51C4E7</color>
+    <color name="background_dragon">#FF948E9E</color>
+    <color name="background_dark">#FF707070</color>
+    <color name="background_fairy">#FFFDB9E9</color>
+    <color name="background_unknown">#FF68A090</color>
+    <color name="background_shadow">#FF736573</color>
+
 
 </resources>

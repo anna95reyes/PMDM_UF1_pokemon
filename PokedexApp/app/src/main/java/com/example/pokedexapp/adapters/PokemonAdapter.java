@@ -6,6 +6,7 @@ import static com.example.pokedexapp.R.color.purple_200;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.BlendMode;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pokedexapp.DetallPokemonFragment;
 import com.example.pokedexapp.R;
 import com.example.pokedexapp.model.Pokemon;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,11 +35,17 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     private List<Pokemon> mPokemons;
     private ImageLoader mImageLoader;
     private Context mContext;
+    private PokemonSelectedListener mListener;
 
-    public PokemonAdapter(List<Pokemon> pokemons, Context context) {
+    public interface PokemonSelectedListener {
+        public void onPokemonSeleccionat (Pokemon pokemon);
+    }
+
+    public PokemonAdapter(List<Pokemon> pokemons, Context context, PokemonSelectedListener listener) {
         mImageLoader = ImageLoader.getInstance();
         mPokemons = pokemons;
         mContext = context;
+        mListener = listener;
     }
 
     @NonNull
@@ -46,7 +57,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         viewFila.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int posicio = vh.getAdapterPosition();
+                Pokemon pokemon = mPokemons.get(posicio);
 
+                if (mListener != null) mListener.onPokemonSeleccionat(pokemon);
             }
         });
 
@@ -86,7 +100,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
                 holder.llyAbilityPokemon.addView(textView);
         }
         int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
-        holder.itemView.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
+        holder.llyPokemonPokedex.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
 
     }
 
@@ -126,6 +140,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         RadioButton rdbFavoritePokemon;
         LinearLayout llyAbilityPokemon;
         ImageView imvImagePokemon;
+        LinearLayout llyPokemonPokedex;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -134,6 +149,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             rdbFavoritePokemon = itemView.findViewById(R.id.rdbFavoritePokemon);
             llyAbilityPokemon = itemView.findViewById(R.id.llyAbilityPokemon);
             imvImagePokemon = itemView.findViewById(R.id.imvImagePokemon);
+            llyPokemonPokedex = itemView.findViewById(R.id.llyPokemonPokedex);
         }
     }
 }

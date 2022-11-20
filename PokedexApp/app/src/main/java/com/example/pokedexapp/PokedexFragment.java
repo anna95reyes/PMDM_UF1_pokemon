@@ -6,6 +6,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PokedexFragment extends Fragment {
+public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonSelectedListener {
 
     private FragmentPokedexBinding binding;
 
@@ -76,7 +78,7 @@ public class PokedexFragment extends Fragment {
 
         //descarregar els tipus de pokemons
         viewModel.getTypes(jsonFolder); //Li paso la carpeta a la funcio de descarrega
-        viewModel.mGetTypes.observe(this, new Observer<List<Type>>() {
+        viewModel.mGetTypes.observe(getViewLifecycleOwner(), new Observer<List<Type>>() {
             @Override
             public void onChanged(List<Type> types) {
                 //descarregar els pokemons
@@ -84,11 +86,13 @@ public class PokedexFragment extends Fragment {
             }
         });
 
-        viewModel.mGetPokemons.observe(this, new Observer<List<Pokemon>>() {
+        PokemonAdapter.PokemonSelectedListener listener = this;
+
+        viewModel.mGetPokemons.observe(getViewLifecycleOwner(), new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
                 //Creació de l'adapter
-                adapter = new PokemonAdapter(pokemons, requireContext());
+                adapter = new PokemonAdapter(pokemons, requireContext(), listener);
                 binding.rcyPokemons.setAdapter(adapter);
                 binding.pgrDownload.setVisibility(View.INVISIBLE);
             }
@@ -186,7 +190,7 @@ public class PokedexFragment extends Fragment {
 
             }
         }
-        adapter = new PokemonAdapter(pokemonsFiltrats, requireContext());
+        adapter = new PokemonAdapter(pokemonsFiltrats, requireContext(), this);
         binding.rcyPokemons.setAdapter(adapter);
     }
 
@@ -223,4 +227,11 @@ public class PokedexFragment extends Fragment {
 
     }
 
+    @Override
+    public void onPokemonSeleccionat(Pokemon pokemon) {
+        Bundle args = new Bundle();
+        args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
+        NavController navController =  NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
+    }
 }

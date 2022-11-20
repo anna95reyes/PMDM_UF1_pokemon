@@ -1,8 +1,9 @@
 package com.example.pokedexapp.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Ability {
+public class Ability implements Serializable {
     private String name;
     private boolean is_hidden;
 

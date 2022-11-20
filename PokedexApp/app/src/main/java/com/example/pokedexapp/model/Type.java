@@ -3,11 +3,12 @@ package com.example.pokedexapp.model;
 import android.os.Debug;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Type {
+public class Type implements Serializable {
     private String name;
 
     public Type(String name) {

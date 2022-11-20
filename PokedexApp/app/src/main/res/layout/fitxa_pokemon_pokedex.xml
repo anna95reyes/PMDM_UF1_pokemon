@@ -6,7 +6,8 @@
     android:background="@drawable/capseta_fila_pokemon_pokedex"
     android:backgroundTintMode="add"
     android:orientation="horizontal"
-    android:layout_marginTop="5dp">
+    android:layout_marginTop="5dp"
+    android:id="@+id/llyPokemonPokedex">
 
     <GridLayout
         android:layout_width="0dp"

@@ -9,5 +9,15 @@
         android:id="@+id/pokedexFragment"
         android:name="com.example.pokedexapp.PokedexFragment"
         android:label="fragment_pokedex"
-        tools:layout="@layout/fragment_pokedex" />
+        tools:layout="@layout/fragment_pokedex" >
+        <action
+            android:id="@+id/action_pokedexFragment_to_detallPokemonFragment"
+            app:destination="@id/detallPokemonFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/detallPokemonFragment"
+        android:name="com.example.pokedexapp.DetallPokemonFragment"
+        android:label="fragment_detall_pokemon"
+        tools:layout="@layout/fragment_detall_pokemon" />
 </navigation>
