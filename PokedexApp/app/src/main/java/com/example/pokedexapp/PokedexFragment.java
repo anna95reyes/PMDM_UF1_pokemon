@@ -142,10 +142,23 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     }
 
 
-    //Esta a lo guarro pero funciona
+    //TODO: Esta a lo guarro pero funciona
     private void filtratgeLlistaPokemons() {
         List<Pokemon> pokemonsSenseFiltrar = viewModel.mGetPokemons.getValue();
         pokemonsFiltrats = new ArrayList<Pokemon>();
+
+
+
+        //-------------------------------------------------------------------------------
+        // filtre per nom o número
+        boolean filtrePerNomONumero = !nameOrIdFiltre.equals("");
+        // filtre per favorit
+        boolean filtreFavorit = botoFavoritsClicat;
+        // filtre per tipus
+        boolean filtreTipus = !nameTypeFiltre.equals("all types") ;
+        //-------------------------------------------------------------------------------
+
+
         if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && nameTypeFiltre.equals("all types")) {
             pokemonsFiltrats = pokemonsSenseFiltrar;
         } else {
@@ -154,39 +167,10 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
                 boolean filtreFavorits = p.isFavorite();
                 boolean filtreTypes = p.getTypes().contains(new Type(nameTypeFiltre));
 
-                if (!nameOrIdFiltre.equals("") && filtreNameOrId) {
-                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
-                }
-
-                if (botoFavoritsClicat && filtreFavorits) {
-                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
-                }
-
-                if (!nameTypeFiltre.equals("all types") && filtreTypes) {
-                    if (!pokemonsFiltrats.contains(p)) pokemonsFiltrats.add(p);
-                }
-                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat) {
-                    if (!filtreNameOrId || !filtreFavorits) {
-                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
-                    }
-                }
-                if (!nameOrIdFiltre.equals("") && !nameTypeFiltre.equals("all types")) {
-                    if (!filtreNameOrId) {
-                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
-                    }
-                }
-                if (botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
-                    if (!filtreFavorits || !filtreTypes) {
-                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
-                    }
-                }
-                if (!nameOrIdFiltre.equals("") && botoFavoritsClicat && !nameTypeFiltre.equals("all types")) {
-                    if (!filtreFavorits || !filtreNameOrId || !filtreTypes) {
-                        if (pokemonsFiltrats.contains(p)) pokemonsFiltrats.remove(p);
-                    }
-                }
-
-
+                boolean ok1 =  !filtrePerNomONumero ||  filtreNameOrId;
+                boolean ok2 =  !filtreFavorit ||  filtreFavorits;
+                boolean ok3 =  !filtreTipus ||  filtreTypes;
+                if(ok1 && ok2 && ok3) pokemonsFiltrats.add(p);
             }
         }
         adapter = new PokemonAdapter(pokemonsFiltrats, requireContext(), this);
