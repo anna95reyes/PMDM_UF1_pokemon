@@ -1,22 +1,31 @@
 package com.example.pokedexapp;
 
-import android.graphics.Color;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.pokedexapp.databinding.FragmentDetallPokemonBinding;
+import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
-import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.text.DecimalFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,9 +40,14 @@ public class DetallPokemonFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private Pokemon mPokemon;
 
-
+    private final Integer MAX_BASE_STATS = 100;
+    private final float METRES_A_PEUS = 3.2808f;
+    private final float KG_A_LBS = 2.2046226218f;
+    private DecimalFormat df;
     private FragmentDetallPokemonBinding binding;
     private ImageLoader mImageLoader;
+    private LinearLayout.LayoutParams params;
+    private RelativeLayout.LayoutParams relativeParams;
 
     public DetallPokemonFragment() {
         // Required empty public constructor
@@ -72,11 +86,11 @@ public class DetallPokemonFragment extends Fragment {
         binding = FragmentDetallPokemonBinding.inflate(inflater, container, false);
 
         mImageLoader.displayImage(mPokemon.getImageURL(), binding.llyPokemon.imvImagePokemon);
-        binding.llyPokemon.txvIdPokemon.setText(getPokemonActualId(mPokemon));
-        binding.llyPokemon.txvNamePokemon.setText(getPokemonActualName(mPokemon));
+        binding.llyPokemon.txvIdPokemon.setText(mPokemon.getPokemonId());
+        binding.llyPokemon.txvNamePokemon.setText(mPokemon.getPokemonName());
         binding.llyPokemon.rdbFavoritePokemon.setChecked(mPokemon.isFavorite());
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         params.setMargins(7, 5, 7, 5);
 
         binding.llyPokemon.llyAbilityPokemon.removeAllViews();
@@ -97,29 +111,77 @@ public class DetallPokemonFragment extends Fragment {
 
         binding.llyFragmentDetallPokemon.setBackgroundColor(ContextCompat.getColor(requireContext(), idColor));
 
+        binding.txvDescriptionPokemon.setText(mPokemon.getDefinition().replace("\n", " "));
+
+        binding.txvHeightPokemon.setText(getHeight());
+        binding.txvWeightPokemon.setText(getWeight());
+
+        for (int i = 0; i < mPokemon.getAbilities().size(); i++) {
+            Ability ability = mPokemon.getAbilities().get(i);
+
+            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(10, 10, 10, 10);
+            if (ability.isIs_hidden()) {
+                RelativeLayout relativeLayout = new RelativeLayout(binding.llyAbilitiesPokemon.getContext());
+                relativeLayout.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+                relativeLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                relativeLayout.setPadding(0,0,0,0);
+                relativeLayout.setLayoutParams(params);
+
+                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+                TextView textViewHidden = new TextView(relativeLayout.getContext());
+                textViewHidden.setText("Hidden");
+                textViewHidden.setBackgroundResource(R.drawable.capseta_abilities_hidden);
+                textViewHidden.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                textViewHidden.setPadding(45, 15, 30, 15);
+                textViewHidden.setLayoutParams(relativeParams);
+
+                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                TextView textView = new TextView(relativeLayout.getContext());
+                textView.setText(ability.getAbilityName());
+                textView.setLayoutParams(relativeParams);
+
+                relativeLayout.addView(textViewHidden);
+                relativeLayout.addView(textView);
+                binding.llyAbilitiesPokemon.addView(relativeLayout);
+            } else {
+                TextView textView = new TextView(binding.llyAbilitiesPokemon.getContext());
+                textView.setText(ability.getAbilityName());
+                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_pokedex);
+                textView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                textView.setBackgroundTintMode(PorterDuff.Mode.ADD);
+                textView.setPadding(15, 15, 15, 15);
+                textView.setGravity(Gravity.CENTER);
+                textView.setLayoutParams(params);
+                binding.llyAbilitiesPokemon.addView(textView);
+            }
+
+        }
+
+        binding.txvBaseStats.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+
         return binding.getRoot();
     }
 
-    public String getPokemonActualId(Pokemon pokemonActual) {
-        String text;
-        int id = pokemonActual.getId();
-        text = "#";
-        if (id < 10) {
-            text += "00";
-        } else if (id < 100) {
-            text += "0";
-        }
-        text += id;
-        return text;
+
+    private String getWeight() {
+        float weightKg = mPokemon.getWeight()/10f;
+        df = new DecimalFormat("0.00");
+        String weightLbs = df.format(weightKg*KG_A_LBS);
+        return weightLbs + " lbs (" + weightKg + " kg)";
     }
 
-    public String getPokemonActualName(Pokemon pokemonActual) {
-        String name = pokemonActual.getName();
-        String text;
-        text = name.substring(0, 1).toUpperCase();
-        text += name.substring(1, name.length());
 
-        return text;
+    private String getHeight() {
+        float heightMetres = mPokemon.getHeight()/10f;
+        df = new DecimalFormat("0.0");
+        String heightPies = df.format(heightMetres * METRES_A_PEUS);
+        return heightPies.substring(0,1) + "\'" + heightPies.substring(2,3) + "\"" + " (" + heightMetres + " m)";
     }
+
+
 
 }

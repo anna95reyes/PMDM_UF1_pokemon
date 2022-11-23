@@ -155,6 +155,27 @@ public class Pokemon implements Serializable {
         this.selected = selected;
     }
 
+    public String getPokemonId() {
+        String text;
+        text = "#";
+        if (id < 10) {
+            text += "00";
+        } else if (id < 100) {
+            text += "0";
+        }
+        text += id;
+        return text;
+    }
+
+    public String getPokemonName() {
+        String text;
+        text = name.substring(0, 1).toUpperCase();
+        text += name.substring(1, name.length());
+
+        return text;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

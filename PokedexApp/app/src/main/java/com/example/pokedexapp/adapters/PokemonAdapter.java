@@ -71,8 +71,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Pokemon pokemonActual = mPokemons.get(position);
         mImageLoader.displayImage(pokemonActual.getImageURL(), holder.imvImagePokemon);
-        holder.txvIdPokemon.setText(getPokemonActualId(pokemonActual));
-        holder.txvNamePokemon.setText(getPokemonActualName(pokemonActual));
+        holder.txvIdPokemon.setText(pokemonActual.getPokemonId());
+        holder.txvNamePokemon.setText(pokemonActual.getPokemonName());
         holder.rdbFavoritePokemon.setChecked(pokemonActual.isFavorite());
 
         holder.rdbFavoritePokemon.setOnClickListener(new View.OnClickListener() {
@@ -102,30 +102,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
         holder.llyPokemonPokedex.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
 
-    }
-
-
-
-    private String getPokemonActualId(Pokemon pokemonActual) {
-        String text;
-        int id = pokemonActual.getId();
-        text = "#";
-        if (id < 10) {
-            text += "00";
-        } else if (id < 100) {
-            text += "0";
-        }
-        text += id;
-        return text;
-    }
-
-    private String getPokemonActualName(Pokemon pokemonActual) {
-        String name = pokemonActual.getName();
-        String text;
-        text = name.substring(0, 1).toUpperCase();
-        text += name.substring(1, name.length());
-
-        return text;
     }
 
     @Override

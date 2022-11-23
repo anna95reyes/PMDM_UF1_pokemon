@@ -28,6 +28,14 @@ public class Ability implements Serializable {
         this.is_hidden = is_hidden;
     }
 
+    public String getAbilityName() {
+        String text;
+        text = name.substring(0, 1).toUpperCase();
+        text += name.substring(1, name.length());
+
+        return text;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

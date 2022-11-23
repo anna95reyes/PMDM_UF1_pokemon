@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
-import com.example.pokedexapp.databinding.ActivityMainBinding;
 import com.example.pokedexapp.databinding.FragmentPokedexBinding;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Type;
