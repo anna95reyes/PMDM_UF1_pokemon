@@ -47,7 +47,8 @@
             android:layout_row="0"
             android:layout_column="2"
             android:layout_gravity="right"
-            android:textColor="@color/gray" />
+            android:background="@null"
+            android:button="@drawable/radio_button_favorite"/>
 
         <LinearLayout
             android:id="@+id/llyAbilityPokemon"

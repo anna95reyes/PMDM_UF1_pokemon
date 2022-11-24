@@ -108,9 +108,9 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
             @Override
             public void onClick(View v) {
                 botoFavoritsClicat = true;
-                binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_gray);
+                binding.btnFilterFavorites.setImageResource(R.drawable.filter_favorite_black);
                 if (botoFavoritsClicat == botoFavoritsAbansClicat) {
-                    binding.btnFilterFavorites.setImageResource(R.drawable.cheack_all_black);
+                    binding.btnFilterFavorites.setImageResource(R.drawable.filter_favorite_transparent);
                     botoFavoritsClicat = false;
                 }
                 filtratgeLlistaPokemons();
@@ -127,7 +127,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //TODO: fer filtre per a la id i el nom
                 nameOrIdFiltre = s.toString();
                 filtratgeLlistaPokemons();
             }
@@ -141,36 +140,34 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         return binding.getRoot();
     }
 
-
-    //TODO: Esta a lo guarro pero funciona
     private void filtratgeLlistaPokemons() {
         List<Pokemon> pokemonsSenseFiltrar = viewModel.mGetPokemons.getValue();
         pokemonsFiltrats = new ArrayList<Pokemon>();
 
-
-
         //-------------------------------------------------------------------------------
         // filtre per nom o número
-        boolean filtrePerNomONumero = !nameOrIdFiltre.equals("");
+        boolean isFiltreNameOrIdActive = !nameOrIdFiltre.equals("");
         // filtre per favorit
-        boolean filtreFavorit = botoFavoritsClicat;
+        boolean isFiltreFavoritActive = botoFavoritsClicat;
         // filtre per tipus
-        boolean filtreTipus = !nameTypeFiltre.equals("all types") ;
+        boolean isFiltreTipusActive = !nameTypeFiltre.equals("all types") ;
         //-------------------------------------------------------------------------------
 
 
-        if (nameOrIdFiltre.equals("") && !botoFavoritsClicat && nameTypeFiltre.equals("all types")) {
+        if (!isFiltreNameOrIdActive && !isFiltreFavoritActive && !isFiltreTipusActive) {
             pokemonsFiltrats = pokemonsSenseFiltrar;
         } else {
             for (Pokemon p : pokemonsSenseFiltrar) {
+
                 boolean filtreNameOrId = (p.getId() + "").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre);
                 boolean filtreFavorits = p.isFavorite();
                 boolean filtreTypes = p.getTypes().contains(new Type(nameTypeFiltre));
 
-                boolean ok1 =  !filtrePerNomONumero ||  filtreNameOrId;
-                boolean ok2 =  !filtreFavorit ||  filtreFavorits;
-                boolean ok3 =  !filtreTipus ||  filtreTypes;
-                if(ok1 && ok2 && ok3) pokemonsFiltrats.add(p);
+                boolean filtratgeNameOrIdOk =  !isFiltreNameOrIdActive ||  filtreNameOrId;
+                boolean filtratgeFavoritsOk =  !isFiltreFavoritActive ||  filtreFavorits;
+                boolean filtratgeTipusOk =  !isFiltreTipusActive ||  filtreTypes;
+
+                if(filtratgeNameOrIdOk && filtratgeFavoritsOk && filtratgeTipusOk) pokemonsFiltrats.add(p);
             }
         }
         adapter = new PokemonAdapter(pokemonsFiltrats, requireContext(), this);
