@@ -20,6 +20,7 @@ public class PokemonApi {
 
     private static Integer maxPokemons = 386; //Fins a la tecera generacio de pokemons
     private static List<Pokemon> llistaPokemons;
+    private static List<Pokemon> llistaEvolucions;
     private static Pokemon pokemon;
 
     public static List<Pokemon> getLlistaPokemons(File jsonFolder) {
@@ -64,6 +65,10 @@ public class PokemonApi {
             Log.e("POKEMON", "error en el JSON LLISTA POKEMONS", e);
         }
 
+        for (int i = 0; i < llistaPokemons.size(); i++){
+            getEvolucions(jsonFolder, llistaPokemons.get(i), "https://pokeapi.co/api/v2/pokemon/");
+        }
+
         return llistaPokemons;
     }
 
@@ -90,8 +95,8 @@ public class PokemonApi {
             String urlSpecies = species.getString("url");
             String jsonSpecies = NetworkUtils.getJSon(jsonFolder,
                     "species_" + species.getString("name") + ".json", urlSpecies);
-            JSONObject speciesnObj = new JSONObject(jsonSpecies);
-            JSONArray flavor_text_entries = speciesnObj.getJSONArray("flavor_text_entries");
+            JSONObject speciesObj = new JSONObject(jsonSpecies);
+            JSONArray flavor_text_entries = speciesObj.getJSONArray("flavor_text_entries");
             String definition = "";
             for (int i = 0; i < flavor_text_entries.length(); i++) {
                 JSONObject  flavor_text_entries_object = flavor_text_entries.getJSONObject(i);
@@ -135,6 +140,76 @@ public class PokemonApi {
 
         return pokemon;
 
+    }
+
+    private static List<Pokemon> getEvolucions (File jsonFolder, Pokemon pokemon, String url) {
+
+        llistaEvolucions = new ArrayList<Pokemon>();
+
+        String json = NetworkUtils.getJSon(jsonFolder, "pokemon_" + pokemon.getName() + ".json", url+pokemon.getId());
+
+        try {
+            JSONObject pokemonObj = new JSONObject(json);
+
+            JSONObject species = pokemonObj.getJSONObject("species");
+            String urlSpecies = species.getString("url");
+            String jsonSpecies = NetworkUtils.getJSon(jsonFolder,
+                    "species_" + species.getString("name") + ".json", urlSpecies);
+
+            JSONObject speciesObj = new JSONObject(jsonSpecies);
+            JSONObject evolution_chain = speciesObj.getJSONObject("evolution_chain");
+            String urlEvolucions = evolution_chain.getString("url");
+
+            Log.d("POKEMON", "EVOLUCIONS: "+urlEvolucions);
+
+            String jsonEvolucions = NetworkUtils.getJSon(jsonFolder, "evolution_" + pokemon.getName() + ".json", urlEvolucions);
+
+            JSONObject evolucionsObj = new JSONObject(jsonEvolucions);
+            JSONObject chain = evolucionsObj.getJSONObject("chain");
+            JSONObject speciesEvolucions = chain.getJSONObject("species");
+            String evolucioBabyName = speciesEvolucions.getString("name");
+            if (getPokemonPerNom(evolucioBabyName) != null) llistaEvolucions.add(getPokemonPerNom(evolucioBabyName));
+
+            JSONArray primera_evolves_to = chain.getJSONArray("evolves_to");
+            for (int i = 0; i < primera_evolves_to.length(); i++){
+                JSONObject primera_evolves_toObject = primera_evolves_to.getJSONObject(i);
+                JSONObject primeraSpeciesEvolucions = primera_evolves_toObject.getJSONObject("species");
+                String primeraEvolucioName = primeraSpeciesEvolucions.getString("name");
+                if (getPokemonPerNom(primeraEvolucioName) != null) llistaEvolucions.add(getPokemonPerNom(primeraEvolucioName));
+                JSONArray segona_evolves_to = chain.getJSONArray("evolves_to");
+                for (int j = 0; j < segona_evolves_to.length(); j++){
+                    JSONObject segona_evolves_toObject = segona_evolves_to.getJSONObject(i);
+                    JSONObject segonaSpeciesEvolucions = segona_evolves_toObject.getJSONObject("species");
+                    String segonaEvolucioName = segonaSpeciesEvolucions.getString("name");
+                    if (getPokemonPerNom(segonaEvolucioName) != null) llistaEvolucions.add(getPokemonPerNom(segonaEvolucioName));
+                }
+
+            }
+
+
+
+        } catch (JSONException e) {
+            Log.e("POKEMON", "error en el JSON POKEMON", e);
+        }
+
+        Log.d("POKEMON", "EVOLUCIONS: "+llistaPokemons.toString());
+
+        return llistaEvolucions;
+
+    }
+
+    public static Pokemon getPokemonPerNom(String name) {
+        Pokemon pokemon = null;
+        int i = 0;
+        while (i < llistaPokemons.size() && !llistaPokemons.get(i).getName().equals(name)) {
+            i++;
+        }
+
+        if (i < llistaPokemons.size()){
+            pokemon = llistaPokemons.get(i);
+        }
+
+        return pokemon;
     }
 
 }

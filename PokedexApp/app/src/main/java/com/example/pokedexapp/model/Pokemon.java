@@ -26,7 +26,6 @@ public class Pokemon implements Serializable {
     private List<Pokemon> evolutions; //species/url -> evolution_chain/url --> species/name
 
     private Bitmap bitmap;
-    private boolean selected;
 
     public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
                    int height, int weight, List<Ability> abilities, List<Stat> stats) {
@@ -147,14 +146,6 @@ public class Pokemon implements Serializable {
         imageURL = null;
     }
 
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     public String getPokemonId() {
         String text;
         text = "#";
@@ -205,7 +196,6 @@ public class Pokemon implements Serializable {
                 ", totalStats=" + totalStats +
                 ", evolutions=" + evolutions +
                 ", bitmap=" + bitmap +
-                ", selected=" + selected +
                 '}';
     }
 }
