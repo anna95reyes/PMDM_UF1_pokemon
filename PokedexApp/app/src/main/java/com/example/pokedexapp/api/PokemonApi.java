@@ -52,8 +52,6 @@ public class PokemonApi {
         */
         String json = NetworkUtils.getJSon(jsonFolder, "pokemons.json","https://pokeapi.co/api/v2/pokemon?offset=0&limit="+maxPokemons);
 
-        //Log.d("POKEMON", "JSON: " + json);
-
         try {
             JSONObject typeObj = new JSONObject(json);
             JSONArray results = typeObj.getJSONArray("results");
@@ -73,8 +71,6 @@ public class PokemonApi {
 
         String json = NetworkUtils.getJSon(jsonFolder, "pokemon_" + nomPokemon + ".json", url);
 
-        //Log.d("POKEMON", "JSON POKEMON: " + json);
-
         try {
             JSONObject pokemonObj = new JSONObject(json);
             Integer id = pokemonObj.getInt("id");
@@ -82,7 +78,7 @@ public class PokemonApi {
             JSONObject sprites = pokemonObj.getJSONObject("sprites");
             JSONObject other = sprites.getJSONObject("other");
             JSONObject official_artwork = other.getJSONObject("official-artwork");
-            String imageURL = official_artwork.getString("front_default"); //TODO: s'ha de canviar
+            String imageURL = official_artwork.getString("front_default");
             JSONArray types = pokemonObj.getJSONArray("types");
             List<Type> llistaTypes = new ArrayList<Type>();
             for (int i = 0; i < types.length(); i++){
@@ -96,7 +92,17 @@ public class PokemonApi {
                     "species_" + species.getString("name") + ".json", urlSpecies);
             JSONObject speciesnObj = new JSONObject(jsonSpecies);
             JSONArray flavor_text_entries = speciesnObj.getJSONArray("flavor_text_entries");
-            String definition = flavor_text_entries.getJSONObject(0).getString("flavor_text");
+            String definition = "";
+            for (int i = 0; i < flavor_text_entries.length(); i++) {
+                JSONObject  flavor_text_entries_object = flavor_text_entries.getJSONObject(i);
+                JSONObject language = flavor_text_entries_object.getJSONObject("language");
+                String nameLanguage = language.getString("name");
+
+                if (nameLanguage.equals("en")) {
+                    definition = flavor_text_entries.getJSONObject(i).getString("flavor_text");
+                    break;
+                }
+            }
             Integer height = pokemonObj.getInt("height");
             Integer weight = pokemonObj.getInt("weight");
 

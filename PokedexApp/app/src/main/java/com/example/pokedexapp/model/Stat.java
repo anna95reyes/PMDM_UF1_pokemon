@@ -3,6 +3,7 @@ package com.example.pokedexapp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Stat implements Serializable {
@@ -28,6 +29,22 @@ public class Stat implements Serializable {
 
     public void setBase_stat(int base_stat) {
         this.base_stat = base_stat;
+    }
+
+    public String getStatName() {
+        String text;
+        if (name.equals("hp")){
+            text = name.toUpperCase();
+        } else if (name.contains("special")) {
+            text = "Sp. ";
+            text += name.substring(8, 9).toUpperCase();
+            text += name.substring(9,name.length());
+        } else {
+            text = name.substring(0, 1).toUpperCase();
+            text += name.substring(1, name.length());
+        }
+
+        return text;
     }
 
     @Override

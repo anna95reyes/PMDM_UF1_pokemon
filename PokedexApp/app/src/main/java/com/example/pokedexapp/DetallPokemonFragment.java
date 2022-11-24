@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.pokedexapp.databinding.FragmentDetallPokemonBinding;
 import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
+import com.example.pokedexapp.model.Stat;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
@@ -116,11 +117,120 @@ public class DetallPokemonFragment extends Fragment {
         binding.txvHeightPokemon.setText(getHeight());
         binding.txvWeightPokemon.setText(getWeight());
 
-        for (int i = 0; i < mPokemon.getAbilities().size(); i++) {
-            Ability ability = mPokemon.getAbilities().get(i);
+        getAbilities(idColor);
+        getBaseStats(idColor);
+        binding.txvTotalBaseStats.setText(""+mPokemon.getTotalStats());
+
+        binding.txvBaseStats.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+
+        return binding.getRoot();
+    }
+
+    private void getBaseStats(int idColor) {
+
+        binding.llyBaseStats.removeAllViews();
+
+        for (int i = 0; i < mPokemon.getStats().size(); i++) {
+
+            Stat stat = mPokemon.getStats().get(i);
 
             params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10, 10, 10, 10);
+            LinearLayout linearLayout = new LinearLayout(binding.llyBaseStats.getContext());
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.setLayoutParams(params);
+
+            int tamanyCapsetaNom = 310;
+            int tamanyMinimCapsetaNumero = 90;
+            int base_stat = stat.getBase_stat() >= MAX_BASE_STATS? MAX_BASE_STATS : stat.getBase_stat();
+            params = new LinearLayout.LayoutParams(tamanyCapsetaNom + tamanyMinimCapsetaNumero, LinearLayout.LayoutParams.WRAP_CONTENT, base_stat);
+            params.setMargins(0, 15, 0, 15);
+
+            int idColorRelativeLayout = requireContext().getResources().getIdentifier(mPokemon.getTypes().get(0).getName(), "color", requireContext().getPackageName());
+
+            RelativeLayout relativeLayout = new RelativeLayout(linearLayout.getContext());
+            relativeLayout.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+            relativeLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColorRelativeLayout)));
+            relativeLayout.setBackgroundTintMode(PorterDuff.Mode.ADD);
+            relativeLayout.setPadding(0,0,0,0);
+            relativeLayout.setLayoutParams(params);
+
+            relativeParams = new RelativeLayout.LayoutParams(tamanyCapsetaNom, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+            TextView textViewStat = new TextView(relativeLayout.getContext());
+            textViewStat.setText(stat.getStatName());
+            textViewStat.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            textViewStat.setBackgroundResource(R.drawable.capseta_abilities_hidden);
+            textViewStat.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+            textViewStat.setPadding(45, 15, 30, 15);
+            textViewStat.setLayoutParams(relativeParams);
+
+            relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relativeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            relativeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            TextView textView = new TextView(relativeLayout.getContext());
+            textView.setText(""+ stat.getBase_stat());
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(0,0,45,0);
+            textView.setLayoutParams(relativeParams);
+
+            params = new LinearLayout.LayoutParams(0, 1, MAX_BASE_STATS- base_stat);
+            View view = new View(linearLayout.getContext());
+            view.setLayoutParams(params);
+
+            relativeLayout.addView(textViewStat);
+            relativeLayout.addView(textView);
+            linearLayout.addView(relativeLayout);
+            linearLayout.addView(view);
+            binding.llyBaseStats.addView(linearLayout);
+
+            /*if (ability.isIs_hidden()) {
+                RelativeLayout relativeLayout = new RelativeLayout(binding.llyAbilitiesPokemon.getContext());
+                relativeLayout.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+                relativeLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                relativeLayout.setPadding(0,0,0,0);
+                relativeLayout.setLayoutParams(params);
+
+                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+                TextView textViewHidden = new TextView(relativeLayout.getContext());
+                textViewHidden.setText("Hidden");
+                textViewHidden.setBackgroundResource(R.drawable.capseta_abilities_hidden);
+                textViewHidden.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                textViewHidden.setPadding(45, 15, 30, 15);
+                textViewHidden.setLayoutParams(relativeParams);
+
+                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                relativeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                TextView textView = new TextView(relativeLayout.getContext());
+                textView.setText(ability.getAbilityName());
+                textView.setLayoutParams(relativeParams);
+
+                relativeLayout.addView(textViewHidden);
+                relativeLayout.addView(textView);
+                binding.llyAbilitiesPokemon.addView(relativeLayout);
+            } else {
+                TextView textView = new TextView(binding.llyAbilitiesPokemon.getContext());
+                textView.setText(ability.getAbilityName());
+                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_pokedex);
+                textView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
+                textView.setBackgroundTintMode(PorterDuff.Mode.ADD);
+                textView.setPadding(15, 15, 15, 15);
+                textView.setGravity(Gravity.CENTER);
+                textView.setLayoutParams(params);
+                binding.llyAbilitiesPokemon.addView(textView);
+            }
+*/
+        }
+    }
+
+    private void getAbilities(int idColor) {
+        binding.llyAbilitiesPokemon.removeAllViews();
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10, 10, 10, 10);
+        for (int i = 0; i < mPokemon.getAbilities().size(); i++) {
+            Ability ability = mPokemon.getAbilities().get(i);
             if (ability.isIs_hidden()) {
                 RelativeLayout relativeLayout = new RelativeLayout(binding.llyAbilitiesPokemon.getContext());
                 relativeLayout.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
@@ -160,12 +270,7 @@ public class DetallPokemonFragment extends Fragment {
             }
 
         }
-
-        binding.txvBaseStats.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
-
-        return binding.getRoot();
     }
-
 
     private String getWeight() {
         float weightKg = mPokemon.getWeight()/10f;

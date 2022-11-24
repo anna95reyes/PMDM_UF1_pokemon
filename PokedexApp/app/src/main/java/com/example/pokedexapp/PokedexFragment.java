@@ -150,7 +150,7 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         // filtre per favorit
         boolean isFiltreFavoritActive = botoFavoritsClicat;
         // filtre per tipus
-        boolean isFiltreTipusActive = !nameTypeFiltre.equals("all types") ;
+        boolean isFiltreTipusActive = !nameTypeFiltre.equals("all types");
         //-------------------------------------------------------------------------------
 
 
@@ -200,7 +200,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     public void canviarFiltreType(String text, int idColor) {
         binding.btnFilterTypes.setText(text);
         binding.btnFilterTypes.getBackground().setTint(ContextCompat.getColor(requireContext(), idColor));
-        // TODO: agefir filtre del tipus
         nameTypeFiltre = text.toLowerCase();
         filtratgeLlistaPokemons();
         bottomSheetDialog.dismiss();
@@ -213,5 +212,8 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
         NavController navController =  NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
+        //Fico aixo perque si no quan del fragment de detall tiro cap enrrere, es queda guardat el filtre
+        binding.edtFilterNameOrNumber.setText("");
+        binding.btnFilterFavorites.setSelected(false);
     }
 }
