@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +31,7 @@ import com.example.pokedexapp.model.Stat;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -170,6 +174,19 @@ public class DetallPokemonFragment extends Fragment {
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray));
                 llyAbilityPokemonEvolution.addView(textView);
             }
+            fitxaEvolutionPokemon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args = new Bundle();
+
+                    TextView txvNamePokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvNamePokemonEvolution);
+
+                    args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, getPokemonPerNom(txvNamePokemonEvolution.getText().toString(), mPokemon.getEvolutions()));
+                    NavController navController =  Navigation.findNavController(v);
+                    navController.navigate(R.id.detallPokemonFragment, args);
+
+                }
+            });
 
             binding.llyPokemonEvolutions.addView(fitxaEvolutionPokemon);
 
@@ -300,6 +317,19 @@ public class DetallPokemonFragment extends Fragment {
         return heightPies.substring(0,1) + "\'" + heightPies.substring(2,3) + "\"" + " (" + heightMetres + " m)";
     }
 
+    public Pokemon getPokemonPerNom(String name, List<Pokemon> llistaPokemons) {
+        Pokemon pokemon = null;
+        name = name.toLowerCase();
+        int i = 0;
+        while (i < llistaPokemons.size() && !llistaPokemons.get(i).getName().equals(name)) {
+            i++;
+        }
 
+        if (i < llistaPokemons.size()){
+            pokemon = llistaPokemons.get(i);
+        }
+
+        return pokemon;
+    }
 
 }

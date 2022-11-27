@@ -6,7 +6,8 @@
     android:background="@drawable/capseta_fila_pokemon_pokedex"
     android:id="@+id/llyPokemonEvolution"
     android:backgroundTint="@color/grass"
-    android:backgroundTintMode="add">
+    android:backgroundTintMode="add"
+    android:clickable="true">
 
     <ImageView android:id="@+id/imvImageEvolutionPokemon"
         android:layout_width="150dp"
@@ -40,5 +41,4 @@
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"/>
-
 </LinearLayout>

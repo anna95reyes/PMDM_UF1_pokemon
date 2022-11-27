@@ -20,4 +20,9 @@
         android:name="com.example.pokedexapp.DetallPokemonFragment"
         android:label="fragment_detall_pokemon"
         tools:layout="@layout/fragment_detall_pokemon" />
+    <fragment
+        android:id="@+id/teamFragment"
+        android:name="com.example.pokedexapp.TeamFragment"
+        android:label="fragment_team"
+        tools:layout="@layout/fragment_team" />
 </navigation>

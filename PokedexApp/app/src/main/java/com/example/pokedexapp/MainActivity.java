@@ -7,11 +7,14 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleRegistryOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,35 +104,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        Fragment fragment = null;
-        Class fragmentClass;
-
         switch (menuItem.getItemId()){
             case R.id.mniPokedex:
                 //TODO: t'ha de portar a la finestra de la pokedex
-
-                fragmentClass = PokedexFragment.class;
-
                 break;
             case R.id.mniTeamBuilder:
                 //TODO: t'ha de portat a la finestra dels equips
-
-                fragmentClass = null;
-
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
         }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
 
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
 

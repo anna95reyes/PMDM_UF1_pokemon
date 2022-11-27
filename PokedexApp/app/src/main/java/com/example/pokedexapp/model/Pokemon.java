@@ -3,8 +3,6 @@ package com.example.pokedexapp.model;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +39,7 @@ public class Pokemon implements Serializable {
         this.stats = stats;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
