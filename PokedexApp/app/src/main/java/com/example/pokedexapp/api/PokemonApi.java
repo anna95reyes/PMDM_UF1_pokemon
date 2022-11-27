@@ -66,7 +66,7 @@ public class PokemonApi {
         }
 
         for (int i = 0; i < llistaPokemons.size(); i++){
-            getEvolucions(jsonFolder, llistaPokemons.get(i), "https://pokeapi.co/api/v2/pokemon/");
+            llistaPokemons.get(i).setEvolutions(getEvolucions(jsonFolder, llistaPokemons.get(i), "https://pokeapi.co/api/v2/pokemon/"));
         }
 
         return llistaPokemons;
@@ -160,14 +160,13 @@ public class PokemonApi {
             JSONObject evolution_chain = speciesObj.getJSONObject("evolution_chain");
             String urlEvolucions = evolution_chain.getString("url");
 
-            Log.d("POKEMON", "EVOLUCIONS: "+urlEvolucions);
-
             String jsonEvolucions = NetworkUtils.getJSon(jsonFolder, "evolution_" + pokemon.getName() + ".json", urlEvolucions);
 
             JSONObject evolucionsObj = new JSONObject(jsonEvolucions);
             JSONObject chain = evolucionsObj.getJSONObject("chain");
             JSONObject speciesEvolucions = chain.getJSONObject("species");
             String evolucioBabyName = speciesEvolucions.getString("name");
+
             if (getPokemonPerNom(evolucioBabyName) != null) llistaEvolucions.add(getPokemonPerNom(evolucioBabyName));
 
             JSONArray primera_evolves_to = chain.getJSONArray("evolves_to");
@@ -176,7 +175,7 @@ public class PokemonApi {
                 JSONObject primeraSpeciesEvolucions = primera_evolves_toObject.getJSONObject("species");
                 String primeraEvolucioName = primeraSpeciesEvolucions.getString("name");
                 if (getPokemonPerNom(primeraEvolucioName) != null) llistaEvolucions.add(getPokemonPerNom(primeraEvolucioName));
-                JSONArray segona_evolves_to = chain.getJSONArray("evolves_to");
+                JSONArray segona_evolves_to = primera_evolves_toObject.getJSONArray("evolves_to");
                 for (int j = 0; j < segona_evolves_to.length(); j++){
                     JSONObject segona_evolves_toObject = segona_evolves_to.getJSONObject(i);
                     JSONObject segonaSpeciesEvolucions = segona_evolves_toObject.getJSONObject("species");
@@ -191,8 +190,6 @@ public class PokemonApi {
         } catch (JSONException e) {
             Log.e("POKEMON", "error en el JSON POKEMON", e);
         }
-
-        Log.d("POKEMON", "EVOLUCIONS: "+llistaPokemons.toString());
 
         return llistaEvolucions;
 

@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -123,7 +124,57 @@ public class DetallPokemonFragment extends Fragment {
 
         binding.txvBaseStats.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
 
+        getEvolicions();
+
         return binding.getRoot();
+    }
+
+    private void getEvolicions() {
+        binding.llyPokemonEvolutions.removeAllViews();
+
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10, 0, 10, 0);
+
+        for (int i = 0; i < mPokemon.getEvolutions().size(); i++){
+
+            View fitxaEvolutionPokemon = getLayoutInflater().inflate(R.layout.fitxa_evolution_pokemon,
+                    binding.llyPokemonEvolutions, false);
+
+            int idColorEvolutionPokemon = requireContext().getResources().getIdentifier(mPokemon.getEvolutions().get(i).getTypes().get(0).getName(), "color", requireContext().getPackageName());
+
+            fitxaEvolutionPokemon.setLayoutParams(params);
+            fitxaEvolutionPokemon.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColorEvolutionPokemon)));
+            fitxaEvolutionPokemon.setBackgroundTintMode(PorterDuff.Mode.ADD);
+
+            ImageView imvImageEvolutionPokemon = fitxaEvolutionPokemon.findViewById(R.id.imvImageEvolutionPokemon);
+            mImageLoader.displayImage(mPokemon.getEvolutions().get(i).getImageURL(), imvImageEvolutionPokemon);
+
+            TextView txvIdPokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvIdPokemonEvolution);
+            txvIdPokemonEvolution.setText(mPokemon.getEvolutions().get(i).getPokemonId());
+
+            TextView txvNamePokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvNamePokemonEvolution);
+            txvNamePokemonEvolution.setText(mPokemon.getEvolutions().get(i).getPokemonName());
+
+            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(7, 5, 7, 5);
+            LinearLayout llyAbilityPokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.llyAbilityPokemonEvolution);
+
+            llyAbilityPokemonEvolution.removeAllViews();
+            for (int j = 0; j < mPokemon.getEvolutions().get(i).getTypes().size(); j++) {
+                TextView textView = new TextView(llyAbilityPokemonEvolution.getContext());
+                textView.setText(mPokemon.getEvolutions().get(i).getTypes().get(j).getName().toUpperCase());
+                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
+                textView.setTextSize(16);
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                textView.setLayoutParams(params);
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray));
+                llyAbilityPokemonEvolution.addView(textView);
+            }
+
+            binding.llyPokemonEvolutions.addView(fitxaEvolutionPokemon);
+
+        }
+
     }
 
     private void getBaseStats(int idColor) {
@@ -184,44 +235,6 @@ public class DetallPokemonFragment extends Fragment {
             linearLayout.addView(view);
             binding.llyBaseStats.addView(linearLayout);
 
-            /*if (ability.isIs_hidden()) {
-                RelativeLayout relativeLayout = new RelativeLayout(binding.llyAbilitiesPokemon.getContext());
-                relativeLayout.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
-                relativeLayout.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
-                relativeLayout.setPadding(0,0,0,0);
-                relativeLayout.setLayoutParams(params);
-
-                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-                TextView textViewHidden = new TextView(relativeLayout.getContext());
-                textViewHidden.setText("Hidden");
-                textViewHidden.setBackgroundResource(R.drawable.capseta_abilities_hidden);
-                textViewHidden.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
-                textViewHidden.setPadding(45, 15, 30, 15);
-                textViewHidden.setLayoutParams(relativeParams);
-
-                relativeParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                relativeParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                TextView textView = new TextView(relativeLayout.getContext());
-                textView.setText(ability.getAbilityName());
-                textView.setLayoutParams(relativeParams);
-
-                relativeLayout.addView(textViewHidden);
-                relativeLayout.addView(textView);
-                binding.llyAbilitiesPokemon.addView(relativeLayout);
-            } else {
-                TextView textView = new TextView(binding.llyAbilitiesPokemon.getContext());
-                textView.setText(ability.getAbilityName());
-                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_pokedex);
-                textView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColor)));
-                textView.setBackgroundTintMode(PorterDuff.Mode.ADD);
-                textView.setPadding(15, 15, 15, 15);
-                textView.setGravity(Gravity.CENTER);
-                textView.setLayoutParams(params);
-                binding.llyAbilitiesPokemon.addView(textView);
-            }
-*/
         }
     }
 
