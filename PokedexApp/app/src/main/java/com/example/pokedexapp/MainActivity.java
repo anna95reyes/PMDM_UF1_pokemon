@@ -114,13 +114,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()) {
             case R.id.mniPokedex:
-                //TODO: t'ha de portar a la finestra de la pokedex
-                Log.d("POKEMON", "Menu navigation: POKEDEX");
                 fragment = new PokedexFragment();
                 break;
             case R.id.mniTeamBuilder:
-                //TODO: t'ha de portat a la finestra dels equips
-                Log.d("POKEMON", "Menu navigation: TEAMS");
                 fragment = new TeamFragment();
                 break;
             default:
