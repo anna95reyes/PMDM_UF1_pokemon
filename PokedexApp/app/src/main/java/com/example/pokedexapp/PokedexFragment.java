@@ -48,7 +48,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,6 +209,9 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     public void onPokemonSeleccionat(Pokemon pokemon) {
         Bundle args = new Bundle();
         args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
+        //binding.navHostFragment.getFragment().getParentFragment();
+
+
         NavController navController =  NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
         //Fico aixo perque si no quan del fragment de detall tiro cap enrrere, es queda guardat el filtre

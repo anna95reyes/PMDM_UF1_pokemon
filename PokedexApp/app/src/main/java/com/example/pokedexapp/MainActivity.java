@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Navigation Drawer
         setSupportActionBar((Toolbar) binding.mtbToolbar);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.dwlDrawer, binding.mtbToolbar,
                 R.string.app_name, R.string.app_name);
         binding.dwlDrawer.addDrawerListener(toggle);
@@ -104,12 +107,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+
+        Fragment fragment = null;
+        switch (menuItem.getItemId()) {
             case R.id.mniPokedex:
                 //TODO: t'ha de portar a la finestra de la pokedex
+                Log.d("POKEMON", "Menu navigation: POKEDEX");
+                fragment = new PokedexFragment();
                 break;
             case R.id.mniTeamBuilder:
                 //TODO: t'ha de portat a la finestra dels equips
+                Log.d("POKEMON", "Menu navigation: TEAMS");
+                fragment = new TeamFragment();
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
@@ -118,6 +127,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.mniPokedex:
+                // Código necesario para desplegar el Navigation Drawer.
+                Log.d("POKEMON", "Menu options: POKEDEX");
+                binding.dwlDrawer.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.mniTeamBuilder:
+                Log.d("POKEMON", "Menu options: TEAMS");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
