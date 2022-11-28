@@ -107,8 +107,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
         Fragment fragment = null;
+        for (int i = 0; i < binding.nvwNavigationView.getMenu().size(); i++) {
+            binding.nvwNavigationView.getMenu().getItem(i).setCheckable(false);
+        }
+
         switch (menuItem.getItemId()) {
             case R.id.mniPokedex:
                 //TODO: t'ha de portar a la finestra de la pokedex
@@ -124,24 +127,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 throw new IllegalArgumentException("menu option not implemented!");
         }
 
+        menuItem.setChecked(true);
+
+        //Per modificar el fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, fragment);
+        transaction.commit();
+
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
 
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.mniPokedex:
-                // Código necesario para desplegar el Navigation Drawer.
-                Log.d("POKEMON", "Menu options: POKEDEX");
-                binding.dwlDrawer.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.mniTeamBuilder:
-                Log.d("POKEMON", "Menu options: TEAMS");
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+
+        return true;
     }
 
 }
