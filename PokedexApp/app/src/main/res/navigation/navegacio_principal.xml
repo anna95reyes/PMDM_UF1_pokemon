@@ -12,9 +12,7 @@
         tools:layout="@layout/fragment_pokedex" >
         <action
             android:id="@+id/action_pokedexFragment_to_detallPokemonFragment"
-            app:destination="@id/detallPokemonFragment"
-            app:popUpTo="@id/pokedexFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/detallPokemonFragment" />
     </fragment>
     <fragment
         android:id="@+id/detallPokemonFragment"
@@ -28,9 +26,7 @@
         tools:layout="@layout/fragment_team" >
         <action
             android:id="@+id/action_teamFragment_to_pokedexFragment"
-            app:destination="@id/pokedexFragment"
-            app:popUpTo="@id/teamFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/pokedexFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_pokedexFragment"
