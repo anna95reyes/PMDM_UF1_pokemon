@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
@@ -107,33 +108,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Fragment fragment = null;
         for (int i = 0; i < binding.nvwNavigationView.getMenu().size(); i++) {
-            binding.nvwNavigationView.getMenu().getItem(i).setCheckable(false);
+            binding.nvwNavigationView.getMenu().getItem(i).setChecked(false);
         }
-
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         switch (menuItem.getItemId()) {
             case R.id.mniPokedex:
-                fragment = new PokedexFragment();
+                binding.nvwNavigationView.getMenu().getItem(0).setChecked(true);
+                navHostFragment.getNavController().navigate(R.id.action_global_pokedexFragment);
                 break;
             case R.id.mniTeamBuilder:
-                fragment = new TeamFragment();
+                binding.nvwNavigationView.getMenu().getItem(1).setChecked(true);
+                navHostFragment.getNavController().navigate(R.id.action_global_teamFragment);
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
         }
 
-        menuItem.setChecked(true);
 
-        //Per modificar el fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, fragment);
-        transaction.commit();
 
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
-
-
-
 
         return true;
     }

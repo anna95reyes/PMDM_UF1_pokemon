@@ -59,8 +59,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             public void onClick(View v) {
                 int posicio = vh.getAdapterPosition();
                 Pokemon pokemon = mPokemons.get(posicio);
-
                 if (mListener != null) mListener.onPokemonSeleccionat(pokemon);
+
+
             }
         });
 

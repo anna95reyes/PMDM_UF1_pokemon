@@ -36,29 +36,35 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void getPokemons(File jsonFolder){
-        if (mLlistaPokemons == null) {
+        if (mLlistaPokemons == null || mLlistaPokemons.size() == 0) {
             mLlistaPokemons = new ArrayList<Pokemon>();
             Observable.fromCallable(() -> {
                 mLlistaPokemons = PokemonApi.getLlistaPokemons(jsonFolder);
                 mGetPokemons.postValue(mLlistaPokemons);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
+        } else {
+            mGetPokemons.postValue(mLlistaPokemons);
         }
+
     }
 
     public void getTypes(File jsonFolder) {
-        if (mLlistaTypes == null) {
+        if (mLlistaTypes == null || mLlistaTypes.size() == 0) {
             mLlistaTypes = new ArrayList<Type>();
             Observable.fromCallable(() -> {
                 mLlistaTypes = TypeApi.getLlistaTypes(jsonFolder);
                 mGetTypes.postValue(mLlistaTypes);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
+        } else {
+            mGetTypes.postValue(mLlistaTypes);
         }
+
     }
 
     public List<Type> getTypesFiltre() {
-        if (mLlistaTypesFiltre == null) {
+        if (mLlistaTypesFiltre == null || mLlistaTypesFiltre.size() == 0) {
             mLlistaTypesFiltre = new ArrayList<Type>();
             mLlistaTypesFiltre.add(new Type("all types"));
             for (int i = 0; i < mLlistaTypes.size(); i++){

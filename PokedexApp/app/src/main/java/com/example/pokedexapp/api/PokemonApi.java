@@ -177,7 +177,7 @@ public class PokemonApi {
                 if (getPokemonPerNom(primeraEvolucioName) != null) llistaEvolucions.add(getPokemonPerNom(primeraEvolucioName));
                 JSONArray segona_evolves_to = primera_evolves_toObject.getJSONArray("evolves_to");
                 for (int j = 0; j < segona_evolves_to.length(); j++){
-                    JSONObject segona_evolves_toObject = segona_evolves_to.getJSONObject(i);
+                    JSONObject segona_evolves_toObject = segona_evolves_to.getJSONObject(j);
                     JSONObject segonaSpeciesEvolucions = segona_evolves_toObject.getJSONObject("species");
                     String segonaEvolucioName = segonaSpeciesEvolucions.getString("name");
                     if (getPokemonPerNom(segonaEvolucioName) != null) llistaEvolucions.add(getPokemonPerNom(segonaEvolucioName));

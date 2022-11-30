@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,11 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     private String nameOrIdFiltre = "";
     private String nameTypeFiltre;
 
+    public static final String ARG_PARAM_POKEMONS = "param1";
+
     public PokedexFragment() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -56,7 +60,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         binding = FragmentPokedexBinding.inflate(inflater, container, false);
 
@@ -83,7 +86,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
                 viewModel.getPokemons(jsonFolder);
             }
         });
-
         PokemonAdapter.PokemonSelectedListener listener = this;
 
         viewModel.mGetPokemons.observe(getViewLifecycleOwner(), new Observer<List<Pokemon>>() {
@@ -91,8 +93,11 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
             public void onChanged(List<Pokemon> pokemons) {
                 //Creació de l'adapter
                 adapter = new PokemonAdapter(pokemons, requireContext(), listener);
+
                 binding.rcyPokemons.setAdapter(adapter);
-                binding.pgrDownload.setVisibility(View.INVISIBLE);
+                if (viewModel.mGetPokemons.getValue() != null) {
+                    binding.pgrDownload.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -210,7 +215,6 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         Bundle args = new Bundle();
         args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
         //binding.navHostFragment.getFragment().getParentFragment();
-
 
         NavController navController =  NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
