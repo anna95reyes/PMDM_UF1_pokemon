@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="team_builder">Team Builder</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enter_name_or_number">Enter name or number</string>
     <string name="all_types">All types</string>
@@ -9,4 +10,5 @@
     <string name="evolution_chain">Evolution Chain</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
+    <string name="enter_name">Enter name</string>
 </resources>

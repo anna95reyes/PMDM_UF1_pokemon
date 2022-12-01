@@ -116,10 +116,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.mniPokedex:
                 binding.nvwNavigationView.getMenu().getItem(0).setChecked(true);
                 navHostFragment.getNavController().navigate(R.id.action_global_pokedexFragment);
+                setTitle(R.string.app_name);
                 break;
             case R.id.mniTeamBuilder:
                 binding.nvwNavigationView.getMenu().getItem(1).setChecked(true);
                 navHostFragment.getNavController().navigate(R.id.action_global_teamFragment);
+                setTitle(R.string.team_builder);
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
