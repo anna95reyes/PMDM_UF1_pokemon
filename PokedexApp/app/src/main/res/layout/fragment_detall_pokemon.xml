@@ -208,19 +208,14 @@
                 android:paddingBottom="5dp"
                 android:textSize="20dp" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcyPokemonEvolutions"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout android:id="@+id/llyPokemonEvolutions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/capseta_detall"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="20dp"
-                    android:orientation="horizontal"/>
-
-            </HorizontalScrollView>
+                android:layout_height="wrap_content"
+                android:background="@drawable/capseta_detall"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="20dp"
+                android:orientation="horizontal"/>
 
         </LinearLayout>
 

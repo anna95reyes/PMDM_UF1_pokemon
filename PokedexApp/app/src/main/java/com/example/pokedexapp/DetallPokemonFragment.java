@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.pokedexapp.adapters.EvolucioAdapter;
+import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.databinding.FragmentDetallPokemonBinding;
 import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
@@ -38,7 +41,7 @@ import java.util.List;
  * Use the {@link DetallPokemonFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetallPokemonFragment extends Fragment {
+public class DetallPokemonFragment extends Fragment implements EvolucioAdapter.EvolucioSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +57,7 @@ public class DetallPokemonFragment extends Fragment {
     private ImageLoader mImageLoader;
     private LinearLayout.LayoutParams params;
     private RelativeLayout.LayoutParams relativeParams;
+    private EvolucioAdapter adapter;
 
     public DetallPokemonFragment() {
         // Required empty public constructor
@@ -133,65 +137,16 @@ public class DetallPokemonFragment extends Fragment {
         return binding.getRoot();
     }
 
+    EvolucioAdapter.EvolucioSelectedListener listener = this;
+
     private void getEvolicions() {
-        binding.llyPokemonEvolutions.removeAllViews();
-
-        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10, 0, 10, 0);
-
-        for (int i = 0; i < mPokemon.getEvolutions().size(); i++){
-
-            View fitxaEvolutionPokemon = getLayoutInflater().inflate(R.layout.fitxa_evolution_pokemon,
-                    binding.llyPokemonEvolutions, false);
-
-            int idColorEvolutionPokemon = requireContext().getResources().getIdentifier(mPokemon.getEvolutions().get(i).getTypes().get(0).getName(), "color", requireContext().getPackageName());
-
-            fitxaEvolutionPokemon.setLayoutParams(params);
-            fitxaEvolutionPokemon.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(idColorEvolutionPokemon)));
-            fitxaEvolutionPokemon.setBackgroundTintMode(PorterDuff.Mode.ADD);
-
-            ImageView imvImageEvolutionPokemon = fitxaEvolutionPokemon.findViewById(R.id.imvImageEvolutionPokemon);
-            mImageLoader.displayImage(mPokemon.getEvolutions().get(i).getImageURL(), imvImageEvolutionPokemon);
-
-            TextView txvIdPokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvIdPokemonEvolution);
-            txvIdPokemonEvolution.setText(mPokemon.getEvolutions().get(i).getPokemonId());
-
-            TextView txvNamePokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvNamePokemonEvolution);
-            txvNamePokemonEvolution.setText(mPokemon.getEvolutions().get(i).getPokemonName());
-
-            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(7, 5, 7, 5);
-            LinearLayout llyAbilityPokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.llyAbilityPokemonEvolution);
-
-            llyAbilityPokemonEvolution.removeAllViews();
-            for (int j = 0; j < mPokemon.getEvolutions().get(i).getTypes().size(); j++) {
-                TextView textView = new TextView(llyAbilityPokemonEvolution.getContext());
-                textView.setText(mPokemon.getEvolutions().get(i).getTypes().get(j).getName().toUpperCase());
-                textView.setBackgroundResource(R.drawable.capseta_fila_pokemon_types);
-                textView.setTextSize(16);
-                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                textView.setLayoutParams(params);
-                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray));
-                llyAbilityPokemonEvolution.addView(textView);
-            }
-            fitxaEvolutionPokemon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle args = new Bundle();
-
-                    TextView txvNamePokemonEvolution = fitxaEvolutionPokemon.findViewById(R.id.txvNamePokemonEvolution);
-
-                    args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, getPokemonPerNom(txvNamePokemonEvolution.getText().toString(), mPokemon.getEvolutions()));
-                    NavController navController =  Navigation.findNavController(v);
-                    navController.navigate(R.id.detallPokemonFragment, args);
-
-                }
-            });
-
-            binding.llyPokemonEvolutions.addView(fitxaEvolutionPokemon);
-
-        }
-
+        // Configuració del RecyclerView
+        LinearLayoutManager horizontalLayoutManager
+                = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.rcyPokemonEvolutions.setLayoutManager(horizontalLayoutManager);
+        binding.rcyPokemonEvolutions.hasFixedSize();
+        adapter = new EvolucioAdapter(mPokemon.getEvolutions(), requireContext(), listener);
+        binding.rcyPokemonEvolutions.setAdapter(adapter);
     }
 
     private void getBaseStats(int idColor) {
@@ -332,4 +287,13 @@ public class DetallPokemonFragment extends Fragment {
         return pokemon;
     }
 
+
+    @Override
+    public void onEvolucioSeleccionat(String namePokemonEvolution, List<Pokemon> evolucions) {
+        Bundle args = new Bundle();
+
+        args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, getPokemonPerNom(namePokemonEvolution, evolucions));
+        NavController navController =  NavHostFragment.findNavController(this);
+        navController.navigate(R.id.detallPokemonFragment, args);
+    }
 }
