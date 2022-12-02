@@ -2,26 +2,28 @@ package com.example.pokedexapp.model;
 
 import android.graphics.Bitmap;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 public class Pokemon implements Serializable {
 
-    //private static List<Pokemon> _pokemons;
-
-    private int id; //id
-    private String name; //name
-    private String imageURL; //sprites/front_default
-    private List<Type> types; //types/0/type/name
+    private int id;
+    private String name;
+    private String imageURL;
+    private List<Type> types;
     private boolean favorite;
-    private String definition; //species/url -> flavor_text_entries/0/flavor_text
-    private int height; //height
-    private int weight; //weight
-    private List<Ability> abilities; //abilities/0/ability/name i //abilities/0/is_hidden
-    private List<Stat> stats; //stats/0/base_stats i stats/0/stat/name
-    private int totalStats; // -- camp calculat
-    private List<Pokemon> evolutions; //species/url -> evolution_chain/url --> species/name
+    private String definition;
+    private int height;
+    private int weight;
+    private List<Ability> abilities;
+    private List<Stat> stats;
+    private int totalStats;
+    private List<Pokemon> evolutions;
 
     private Bitmap bitmap;
 

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/capseta_fila_pokemon_pokedex"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,5 +41,11 @@
             android:layout_margin="10dp"/>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcyPokemonsTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
 
 </LinearLayout>

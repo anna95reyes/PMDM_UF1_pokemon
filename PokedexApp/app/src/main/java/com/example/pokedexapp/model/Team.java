@@ -1,5 +1,9 @@
 package com.example.pokedexapp.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,7 @@ public class Team implements Serializable {
 
     private final Integer MAX_POKEMONS = 6;
 
+    private Integer id;
     private String name;
     private Boolean complert;
     private List<Pokemon> pokemons;
