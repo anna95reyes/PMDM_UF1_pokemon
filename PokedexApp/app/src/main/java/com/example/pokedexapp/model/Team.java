@@ -18,9 +18,25 @@ public class Team implements Serializable {
     private List<Pokemon> pokemons;
 
     public Team(String name) {
+        this.id = -1;
         this.name = name;
         this.complert = false;
         this.pokemons = new ArrayList<Pokemon>();
+    }
+
+    public Team(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+        this.complert = false;
+        this.pokemons = new ArrayList<Pokemon>();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -29,6 +45,10 @@ public class Team implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setComplert(Boolean complert) {
+        this.complert = complert;
     }
 
     public Boolean getComplert() {

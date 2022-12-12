@@ -1,51 +1,32 @@
 package com.example.pokedexapp.db.entities;
 
 
+import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Query;
+import androidx.room.Relation;
 
+import com.example.pokedexapp.model.Pokemon;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "team")
 public class TeamDB {
-    @PrimaryKey
-    private Integer id;
-    private String name;
-    private Boolean complert;
-    //private List<PokemonDB> pokemons;
+    @PrimaryKey(autoGenerate = true)
+    public Integer id;
+    public String name;
+    public Boolean complert;
+    @ColumnInfo(name = "pokemon_id")
+    public Integer pokemonId;
 
     public TeamDB() {
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public TeamDB(String name) {
         this.name = name;
+        this.complert = false;
     }
-
-    public Boolean getComplert() {
-        return complert;
-    }
-
-    public void setComplert(Boolean complert) {
-        this.complert = complert;
-    }
-
-    /*public List<PokemonDB> getPokemons() {
-        return pokemons;
-    }
-
-    public void setPokemons(List<PokemonDB> pokemons) {
-        this.pokemons = pokemons;
-    }*/
 }

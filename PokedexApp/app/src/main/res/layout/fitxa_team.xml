@@ -20,7 +20,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"/>
 
-        <ImageButton android:id="@+id/imvImageWarningTeam"
+        <ImageView android:id="@+id/imvImageWarningTeam"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/dialog_warning"

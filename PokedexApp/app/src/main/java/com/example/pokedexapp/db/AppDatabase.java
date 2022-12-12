@@ -3,6 +3,7 @@ package com.example.pokedexapp.db;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import com.example.pokedexapp.db.entities.PokemonWithTeamListsDB;
 import com.example.pokedexapp.db.entities.TeamDB;
 import com.example.pokedexapp.db.entities.PokemonDB;
 import com.example.pokedexapp.db.daos.TeamDao;

@@ -13,6 +13,7 @@ import com.example.pokedexapp.api.PokemonApi;
 import com.example.pokedexapp.api.TypeApi;
 import com.example.pokedexapp.db.AppDatabase;
 import com.example.pokedexapp.db.daos.TeamDao;
+import com.example.pokedexapp.db.entities.TeamDB;
 import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Stat;
@@ -23,6 +24,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -44,6 +46,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         mGetPokemons = new MutableLiveData<List<Pokemon>>();
         mGetTypes = new MutableLiveData<List<Type>>();
         mGetTypesFiltre = new MutableLiveData<List<Type>>();
+        mGetTeams = new MutableLiveData<List<Team>>();
     }
 
     public void getPokemons(File jsonFolder){
@@ -93,7 +96,27 @@ public class MainActivityViewModel extends AndroidViewModel {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
                 TeamDao dao = appDatabase();
+                List<TeamDB> teams = dao.getTeams();
+                for (TeamDB teamDB : teams) {
+                    Team team = new Team(teamDB.id, teamDB.name);
+                    mLlistaTeams.add(team);
+                }
                 mGetTeams.postValue(mLlistaTeams);
+                return 1;
+            }).subscribeOn(Schedulers.io()).subscribe();
+        }
+        return mLlistaTeams;
+    }
+
+    public List<Team> insertTeam(Team team){
+        if (mGetTeams.getValue() != null) {
+            mLlistaTeams = new ArrayList<Team>();
+            Observable.fromCallable(() -> {
+                TeamDao dao = appDatabase();
+
+                TeamDB teamDB = new TeamDB(team.getName());
+                dao.insertTeam(teamDB);
+                mLlistaTeams.add(team);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
