@@ -90,9 +90,36 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mLlistaTypesFiltre;
     }
 
-
     public List<Team> getTeams(){
-        if (mGetTeams.getValue() != null) {
+        if (mLlistaTeams == null) {
+            mLlistaTeams = new ArrayList<Team>();
+            Observable.fromCallable(() -> {
+                Team team = new Team(0, "Team 1");
+                team.addPokemon(0,mLlistaPokemons.get(0));
+                team.addPokemon(1, mLlistaPokemons.get(1));
+                team.addPokemon(2, mLlistaPokemons.get(2));
+                team.addPokemon(3, mLlistaPokemons.get(3));
+                team.addPokemon(4, mLlistaPokemons.get(4));
+                team.addPokemon(5, mLlistaPokemons.get(5));
+                mLlistaTeams.add(team);
+
+                team = new Team(1, "Team 2");
+                team.addPokemon(0, mLlistaPokemons.get(6));
+                team.addPokemon(1, mLlistaPokemons.get(7));
+                team.addPokemon(2, mLlistaPokemons.get(8));
+                team.addPokemon(3, null);
+                team.addPokemon(4, null);
+                team.addPokemon(5, null);
+                mLlistaTeams.add(team);
+                mGetTeams.postValue(mLlistaTeams);
+                return 1;
+            }).subscribeOn(Schedulers.io()).subscribe();
+        }
+        return mLlistaTeams;
+    }
+
+    /*public List<Team> getTeams(){
+        if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
                 TeamDao dao = appDatabase();
@@ -121,7 +148,7 @@ public class MainActivityViewModel extends AndroidViewModel {
             }).subscribeOn(Schedulers.io()).subscribe();
         }
         return mLlistaTeams;
-    }
+    }*/
 
     public TeamDao appDatabase(){
         AppDatabase db = Room.databaseBuilder(getApplication().getApplicationContext(),

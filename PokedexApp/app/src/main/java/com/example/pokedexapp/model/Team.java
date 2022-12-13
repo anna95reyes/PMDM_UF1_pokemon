@@ -1,11 +1,14 @@
 package com.example.pokedexapp.model;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Team implements Serializable {
@@ -22,13 +25,14 @@ public class Team implements Serializable {
         this.name = name;
         this.complert = false;
         this.pokemons = new ArrayList<Pokemon>();
+        for (int i = 0; i < MAX_POKEMONS; i++){
+            this.pokemons.add(i, null);
+        }
     }
 
     public Team(Integer id, String name) {
+        this(name);
         this.id = id;
-        this.name = name;
-        this.complert = false;
-        this.pokemons = new ArrayList<Pokemon>();
     }
 
     public Integer getId() {
@@ -52,6 +56,13 @@ public class Team implements Serializable {
     }
 
     public Boolean getComplert() {
+        int i = 0;
+        while (i < MAX_POKEMONS && pokemons.get(i) != null) {
+            i++;
+        }
+        if (i == MAX_POKEMONS) {
+            setComplert(true);
+        }
         return complert;
     }
 
@@ -59,13 +70,10 @@ public class Team implements Serializable {
         return pokemons;
     }
 
-    public boolean addPokemon(Pokemon pokemon) {
+    public boolean addPokemon(int posicio, Pokemon pokemon) {
         boolean afegit = false;
-        if (pokemons.size() == MAX_POKEMONS) {
-            complert = true;
-        }
-        if (!complert && !pokemons.contains(pokemon)) {
-            pokemons.add(pokemon);
+        if (!getComplert() && !pokemons.contains(pokemon)) {
+            pokemons.set(posicio, pokemon);
             afegit = true;
         }
         return afegit;
