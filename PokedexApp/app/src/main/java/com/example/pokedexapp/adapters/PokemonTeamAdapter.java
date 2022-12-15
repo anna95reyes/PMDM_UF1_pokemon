@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,10 +48,10 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
             mImageLoader.displayImage(pokemonActual.getImageURL(), holder.imvImagePokemonTeam);
 
             int idColor = mContext.getResources().getIdentifier(pokemonActual.getTypes().get(0).getName(), "color", mContext.getPackageName());
-            holder.rlyPokemonTeam.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
+            holder.ctlPokemonTeam.getBackground().setTint(ContextCompat.getColor(mContext, idColor));
         } else {
             holder.imvImagePokemonTeam.setImageResource(R.drawable.question);
-            holder.rlyPokemonTeam.getBackground().setTint(ContextCompat.getColor(mContext, R.color.pokemon_no_afegit));
+            holder.ctlPokemonTeam.getBackground().setTint(ContextCompat.getColor(mContext, R.color.pokemon_no_afegit));
         }
     }
 
@@ -62,12 +63,12 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imvImagePokemonTeam;
-        RelativeLayout rlyPokemonTeam;
+        ConstraintLayout ctlPokemonTeam;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imvImagePokemonTeam = itemView.findViewById(R.id.imvImagePokemonTeam);
-            rlyPokemonTeam = itemView.findViewById(R.id.rlyPokemonTeam);
+            ctlPokemonTeam = itemView.findViewById(R.id.ctlPokemonTeam);
         }
     }
 }

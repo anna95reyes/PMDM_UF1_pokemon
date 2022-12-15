@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PokemonApi {
 
-    private static Integer maxPokemons = 386; //Fins a la tecera generacio de pokemons
+    private static Integer maxPokemons = 151; //Fins a la primera generacio de pokemons
     private static List<Pokemon> llistaPokemons;
     private static List<Pokemon> llistaEvolucions;
     private static Pokemon pokemon;

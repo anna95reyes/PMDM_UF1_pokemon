@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Team teamActual = mTeams.get(position);
-        holder.txvNameTeam.setText(teamActual.getName());
+        holder.edtNameTeam.setText(teamActual.getName());
         if (teamActual.getComplert()) {
             holder.imvImageWarningTeam.setVisibility(View.INVISIBLE);
         } else {
@@ -70,14 +71,14 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txvNameTeam;
+        EditText edtNameTeam;
         ImageView imvImageWarningTeam;
         ImageButton btnImageEditTeam;
         RecyclerView rcyPokemonsTeam;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txvNameTeam = itemView.findViewById(R.id.txvNameTeam);
+            edtNameTeam = itemView.findViewById(R.id.edtNameTeam);
             imvImageWarningTeam = itemView.findViewById(R.id.imvImageWarningTeam);
             btnImageEditTeam = itemView.findViewById(R.id.btnImageEditTeam);
             rcyPokemonsTeam = itemView.findViewById(R.id.rcyPokemonsTeam);
