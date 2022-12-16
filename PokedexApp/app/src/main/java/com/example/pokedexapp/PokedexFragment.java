@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonSelectedListener {
+public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonSelectedListener, PokemonAdapter.PokemonUpdateListener {
 
     private FragmentPokedexBinding binding;
 
@@ -86,13 +86,14 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
                 viewModel.getPokemons(jsonFolder);
             }
         });
-        PokemonAdapter.PokemonSelectedListener listener = this;
+        PokemonAdapter.PokemonSelectedListener listenerSelected = this;
+        PokemonAdapter.PokemonUpdateListener listenerUpdate = this;
 
         viewModel.mGetPokemons.observe(getViewLifecycleOwner(), new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
                 //Creació de l'adapter
-                adapter = new PokemonAdapter(pokemons, requireContext(), listener);
+                adapter = new PokemonAdapter(pokemons, requireContext(), listenerSelected, listenerUpdate);
 
                 binding.rcyPokemons.setAdapter(adapter);
                 if (viewModel.mGetPokemons.getValue() != null) {
@@ -163,7 +164,7 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         } else {
             for (Pokemon p : pokemonsSenseFiltrar) {
 
-                boolean filtreNameOrId = (p.getId() + "").contains(nameOrIdFiltre) || p.getName().contains(nameOrIdFiltre);
+                boolean filtreNameOrId = (p.getId() + "").contains(nameOrIdFiltre) || p.getName().toLowerCase().contains(nameOrIdFiltre.toLowerCase());
                 boolean filtreFavorits = p.isFavorite();
                 boolean filtreTypes = p.getTypes().contains(new Type(nameTypeFiltre));
 
@@ -174,7 +175,7 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
                 if(filtratgeNameOrIdOk && filtratgeFavoritsOk && filtratgeTipusOk) pokemonsFiltrats.add(p);
             }
         }
-        adapter = new PokemonAdapter(pokemonsFiltrats, requireContext(), this);
+        adapter = new PokemonAdapter(pokemonsFiltrats, requireContext(), this, this);
         binding.rcyPokemons.setAdapter(adapter);
     }
 
@@ -221,5 +222,10 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
         //Fico aixo perque si no quan del fragment de detall tiro cap enrrere, es queda guardat el filtre
         binding.edtFilterNameOrNumber.setText("");
         binding.btnFilterFavorites.setSelected(false);
+    }
+
+    @Override
+    public void onPokemonUpdateFavorite(Pokemon pokemon) {
+        viewModel.updatePokemonFavorit(pokemon);
     }
 }

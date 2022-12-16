@@ -10,6 +10,7 @@
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/button_filtre_favorits_checked.xml" value="0.27395833333333336" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta.xml" value="0.403125" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta_abilities_hidden.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta_borde_pokemon_seleccionat.xml" value="0.21875" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta_boto_base_stats.xml" value="0.2015625" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta_capsa_types.xml" value="0.33" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/drawable/capseta_detall.xml" value="0.2520833333333333" />
@@ -28,7 +29,7 @@
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_evolution_pokemon.xml" value="0.33" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_evolution_team.xml" value="0.20625" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_pokemon_pokedex.xml" value="0.30300807043286865" />
-        <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_pokemon_team.xml" value="0.22" />
+        <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_pokemon_team.xml" value="0.5" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_team.xml" value="0.20625" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fitxa_types.xml" value="0.33" />
         <entry key="..\:/Users/anna9/Documents/ESTUDIOS/DAM/2022-2023/M08-PMDM/UF1/Practica/PokedexApp/app/src/main/res/layout/fragment_detall_pokemon.xml" value="0.25" />

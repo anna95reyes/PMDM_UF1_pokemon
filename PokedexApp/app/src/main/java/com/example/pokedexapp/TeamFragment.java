@@ -7,15 +7,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pokedexapp.adapters.PokemonAdapter;
-import com.example.pokedexapp.adapters.PokemonTeamAdapter;
 import com.example.pokedexapp.adapters.TeamAdapter;
-import com.example.pokedexapp.adapters.TypeAdapter;
 import com.example.pokedexapp.databinding.FragmentTeamBinding;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
@@ -23,6 +22,7 @@ import com.example.pokedexapp.model.Type;
 import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamFragment extends Fragment {
@@ -30,11 +30,8 @@ public class TeamFragment extends Fragment {
     private FragmentTeamBinding binding;
     private MainActivityViewModel viewModel;
     private TeamAdapter adapter;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-    // TODO: Rename and change types of parameters
+    private List<Team> teamsFiltrats;
+    private String nameFiltre = "";
 
     public TeamFragment() {
         // Required empty public constructor
@@ -77,6 +74,26 @@ public class TeamFragment extends Fragment {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
                 //descarregar els equips
+                Team team = new Team("Team 1");
+                /*team.addPokemon(0, pokemons.get(0));
+                team.addPokemon(1, pokemons.get(1));
+                team.addPokemon(2, pokemons.get(2));
+                team.addPokemon(3, pokemons.get(3));
+                team.addPokemon(4, pokemons.get(4));
+                team.addPokemon(5, pokemons.get(5));*/
+
+                viewModel.insertTeam(team);
+
+                team = null;
+                team = new Team("Team 2");
+                /*team.addPokemon(0, pokemons.get(6));
+                team.addPokemon(1, pokemons.get(7));
+                team.addPokemon(2, pokemons.get(8));
+                team.addPokemon(3, null);
+                team.addPokemon(4, null);
+                team.addPokemon(5, null);*/
+
+                viewModel.insertTeam(team);
                 viewModel.getTeams();
             }
         });
@@ -94,7 +111,51 @@ public class TeamFragment extends Fragment {
             }
         });
 
+        binding.edtFilterName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                nameFiltre = s.toString();
+                filtratgeLlistaTeams();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return binding.getRoot();
 
+    }
+
+    private void filtratgeLlistaTeams() {
+        List<Team> teamsSenseFiltrar = viewModel.mGetTeams.getValue();
+        teamsFiltrats = new ArrayList<Team>();
+
+        //-------------------------------------------------------------------------------
+        // filtre per nom
+        boolean isFiltreNameActive = !nameFiltre.equals("");
+        //-------------------------------------------------------------------------------
+
+
+        if (!isFiltreNameActive) {
+            teamsFiltrats = teamsSenseFiltrar;
+        } else {
+            for (Team t : teamsSenseFiltrar) {
+
+                boolean filtreName = t.getName().toLowerCase().contains(nameFiltre.toLowerCase());
+
+                boolean filtratgeNameOk =  !isFiltreNameActive ||  filtreName;
+
+                if(filtratgeNameOk) teamsFiltrats.add(t);
+            }
+        }
+        adapter = new TeamAdapter(teamsFiltrats, requireContext());
+        binding.rcyTeams.setAdapter(adapter);
     }
 }

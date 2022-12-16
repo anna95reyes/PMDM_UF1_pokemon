@@ -3,19 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/capseta_fila_pokemon_pokedex"
-    android:backgroundTint="@color/pokemon_no_afegit"
-    android:backgroundTintMode="add"
-    android:layout_margin="10dp"
-    android:id="@+id/ctlPokemonTeam">
+    android:background="@drawable/capseta_borde_pokemon_seleccionat"
+    android:backgroundTint="@color/transparent"
+    android:padding="5dp"
+    android:layout_margin="5dp"
+    android:id="@+id/ctlPokemonTeamSeleccionat">
 
-    <ImageView
-        android:id="@+id/imvImagePokemonTeam"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:src="@drawable/question"
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/capseta_fila_pokemon_pokedex"
+        android:backgroundTint="@color/pokemon_no_afegit"
+        android:backgroundTintMode="add"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="1:1"/>
+        android:id="@+id/ctlPokemonTeam">
+
+    <ImageView
+            android:id="@+id/imvImagePokemonTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/question"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintDimensionRatio="1:1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pokedexapp.DetallPokemonFragment;
 import com.example.pokedexapp.R;
 import com.example.pokedexapp.model.Pokemon;
+import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -35,17 +37,25 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     private List<Pokemon> mPokemons;
     private ImageLoader mImageLoader;
     private Context mContext;
-    private PokemonSelectedListener mListener;
+    private PokemonSelectedListener mListenerSelected;
+    private PokemonUpdateListener mListenerUpdate;
+    private MainActivityViewModel viewModel;
 
     public interface PokemonSelectedListener {
         public void onPokemonSeleccionat (Pokemon pokemon);
     }
 
-    public PokemonAdapter(List<Pokemon> pokemons, Context context, PokemonSelectedListener listener) {
+    public interface PokemonUpdateListener {
+        public void onPokemonUpdateFavorite (Pokemon pokemon);
+    }
+
+    public PokemonAdapter(List<Pokemon> pokemons, Context context, PokemonSelectedListener listenerSelected,
+                          PokemonUpdateListener listenerUpdate) {
         mImageLoader = ImageLoader.getInstance();
         mPokemons = pokemons;
         mContext = context;
-        mListener = listener;
+        mListenerSelected = listenerSelected;
+        mListenerUpdate = listenerUpdate;
     }
 
     @NonNull
@@ -59,8 +69,18 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             public void onClick(View v) {
                 int posicio = vh.getAdapterPosition();
                 Pokemon pokemon = mPokemons.get(posicio);
-                if (mListener != null) mListener.onPokemonSeleccionat(pokemon);
+                if (mListenerSelected != null) mListenerSelected.onPokemonSeleccionat(pokemon);
 
+            }
+        });
+        vh.rdbFavoritePokemon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int posicio = vh.getAdapterPosition();
+                Pokemon pokemon = mPokemons.get(posicio);
+                pokemon.setFavorite(!pokemon.isFavorite());
+                notifyItemChanged(posicio);
+                if (mListenerUpdate != null) mListenerUpdate.onPokemonUpdateFavorite(pokemon);
             }
         });
 
@@ -74,16 +94,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.txvIdPokemon.setText(pokemonActual.getPokemonId());
         holder.txvNamePokemon.setText(pokemonActual.getPokemonName());
         holder.rdbFavoritePokemon.setChecked(pokemonActual.isFavorite());
-
-        holder.rdbFavoritePokemon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pokemonActual.isFavorite()) {
-                    holder.rdbFavoritePokemon.setChecked(false);
-                }
-                pokemonActual.setFavorite(holder.rdbFavoritePokemon.isChecked());
-            }
-        });
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         params.setMargins(7, 5, 7, 5);

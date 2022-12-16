@@ -2,6 +2,10 @@ package com.example.pokedexapp.api;
 
 import android.util.Log;
 
+import androidx.room.Room;
+
+import com.example.pokedexapp.MainActivity;
+import com.example.pokedexapp.db.AppDatabase;
 import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Stat;
@@ -18,7 +22,7 @@ import java.util.List;
 
 public class PokemonApi {
 
-    private static Integer maxPokemons = 151; //Fins a la primera generacio de pokemons
+    private static Integer maxPokemons = 386; //Fins a la tercera generacio de pokemons
     private static List<Pokemon> llistaPokemons;
     private static List<Pokemon> llistaEvolucions;
     private static Pokemon pokemon;
@@ -30,7 +34,7 @@ public class PokemonApi {
         //Quan al json hi haiguin mes pokemons dels que hi actualment, la llista de pokemons s'actualitzara
         //ja que mira si ha aumentat el numero de pokemons i si es aixi torna a descarregar el json dels pokemons
 
-        //Ho deixo comentat perque si no ha de descarregar mols pokemons i triga bastant encara que estigui els jsons el local
+        //Ho deixo comentat perque si no ha de descarregar molts pokemons i triga bastant encara que estigui els jsons el local
         /*
         Integer qtatPokemons = 0;
 

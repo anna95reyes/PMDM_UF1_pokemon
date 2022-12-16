@@ -12,7 +12,9 @@ import androidx.room.Room;
 import com.example.pokedexapp.api.PokemonApi;
 import com.example.pokedexapp.api.TypeApi;
 import com.example.pokedexapp.db.AppDatabase;
+import com.example.pokedexapp.db.daos.PokemonDao;
 import com.example.pokedexapp.db.daos.TeamDao;
+import com.example.pokedexapp.db.entities.PokemonDB;
 import com.example.pokedexapp.db.entities.TeamDB;
 import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
@@ -54,6 +56,8 @@ public class MainActivityViewModel extends AndroidViewModel {
             mLlistaPokemons = new ArrayList<Pokemon>();
             Observable.fromCallable(() -> {
                 mLlistaPokemons = PokemonApi.getLlistaPokemons(jsonFolder);
+                insertPokemonsFavorits();
+                getPokemonsFavorits();
                 mGetPokemons.postValue(mLlistaPokemons);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
@@ -61,6 +65,40 @@ public class MainActivityViewModel extends AndroidViewModel {
             mGetPokemons.postValue(mLlistaPokemons);
         }
 
+    }
+
+    public void insertPokemonsFavorits() {
+        Observable.fromCallable(() -> {
+            PokemonDao dao = appDatabase().pokemonDao();
+            for (Pokemon p : mLlistaPokemons) {
+                if (dao.getPokemonById(p.getId()) == null) {
+                    PokemonDB pokemonDB = new PokemonDB(p.getId(), p.getName(), p.isFavorite());
+                    dao.insertPokemon(pokemonDB);
+                }
+            }
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    public void getPokemonsFavorits() {
+        Observable.fromCallable(() -> {
+            PokemonDao dao = appDatabase().pokemonDao();
+            List<PokemonDB> pokemonsDB = dao.getPokemonsFavorits();
+
+            for (PokemonDB pDB : pokemonsDB) {
+                int id = mLlistaPokemons.indexOf(getPokemonPerId(pDB.id));
+                mLlistaPokemons.get(id).setFavorite(pDB.favorite);
+            }
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    public void updatePokemonFavorit(Pokemon p) {
+        Observable.fromCallable(() -> {
+            PokemonDao dao = appDatabase().pokemonDao();
+            dao.updatePokemonFavorite(p.getId(), p.isFavorite());
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
     }
 
     public void getTypes(File jsonFolder) {
@@ -90,7 +128,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mLlistaTypesFiltre;
     }
 
-    public List<Team> getTeams(){
+    /*public List<Team> getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -116,45 +154,64 @@ public class MainActivityViewModel extends AndroidViewModel {
             }).subscribeOn(Schedulers.io()).subscribe();
         }
         return mLlistaTeams;
-    }
+    }*/
 
-    /*public List<Team> getTeams(){
+    public void getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
-                TeamDao dao = appDatabase();
+                TeamDao dao = appDatabase().teamDao();
                 List<TeamDB> teams = dao.getTeams();
                 for (TeamDB teamDB : teams) {
                     Team team = new Team(teamDB.id, teamDB.name);
-                    mLlistaTeams.add(team);
+                    if (!mLlistaTeams.contains(team)) {
+                        mLlistaTeams.add(team);
+                    }
                 }
                 mGetTeams.postValue(mLlistaTeams);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
-        return mLlistaTeams;
     }
 
-    public List<Team> insertTeam(Team team){
+    public void insertTeam(Team team){
         if (mGetTeams.getValue() != null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
-                TeamDao dao = appDatabase();
+                TeamDao dao = appDatabase().teamDao();
+                Log.d("XXX", "Team: " + team);
+                Log.d("XXX", "dao.getTeamById(team.getId()): " + dao.getTeamById(team.getId()));
+                if (dao.getTeamById(team.getId()) == null) {
+                    Log.d("XXX", "entro");
 
-                TeamDB teamDB = new TeamDB(team.getName());
-                dao.insertTeam(teamDB);
-                mLlistaTeams.add(team);
+                    TeamDB teamDB = new TeamDB(team.getName());
+                    dao.insertTeam(teamDB);
+                    mLlistaTeams.add(team);
+                }
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
-        return mLlistaTeams;
-    }*/
+    }
 
-    public TeamDao appDatabase(){
+    public static Pokemon getPokemonPerId(Integer idPokemon) {
+        Pokemon pokemon = null;
+        int i = 0;
+        while (i < mLlistaPokemons.size() && !mLlistaPokemons.get(i).getId().equals(idPokemon)) {
+            i++;
+        }
+
+        if (i < mLlistaPokemons.size()){
+            pokemon = mLlistaPokemons.get(i);
+        }
+
+        return pokemon;
+    }
+
+    public AppDatabase appDatabase(){
         AppDatabase db = Room.databaseBuilder(getApplication().getApplicationContext(),
                 AppDatabase.class, "database-name").build();
 
-        return db.teamDao();
+        return db;
     }
 
 }

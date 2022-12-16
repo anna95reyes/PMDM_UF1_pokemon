@@ -19,4 +19,10 @@ public class PokemonDB {
 
     public PokemonDB() {
     }
+
+    public PokemonDB(int id, String name, boolean favorite) {
+        this.id = id;
+        this.name = name;
+        this.favorite = favorite;
+    }
 }

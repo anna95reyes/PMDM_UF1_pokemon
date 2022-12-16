@@ -5,12 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.R;
 import com.example.pokedexapp.model.Team;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -39,7 +34,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewFila = LayoutInflater.from(parent.getContext()).inflate(R.layout.fitxa_team, parent, false);
         ViewHolder vh = new ViewHolder(viewFila);
+        vh.btnImageEditTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         return vh;
     }
 
@@ -52,12 +52,6 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         } else {
             holder.imvImageWarningTeam.setVisibility(View.VISIBLE);
         }
-        holder.btnImageEditTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         holder.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(mContext, MAX_COLUMS));
         PokemonTeamAdapter adapter = new PokemonTeamAdapter(teamActual.getPokemons(), mContext);
