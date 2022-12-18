@@ -13,19 +13,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.R;
+import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
 
 import java.util.List;
 
-public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
+public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> implements PokemonTeamAdapter.PokemonTeamSelectedListener {
 
     public static final Integer MAX_COLUMS = 3;
 
     private List<Team> mTeams;
     private Context mContext;
     private TeamEditableListener mListenerTeamEditable;
-
 
     public interface TeamEditableListener {
         public void onTeamEditable (Team team);
@@ -64,7 +64,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         }
 
         holder.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(mContext, MAX_COLUMS));
-        PokemonTeamAdapter adapter = new PokemonTeamAdapter(teamActual.getPokemons(), mContext);
+        PokemonTeamAdapter adapter = new PokemonTeamAdapter(teamActual.getPokemons(), mContext, this, Estat.VIEW);
         holder.rcyPokemonsTeam.setAdapter(adapter);
     }
 
@@ -87,5 +87,10 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             btnEditTeam = itemView.findViewById(R.id.btnEditTeam);
             rcyPokemonsTeam = itemView.findViewById(R.id.rcyPokemonsTeam);
         }
+    }
+
+    @Override
+    public void onPokemonSeleccionat(Pokemon pokemon) {
+
     }
 }

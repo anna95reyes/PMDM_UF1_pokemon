@@ -17,6 +17,7 @@ import com.example.pokedexapp.adapters.PokemonTeamAdapter;
 import com.example.pokedexapp.adapters.TeamAdapter;
 import com.example.pokedexapp.databinding.FragmentTeamBinding;
 import com.example.pokedexapp.databinding.FragmentTeamPokemonBinding;
+import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
 
@@ -25,7 +26,7 @@ import com.example.pokedexapp.model.Team;
  * Use the {@link TeamPokemonFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TeamPokemonFragment extends Fragment {
+public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.PokemonTeamSelectedListener {
 
     private FragmentTeamPokemonBinding binding;
 
@@ -73,7 +74,7 @@ public class TeamPokemonFragment extends Fragment {
         binding.lytFitxaTeam.btnEditTeam.setVisibility(View.INVISIBLE);
 
         binding.lytFitxaTeam.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
-        PokemonTeamAdapter adapter = new PokemonTeamAdapter(mTeam.getPokemons(), requireContext());
+        PokemonTeamAdapter adapter = new PokemonTeamAdapter(mTeam.getPokemons(), requireContext(), this, Estat.UPDATE);
         binding.lytFitxaTeam.rcyPokemonsTeam.setAdapter(adapter);
 
         if (mTeam.getComplert()) {
@@ -91,5 +92,10 @@ public class TeamPokemonFragment extends Fragment {
         if (!mTeam.getName().equals(binding.lytFitxaTeam.edtNameTeam.getText().toString())) {
             mTeam.setName(binding.lytFitxaTeam.edtNameTeam.getText().toString());
         }
+    }
+
+    @Override
+    public void onPokemonSeleccionat(Pokemon pokemon) {
+
     }
 }

@@ -55,6 +55,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         inicialitzarImageLoader();
 
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         MenuItem menuItem = binding.nvwNavigationView.getMenu().getItem(0);
         onNavigationItemSelected(menuItem);
+
         menuItem.setChecked(true);
 
     }
@@ -127,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 throw new IllegalArgumentException("menu option not implemented!");
         }
-
-
 
         binding.dwlDrawer.closeDrawer(GravityCompat.START);
 

@@ -1,6 +1,7 @@
 package com.example.pokedexapp.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.R;
+import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -24,11 +26,19 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
     private Context mContext;
     private Integer mPokemonSeleccionat = -1;
     private Integer mPokemonAnticSeleccionat = -1;
+    private PokemonTeamSelectedListener mListenerSelected;
+    private Estat mEstat;
 
-    public PokemonTeamAdapter(List<Pokemon> pokemons,  Context context) {
+    public interface PokemonTeamSelectedListener {
+        public void onPokemonSeleccionat (Pokemon pokemon);
+    }
+
+    public PokemonTeamAdapter(List<Pokemon> pokemons,  Context context, PokemonTeamSelectedListener listenerSelected, Estat estat) {
         mImageLoader = ImageLoader.getInstance();
         mPokemons = pokemons;
         mContext = context;
+        mListenerSelected = listenerSelected;
+        mEstat = estat;
     }
 
     @NonNull
@@ -49,6 +59,7 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
                     notifyItemChanged(mPokemonAnticSeleccionat);
                 }
                 notifyItemChanged(mPokemonSeleccionat);
+                if (mListenerSelected != null) mListenerSelected.onPokemonSeleccionat(pokemon);
             }
         });
 
@@ -70,7 +81,7 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
         }
 
         Integer color = R.color.transparent;
-        if (mPokemonSeleccionat == position) {
+        if (mPokemonSeleccionat == position && mEstat == Estat.UPDATE) {
             color = R.color.pokemon_seleccionat;
         }
         holder.ctlPokemonTeamSeleccionat.getBackground().setTint(ContextCompat.getColor(mContext, color));

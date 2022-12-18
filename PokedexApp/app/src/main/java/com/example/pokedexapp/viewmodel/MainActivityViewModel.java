@@ -2,6 +2,7 @@ package com.example.pokedexapp.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -152,6 +153,8 @@ public class MainActivityViewModel extends AndroidViewModel {
                 mGetTeams.postValue(mLlistaTeams);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
+        } else {
+            mGetTeams.postValue(mLlistaTeams);
         }
         return mLlistaTeams;
     }
@@ -171,6 +174,8 @@ public class MainActivityViewModel extends AndroidViewModel {
                 mGetTeams.postValue(mLlistaTeams);
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
+        } else {
+            mGetTeams.postValue(mLlistaTeams);
         }
     }*/
 
