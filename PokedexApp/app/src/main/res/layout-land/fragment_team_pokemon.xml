@@ -13,14 +13,12 @@
         android:layout_weight="1"
         layout="@layout/fitxa_team"/>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <fragment
+        android:id="@+id/frgPokedex"
+        android:name="com.example.pokedexapp.PokedexFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.2"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navegacio_team" />
+        android:layout_weight="1.2"/>
 
 
 </LinearLayout>

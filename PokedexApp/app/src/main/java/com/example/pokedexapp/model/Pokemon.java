@@ -27,6 +27,21 @@ public class Pokemon implements Serializable {
 
     private Bitmap bitmap;
 
+    public Pokemon (Pokemon pokemonCopia) {
+        this.id = pokemonCopia.getId();
+        this.name = pokemonCopia.getName();
+        this.imageURL = pokemonCopia.getImageURL();
+        this.types = pokemonCopia.getTypes();
+        this.favorite = pokemonCopia.isFavorite();
+        this.definition = pokemonCopia.getDefinition();
+        this.height = pokemonCopia.getHeight();
+        this.weight = pokemonCopia.getWeight();
+        this.abilities = pokemonCopia.getAbilities();
+        this.stats = pokemonCopia.getStats();
+        this.totalStats = pokemonCopia.getTotalStats();
+        this.evolutions = pokemonCopia.getEvolutions();
+    }
+
     public Pokemon(int id, String name, String imageURL, List<Type> types, boolean favorite, String definition,
                    int height, int weight, List<Ability> abilities, List<Stat> stats) {
         this.id = id;
@@ -185,17 +200,6 @@ public class Pokemon implements Serializable {
         return "Pokemon{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", imageURL='" + imageURL + '\'' +
-                ", types=" + types +
-                ", favorite=" + favorite +
-                ", definition='" + definition + '\'' +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", abilities=" + abilities +
-                ", stats=" + stats +
-                ", totalStats=" + totalStats +
-                ", evolutions=" + evolutions +
-                ", bitmap=" + bitmap +
                 '}';
     }
 }

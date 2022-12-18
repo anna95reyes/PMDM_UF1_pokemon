@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.PokemonTeamAdapter;
 import com.example.pokedexapp.adapters.TeamAdapter;
 import com.example.pokedexapp.databinding.FragmentTeamBinding;
@@ -38,7 +40,7 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
         // Required empty public constructor
     }
 
-    public static TeamPokemonFragment newInstance(String param1, String param2) {
+    public static TeamPokemonFragment newInstance(String param1) {
         TeamPokemonFragment fragment = new TeamPokemonFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_TEAM, param1);
@@ -95,7 +97,7 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
     }
 
     @Override
-    public void onPokemonSeleccionat(Pokemon pokemon) {
+    public void onPokemonTeamSeleccionat(Pokemon pokemon) {
 
     }
 }

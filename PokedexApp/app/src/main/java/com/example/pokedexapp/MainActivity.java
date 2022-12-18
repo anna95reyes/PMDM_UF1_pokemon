@@ -54,8 +54,11 @@ import io.reactivex.rxjava3.annotations.NonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static String STATE_SELECTED_POSITION = "state_selected_position";
+
     private ActivityMainBinding binding;
     private MainActivityViewModel viewModel;
+    private Integer mCurrentSelectedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.nvwNavigationView.setNavigationItemSelectedListener(this);
 
         MenuItem menuItem = binding.nvwNavigationView.getMenu().getItem(0);
+        mCurrentSelectedPosition = 0;
         onNavigationItemSelected(menuItem);
 
         menuItem.setChecked(true);
@@ -120,11 +124,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.mniPokedex:
                 binding.nvwNavigationView.getMenu().getItem(0).setChecked(true);
+                mCurrentSelectedPosition = 0;
                 navHostFragment.getNavController().navigate(R.id.action_global_pokedexFragment);
                 setTitle(R.string.app_name);
                 break;
             case R.id.mniTeamBuilder:
                 binding.nvwNavigationView.getMenu().getItem(1).setChecked(true);
+                mCurrentSelectedPosition = 1;
                 navHostFragment.getNavController().navigate(R.id.action_global_teamFragment);
                 setTitle(R.string.team_builder);
                 break;
@@ -137,4 +143,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        for (int i = 0; i < binding.nvwNavigationView.getMenu().size(); i++) {
+            binding.nvwNavigationView.getMenu().getItem(i).setChecked(false);
+        }
+        mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+        binding.nvwNavigationView.getMenu().getItem(mCurrentSelectedPosition).setChecked(true);
+        onNavigationItemSelected(binding.nvwNavigationView.getMenu().getItem(mCurrentSelectedPosition));
+    }
 }

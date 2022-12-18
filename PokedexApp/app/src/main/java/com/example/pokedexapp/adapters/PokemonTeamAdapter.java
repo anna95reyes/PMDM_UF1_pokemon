@@ -30,7 +30,7 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
     private Estat mEstat;
 
     public interface PokemonTeamSelectedListener {
-        public void onPokemonSeleccionat (Pokemon pokemon);
+        public void onPokemonTeamSeleccionat (Pokemon pokemon);
     }
 
     public PokemonTeamAdapter(List<Pokemon> pokemons,  Context context, PokemonTeamSelectedListener listenerSelected, Estat estat) {
@@ -59,7 +59,7 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
                     notifyItemChanged(mPokemonAnticSeleccionat);
                 }
                 notifyItemChanged(mPokemonSeleccionat);
-                if (mListenerSelected != null) mListenerSelected.onPokemonSeleccionat(pokemon);
+                if (mListenerSelected != null) mListenerSelected.onPokemonTeamSeleccionat(pokemon);
             }
         });
 

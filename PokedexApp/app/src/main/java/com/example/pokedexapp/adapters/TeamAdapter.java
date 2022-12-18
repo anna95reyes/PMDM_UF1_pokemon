@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pokedexapp.PokedexFragment;
 import com.example.pokedexapp.R;
 import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
@@ -48,6 +49,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> im
                 int posicio = vh.getAdapterPosition();
                 Team team = mTeams.get(posicio);
                 if (mListenerTeamEditable != null) mListenerTeamEditable.onTeamEditable(team);
+                notifyItemChanged(posicio);
             }
         });
         return vh;
@@ -90,7 +92,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> im
     }
 
     @Override
-    public void onPokemonSeleccionat(Pokemon pokemon) {
+    public void onPokemonTeamSeleccionat(Pokemon pokemon) {
 
     }
 }

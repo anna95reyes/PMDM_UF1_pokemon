@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
+import com.example.pokedexapp.adapters.PokemonTeamAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
 import com.example.pokedexapp.databinding.FragmentPokedexBinding;
+import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Type;
 import com.example.pokedexapp.viewmodel.MainActivityViewModel;
@@ -44,8 +46,9 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     private Boolean botoFavoritsAbansClicat = false;
     private String nameOrIdFiltre = "";
     private String nameTypeFiltre;
+    private static Integer indexPokemonTeamClicat = -1;
+    private static Integer indexTeamClicat = -1;
 
-    public static final String ARG_PARAM_POKEMONS = "param1";
 
     public PokedexFragment() {
         // Required empty public constructor
@@ -213,15 +216,21 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
 
     @Override
     public void onPokemonSeleccionat(Pokemon pokemon) {
-        Bundle args = new Bundle();
-        args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
-        //binding.navHostFragment.getFragment().getParentFragment();
+        View v = this.getView().findViewById(R.id.frgPokedex);
+        Log.d("XXX", "POKEDEX: " + v);
+        if (v == null) {
+            Bundle args = new Bundle();
+            args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
+            //binding.navHostFragment.getFragment().getParentFragment();
 
-        NavController navController =  NavHostFragment.findNavController(this);
-        navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
-        //Fico aixo perque si no quan del fragment de detall tiro cap enrrere, es queda guardat el filtre
-        binding.edtFilterNameOrNumber.setText("");
-        binding.btnFilterFavorites.setSelected(false);
+            NavController navController =  NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_pokedexFragment_to_detallPokemonFragment, args);
+            //Fico aixo perque si no quan del fragment de detall tiro cap enrrere, es queda guardat el filtre
+            binding.edtFilterNameOrNumber.setText("");
+            binding.btnFilterFavorites.setSelected(false);
+        } else {
+
+        }
     }
 
     @Override
