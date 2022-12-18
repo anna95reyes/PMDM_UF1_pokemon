@@ -128,7 +128,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mLlistaTypesFiltre;
     }
 
-    /*public List<Team> getTeams(){
+    public List<Team> getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -154,9 +154,9 @@ public class MainActivityViewModel extends AndroidViewModel {
             }).subscribeOn(Schedulers.io()).subscribe();
         }
         return mLlistaTeams;
-    }*/
+    }
 
-    public void getTeams(){
+    /*public void getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -172,9 +172,9 @@ public class MainActivityViewModel extends AndroidViewModel {
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
-    }
+    }*/
 
-    public void insertTeam(Team team){
+    /*public void insertTeam(Team team){
         if (mGetTeams.getValue() != null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -191,7 +191,7 @@ public class MainActivityViewModel extends AndroidViewModel {
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
-    }
+    }*/
 
     public static Pokemon getPokemonPerId(Integer idPokemon) {
         Pokemon pokemon = null;

@@ -13,20 +13,28 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedexapp.R;
+import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
 
 import java.util.List;
 
 public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
 
-    private final Integer MAX_COLUMS = 3;
+    public static final Integer MAX_COLUMS = 3;
 
     private List<Team> mTeams;
     private Context mContext;
+    private TeamEditableListener mListenerTeamEditable;
 
-    public TeamAdapter(List<Team> teams, Context context) {
+
+    public interface TeamEditableListener {
+        public void onTeamEditable (Team team);
+    }
+
+    public TeamAdapter(List<Team> teams, Context context, TeamEditableListener listenerTeamEditable) {
         mTeams = teams;
         mContext = context;
+        mListenerTeamEditable = listenerTeamEditable;
     }
 
     @NonNull
@@ -34,10 +42,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewFila = LayoutInflater.from(parent.getContext()).inflate(R.layout.fitxa_team, parent, false);
         ViewHolder vh = new ViewHolder(viewFila);
-        vh.btnImageEditTeam.setOnClickListener(new View.OnClickListener() {
+        vh.btnEditTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int posicio = vh.getAdapterPosition();
+                Team team = mTeams.get(posicio);
+                if (mListenerTeamEditable != null) mListenerTeamEditable.onTeamEditable(team);
             }
         });
         return vh;
@@ -48,9 +58,9 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         Team teamActual = mTeams.get(position);
         holder.edtNameTeam.setText(teamActual.getName());
         if (teamActual.getComplert()) {
-            holder.imvImageWarningTeam.setVisibility(View.INVISIBLE);
+            holder.imvWarningTeam.setVisibility(View.INVISIBLE);
         } else {
-            holder.imvImageWarningTeam.setVisibility(View.VISIBLE);
+            holder.imvWarningTeam.setVisibility(View.VISIBLE);
         }
 
         holder.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(mContext, MAX_COLUMS));
@@ -66,15 +76,15 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         EditText edtNameTeam;
-        ImageView imvImageWarningTeam;
-        ImageButton btnImageEditTeam;
+        ImageView imvWarningTeam;
+        ImageButton btnEditTeam;
         RecyclerView rcyPokemonsTeam;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             edtNameTeam = itemView.findViewById(R.id.edtNameTeam);
-            imvImageWarningTeam = itemView.findViewById(R.id.imvImageWarningTeam);
-            btnImageEditTeam = itemView.findViewById(R.id.btnImageEditTeam);
+            imvWarningTeam = itemView.findViewById(R.id.imvWarningTeam);
+            btnEditTeam = itemView.findViewById(R.id.btnEditTeam);
             rcyPokemonsTeam = itemView.findViewById(R.id.rcyPokemonsTeam);
         }
     }

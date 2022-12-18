@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.Editable;
@@ -25,7 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamFragment extends Fragment {
+public class TeamFragment extends Fragment implements View.OnClickListener, TeamAdapter.TeamEditableListener {
 
     private FragmentTeamBinding binding;
     private MainActivityViewModel viewModel;
@@ -82,7 +84,7 @@ public class TeamFragment extends Fragment {
                 team.addPokemon(4, pokemons.get(4));
                 team.addPokemon(5, pokemons.get(5));*/
 
-                viewModel.insertTeam(team);
+                //viewModel.insertTeam(team);
 
                 team = null;
                 team = new Team("Team 2");
@@ -93,10 +95,12 @@ public class TeamFragment extends Fragment {
                 team.addPokemon(4, null);
                 team.addPokemon(5, null);*/
 
-                viewModel.insertTeam(team);
+                //viewModel.insertTeam(team);
                 viewModel.getTeams();
             }
         });
+
+        TeamAdapter.TeamEditableListener listener = this;
 
         viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
             @Override
@@ -104,7 +108,7 @@ public class TeamFragment extends Fragment {
                 if (viewModel.mGetTeams.getValue() != null) {
                     binding.pgrDownload.setVisibility(View.INVISIBLE);
                 }
-                adapter = new TeamAdapter(teams, requireContext());
+                adapter = new TeamAdapter(teams, requireContext(), listener);
                 binding.rcyTeams.setAdapter(adapter);
                 for (int i = 0; i < teams.size(); i++)
                     Log.d("POKEMON", "onCreate: " + teams.get(i).getName() + " - pokemons:" + teams.get(i).getPokemons().size());
@@ -128,6 +132,9 @@ public class TeamFragment extends Fragment {
 
             }
         });
+
+        binding.btnAddTeams.setOnClickListener(this);
+
 
         return binding.getRoot();
 
@@ -155,7 +162,25 @@ public class TeamFragment extends Fragment {
                 if(filtratgeNameOk) teamsFiltrats.add(t);
             }
         }
-        adapter = new TeamAdapter(teamsFiltrats, requireContext());
+        adapter = new TeamAdapter(teamsFiltrats, requireContext(), this);
         binding.rcyTeams.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Bundle args = new Bundle();
+        args.putSerializable(TeamPokemonFragment.ARG_PARAM_TEAM, null);
+
+        NavController navController =  NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_teamFragment_to_teamPokemonFragment, args);
+    }
+
+    @Override
+    public void onTeamEditable(Team team) {
+        Bundle args = new Bundle();
+        args.putSerializable(TeamPokemonFragment.ARG_PARAM_TEAM, team);
+
+        NavController navController =  NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_teamFragment_to_teamPokemonFragment, args);
     }
 }

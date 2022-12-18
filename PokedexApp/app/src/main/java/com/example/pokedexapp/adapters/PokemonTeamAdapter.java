@@ -41,6 +41,7 @@ public class PokemonTeamAdapter extends RecyclerView.Adapter<PokemonTeamAdapter.
             @Override
             public void onClick(View v) {
                 int pos = vh.getAdapterPosition();
+                Pokemon pokemon = mPokemons.get(pos);
                 mPokemonAnticSeleccionat = mPokemonSeleccionat;
                 mPokemonSeleccionat = pos;
 

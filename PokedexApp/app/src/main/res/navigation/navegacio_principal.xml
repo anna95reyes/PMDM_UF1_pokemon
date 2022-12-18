@@ -23,10 +23,10 @@
         android:id="@+id/teamFragment"
         android:name="com.example.pokedexapp.TeamFragment"
         android:label="fragment_team"
-        tools:layout="@layout/fragment_team" >
+        tools:layout="@layout/fragment_team_comu" >
         <action
-            android:id="@+id/action_teamFragment_to_pokedexFragment"
-            app:destination="@id/pokedexFragment" />
+            android:id="@+id/action_teamFragment_to_teamPokemonFragment"
+            app:destination="@id/teamPokemonFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_pokedexFragment"
@@ -34,4 +34,8 @@
     <action
         android:id="@+id/action_global_teamFragment"
         app:destination="@id/teamFragment" />
+    <fragment
+        android:id="@+id/teamPokemonFragment"
+        android:name="com.example.pokedexapp.TeamPokemonFragment"
+        android:label="TeamPokemonFragment" />
 </navigation>
