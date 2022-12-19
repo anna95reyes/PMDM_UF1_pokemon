@@ -51,8 +51,10 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("XXX", "onCreate " );
         if (getArguments() != null) {
             mTeam = (Team) getArguments().getSerializable(ARG_PARAM_TEAM);
+            Log.d("XXX", "onCreate mTeam:"+mTeam );
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             mTeam = null;
