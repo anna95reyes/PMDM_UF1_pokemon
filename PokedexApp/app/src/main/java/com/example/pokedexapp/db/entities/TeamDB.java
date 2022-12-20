@@ -19,8 +19,6 @@ public class TeamDB {
     public Integer id;
     public String name;
     public Boolean complert;
-    @ColumnInfo(name = "pokemon_id")
-    public Integer pokemonId;
 
     public TeamDB() {
     }

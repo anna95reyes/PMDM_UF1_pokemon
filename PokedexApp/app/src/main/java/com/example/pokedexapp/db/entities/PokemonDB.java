@@ -1,5 +1,6 @@
 package com.example.pokedexapp.db.entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

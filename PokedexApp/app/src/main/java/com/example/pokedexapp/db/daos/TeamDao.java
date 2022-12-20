@@ -26,9 +26,9 @@ public interface  TeamDao {
     @Query("SELECT * FROM team WHERE id = :idTeam")
     TeamDB getTeamById(int idTeam);
 
-    @Query("SELECT p.id, p.name, p.favorite FROM team t " +
-            "INNER JOIN pokemon p on p.id = t.pokemon_id " +
-            "WHERE t.id = :idTeam")
+    @Query("SELECT p.id, p.name, p.favorite FROM pokemon p " +
+            "INNER JOIN team_pokemon tp on tp.pokemon_id = p.id " +
+            "WHERE tp.team_id = :idTeam")
     List<PokemonDB> getPokemonsByTeamId(int idTeam);
 
     @Transaction
