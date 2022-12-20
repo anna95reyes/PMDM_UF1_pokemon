@@ -80,13 +80,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         binding.nvwNavigationView.setNavigationItemSelectedListener(this);
 
-        /*NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-        navHostFragment.getNavController().getCurrentDestination().getId();
+        Log.d("XXX", navHostFragment.getNavController().getCurrentDestination().getDisplayName() + "");
 
-        MenuItem menuItem = binding.nvwNavigationView.getMenu().getItem(0);
+        Integer id;
+        if (!navHostFragment.getNavController().getCurrentDestination().getDisplayName().contains("team")){
+            id = 0;
+            setTitle(R.string.app_name);
+        } else {
+            id = 1;
+            setTitle(R.string.team_builder);
+        }
+        MenuItem menuItem = binding.nvwNavigationView.getMenu().getItem(id);
 
-        menuItem.setChecked(true);*/
+        menuItem.setChecked(true);
 
     }
 
