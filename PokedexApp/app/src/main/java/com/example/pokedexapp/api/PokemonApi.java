@@ -22,7 +22,7 @@ import java.util.List;
 
 public class PokemonApi {
 
-    private static Integer maxPokemons = 10; //Fins a la tercera generacio de pokemons
+    private static Integer maxPokemons = 30;
     private static List<Pokemon> llistaPokemons;
     private static List<Pokemon> llistaEvolucions;
     private static Pokemon pokemon;

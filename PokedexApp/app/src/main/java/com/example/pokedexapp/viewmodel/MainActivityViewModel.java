@@ -39,6 +39,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public MutableLiveData<List<Type>> mGetTypes;
     public MutableLiveData<List<Type>> mGetTypesFiltre;
     public MutableLiveData<List<Team>> mGetTeams;
+    public MutableLiveData<Integer> mGetMaxIndexTeam;
     private static List<Pokemon> mLlistaPokemons;
     private static List<Type> mLlistaTypes;
     private static List<Type> mLlistaTypesFiltre;
@@ -50,6 +51,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         mGetTypes = new MutableLiveData<List<Type>>();
         mGetTypesFiltre = new MutableLiveData<List<Type>>();
         mGetTeams = new MutableLiveData<List<Team>>();
+        mGetMaxIndexTeam = new MutableLiveData<Integer>();
     }
 
     public void getPokemons(File jsonFolder){
@@ -129,7 +131,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mLlistaTypesFiltre;
     }
 
-    public List<Team> getTeams(){
+    /*public List<Team> getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -157,9 +159,9 @@ public class MainActivityViewModel extends AndroidViewModel {
             mGetTeams.postValue(mLlistaTeams);
         }
         return mLlistaTeams;
-    }
+    }*/
 
-    /*public void getTeams(){
+    public void getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
             Observable.fromCallable(() -> {
@@ -167,6 +169,12 @@ public class MainActivityViewModel extends AndroidViewModel {
                 List<TeamDB> teams = dao.getTeams();
                 for (TeamDB teamDB : teams) {
                     Team team = new Team(teamDB.id, teamDB.name);
+                    List<PokemonDB> pokemons = dao.getPokemonsByTeamId(teamDB.id);
+                    for (int i = 0; i < pokemons.size(); i++) {
+                        PokemonDB pokemonDB = pokemons.get(i);
+                        Pokemon pokemon = new Pokemon(getPokemonPerId(pokemonDB.id));
+                        team.addPokemon(i, pokemon);
+                    }
                     if (!mLlistaTeams.contains(team)) {
                         mLlistaTeams.add(team);
                     }
@@ -177,26 +185,44 @@ public class MainActivityViewModel extends AndroidViewModel {
         } else {
             mGetTeams.postValue(mLlistaTeams);
         }
-    }*/
+    }
 
-    /*public void insertTeam(Team team){
-        if (mGetTeams.getValue() != null) {
-            mLlistaTeams = new ArrayList<Team>();
+    public Integer insertTeam(Team team){
+        if (mLlistaTeams == null) mLlistaTeams = new ArrayList<Team>();
+        Observable.fromCallable(() -> {
+            TeamDao dao = appDatabase().teamDao();
+            if (dao.getTeamById(team.getId()) == null) {
+                TeamDB teamDB = new TeamDB(team.getName());
+                dao.insertTeam(teamDB);
+                Log.d("XXX", "mLlistaTeams: " + mLlistaTeams +
+                        " - " + mLlistaTeams.contains(team));
+                Log.d("XXX", "team: " + team);
+                if (!mLlistaTeams.contains(team)) mLlistaTeams.add(team);
+            }
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
+        return team.getId();
+    }
+
+    public void insertPokemonTeam (Integer posicio, Team team, Pokemon pokemon) {
+        Log.d("XXX", "team: " + team);
+        Log.d("XXX", "pokemon: " + pokemon);
+        if (mLlistaTeams.contains(team)) {
             Observable.fromCallable(() -> {
-                TeamDao dao = appDatabase().teamDao();
-                Log.d("XXX", "Team: " + team);
-                Log.d("XXX", "dao.getTeamById(team.getId()): " + dao.getTeamById(team.getId()));
-                if (dao.getTeamById(team.getId()) == null) {
-                    Log.d("XXX", "entro");
-
-                    TeamDB teamDB = new TeamDB(team.getName());
-                    dao.insertTeam(teamDB);
-                    mLlistaTeams.add(team);
+                TeamDao teamDao = appDatabase().teamDao();
+                PokemonDao pokemonDao = appDatabase().pokemonDao();
+                TeamDB teamDB = teamDao.getTeamById(team.getId());
+                PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
+                Log.d("XXX", "teamDB: " + teamDB);
+                Log.d("XXX", "pokemonDB: " + pokemonDB);
+                if (teamDB != null) {
+                    teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
+                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
                 }
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
-    }*/
+    }
 
     public static Pokemon getPokemonPerId(Integer idPokemon) {
         Pokemon pokemon = null;

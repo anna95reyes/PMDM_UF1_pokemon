@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-        Log.d("XXX", navHostFragment.getNavController().getCurrentDestination().getDisplayName() + "");
-
         Integer id;
         if (!navHostFragment.getNavController().getCurrentDestination().getDisplayName().contains("team")){
             id = 0;

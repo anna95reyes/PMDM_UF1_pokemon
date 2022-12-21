@@ -7,11 +7,12 @@ import androidx.room.Relation;
 import java.util.List;
 
 public class PokemonListWithTeam {
-    @Embedded public PokemonDB pokemonDB;
+    @Embedded
+    public TeamDB teamDB;
     @Relation(
-            parentColumn = "pokemon_id",
-            entityColumn = "team_id",
+            parentColumn = "team_id",
+            entityColumn = "pokemon_id",
             associateBy = @Junction(TeamPokemonDB.class)
     )
-    public List<TeamDB> teamsDB;
+    public List<PokemonDB> pokemonsDB;
 }

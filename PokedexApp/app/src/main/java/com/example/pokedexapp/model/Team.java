@@ -10,10 +10,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Team implements Serializable {
 
     private final Integer MAX_POKEMONS = 6;
+    private static Integer idTeam = 0;
 
     private Integer id;
     private String name;
@@ -21,18 +23,20 @@ public class Team implements Serializable {
     private List<Pokemon> pokemons;
 
     public Team(String name) {
-        this.id = -1;
+        this.id = idTeam;
         this.name = name;
         this.complert = false;
         this.pokemons = new ArrayList<Pokemon>();
         for (int i = 0; i < MAX_POKEMONS; i++){
             this.pokemons.add(i, null);
         }
+        idTeam++;
     }
 
     public Team(Integer id, String name) {
         this(name);
         this.id = id;
+        this.complert = false;
     }
 
     public Integer getId() {
@@ -83,5 +87,26 @@ public class Team implements Serializable {
         return pokemons.remove(pokemon);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return id.equals(team.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", complert=" + complert +
+                ", pokemons=" + pokemons +
+                '}';
+    }
 }

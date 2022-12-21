@@ -18,6 +18,7 @@ import java.util.List;
 
 @Dao
 public interface  TeamDao {
+
     @Transaction
     @Query("SELECT * FROM team")
     List<TeamDB> getTeams();
@@ -26,6 +27,7 @@ public interface  TeamDao {
     @Query("SELECT * FROM team WHERE id = :idTeam")
     TeamDB getTeamById(int idTeam);
 
+    @Transaction
     @Query("SELECT p.id, p.name, p.favorite FROM pokemon p " +
             "INNER JOIN team_pokemon tp on tp.pokemon_id = p.id " +
             "WHERE tp.team_id = :idTeam")
@@ -42,6 +44,7 @@ public interface  TeamDao {
     @Insert
     void insertTeam(TeamDB teamDB);
 
-    @Insert
-    void insertPokemonByTeam(TeamDB teamDB, PokemonDB pokemonDB);
+    @Transaction
+    @Query("INSERT INTO team_pokemon (team_id, pokemon_id) VALUES (:idTeam,:idPokemon)")
+    void insertPokemonByTeam(Integer idTeam, Integer idPokemon);
 }

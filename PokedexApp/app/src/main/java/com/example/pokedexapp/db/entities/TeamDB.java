@@ -15,16 +15,14 @@ import java.util.List;
 
 @Entity(tableName = "team")
 public class TeamDB {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     public Integer id;
     public String name;
-    public Boolean complert;
 
     public TeamDB() {
     }
 
     public TeamDB(String name) {
         this.name = name;
-        this.complert = false;
     }
 }
