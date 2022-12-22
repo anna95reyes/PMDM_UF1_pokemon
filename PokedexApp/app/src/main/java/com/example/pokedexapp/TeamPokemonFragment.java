@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -22,6 +24,9 @@ import com.example.pokedexapp.databinding.FragmentTeamPokemonBinding;
 import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
+import com.example.pokedexapp.viewmodel.MainActivityViewModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +35,13 @@ import com.example.pokedexapp.model.Team;
  */
 public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.PokemonTeamSelectedListener {
 
-    private FragmentTeamPokemonBinding binding;
-
     public static final String ARG_PARAM_TEAM = "team";
 
+    private FragmentTeamPokemonBinding binding;
+    private MainActivityViewModel viewModel;
     private Team mTeam;
+    private Pokemon mPokemonTeam = null;
+    private Integer mPos = 0;
 
     public TeamPokemonFragment() {
         // Required empty public constructor
@@ -68,9 +75,12 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
 
         binding = FragmentTeamPokemonBinding.inflate(inflater, container, false);
 
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
         if (mTeam == null) {
             binding.lytFitxaTeam.edtNameTeam.setText("");
             mTeam = new Team(binding.lytFitxaTeam.edtNameTeam.getText().toString());
+            viewModel.insertTeam(mTeam);
         } else {
             binding.lytFitxaTeam.edtNameTeam.setText(mTeam.getName());
         }
@@ -95,11 +105,43 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
         super.onDestroy();
         if (!mTeam.getName().equals(binding.lytFitxaTeam.edtNameTeam.getText().toString())) {
             mTeam.setName(binding.lytFitxaTeam.edtNameTeam.getText().toString());
+            viewModel.updateTeam(mTeam);
         }
     }
 
     @Override
-    public void onPokemonTeamSeleccionat(Pokemon pokemon) {
+    public void onPokemonTeamSeleccionat(Integer posicio, Pokemon pokemon) {
+        mPokemonTeam = pokemon;
+        mPos = posicio;
+        Log.d("XXX", "mPokemonTeam: " + mPokemonTeam);
+        Log.d("XXX", "mPos: " + mPos);
+        Log.d("XXX", "mTeam: " + mTeam);
+    }
+    PokemonTeamAdapter.PokemonTeamSelectedListener listener = this;
 
+    public void afegirPokemon(Integer posicio, Team team, Pokemon pokemon) {
+        viewModel.insertPokemonTeam(posicio, team, pokemon);
+        viewModel.getTeams();
+        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
+            @Override
+            public void onChanged(List<Team> teams) {
+                binding.lytFitxaTeam.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
+                PokemonTeamAdapter adapter = new PokemonTeamAdapter(team.getPokemons(), requireContext(), listener, Estat.VIEW);
+                binding.lytFitxaTeam.rcyPokemonsTeam.setAdapter(adapter);
+            }
+        });
+    }
+
+    public void updatePokemon(Integer posicio, Team team, Pokemon pokemon) {
+        viewModel.updatePokemonTeam(posicio, team, pokemon, team.getPokemons().get(posicio));
+        viewModel.getTeams();
+        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
+            @Override
+            public void onChanged(List<Team> teams) {
+                binding.lytFitxaTeam.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
+                PokemonTeamAdapter adapter = new PokemonTeamAdapter(team.getPokemons(), requireContext(), listener, Estat.VIEW);
+                binding.lytFitxaTeam.rcyPokemonsTeam.setAdapter(adapter);
+            }
+        });
     }
 }

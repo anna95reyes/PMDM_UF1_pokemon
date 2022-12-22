@@ -7,6 +7,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
@@ -37,9 +38,6 @@ public interface  TeamDao {
     @Update
     void updateTeam(TeamDB teamDB);
 
-    @Update
-    void updatePokemonByTeam(TeamDB teamDB, PokemonDB pokemonDB);
-
     @Transaction
     @Insert
     void insertTeam(TeamDB teamDB);
@@ -47,4 +45,15 @@ public interface  TeamDao {
     @Transaction
     @Query("INSERT INTO team_pokemon (team_id, pokemon_id) VALUES (:idTeam,:idPokemon)")
     void insertPokemonByTeam(Integer idTeam, Integer idPokemon);
+
+    @Transaction
+    @Query("DELETE FROM team_pokemon WHERE team_id = :idTeam and pokemon_id = :idPokemon")
+    void deletePokemonByTeam(Integer idTeam, Integer idPokemon);
+
+    @Transaction
+    default void updatedeletePokemonByTeam(Integer idTeam, Integer idPokemon, Integer idPokemonAntic) {
+        deletePokemonByTeam(idTeam, idPokemonAntic);
+        insertPokemonByTeam(idTeam, idPokemon);
+    }
+
 }

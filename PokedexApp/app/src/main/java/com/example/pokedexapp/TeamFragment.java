@@ -76,33 +76,6 @@ public class TeamFragment extends Fragment implements View.OnClickListener, Team
             @Override
             public void onChanged(List<Pokemon> pokemons) {
                 //descarregar els equips
-                /*Team team = new Team( "Team 1");
-
-                team.addPokemon(0, pokemons.get(0));
-                team.addPokemon(1, pokemons.get(1));
-                team.addPokemon(2, pokemons.get(2));
-                team.addPokemon(3, pokemons.get(3));
-                team.addPokemon(4, pokemons.get(4));
-                team.addPokemon(5, pokemons.get(5));
-
-                viewModel.insertTeam(team);
-                viewModel.insertPokemonTeam(0, team, pokemons.get(0));
-                viewModel.insertPokemonTeam(1, team, pokemons.get(1));
-                viewModel.insertPokemonTeam(2, team, pokemons.get(2));
-                viewModel.insertPokemonTeam(3, team, pokemons.get(3));
-                viewModel.insertPokemonTeam(4, team, pokemons.get(4));
-                viewModel.insertPokemonTeam(5, team, pokemons.get(5));
-
-                team = new Team("Team 2");
-                team.addPokemon(0, pokemons.get(6));
-                team.addPokemon(1, pokemons.get(7));
-                team.addPokemon(2, pokemons.get(8));
-
-                viewModel.insertTeam(team);
-                viewModel.insertPokemonTeam(0, team, pokemons.get(6));
-                viewModel.insertPokemonTeam(1, team, pokemons.get(7));
-                viewModel.insertPokemonTeam(2, team, pokemons.get(8));
-                */
                 viewModel.getTeams();
             }
         });
@@ -190,4 +163,6 @@ public class TeamFragment extends Fragment implements View.OnClickListener, Team
         NavController navController =  NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_teamFragment_to_teamPokemonFragment, args);
     }
+
+
 }

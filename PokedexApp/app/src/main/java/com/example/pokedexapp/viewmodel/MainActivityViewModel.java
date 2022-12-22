@@ -2,12 +2,10 @@ package com.example.pokedexapp.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.room.Room;
 
 import com.example.pokedexapp.api.PokemonApi;
@@ -17,17 +15,12 @@ import com.example.pokedexapp.db.daos.PokemonDao;
 import com.example.pokedexapp.db.daos.TeamDao;
 import com.example.pokedexapp.db.entities.PokemonDB;
 import com.example.pokedexapp.db.entities.TeamDB;
-import com.example.pokedexapp.model.Ability;
 import com.example.pokedexapp.model.Pokemon;
-import com.example.pokedexapp.model.Stat;
 import com.example.pokedexapp.model.Team;
 import com.example.pokedexapp.model.Type;
 
-import java.io.Closeable;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -131,36 +124,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         return mLlistaTypesFiltre;
     }
 
-    /*public List<Team> getTeams(){
-        if (mLlistaTeams == null) {
-            mLlistaTeams = new ArrayList<Team>();
-            Observable.fromCallable(() -> {
-                Team team = new Team(0, "Team 1");
-                team.addPokemon(0,mLlistaPokemons.get(0));
-                team.addPokemon(1, mLlistaPokemons.get(1));
-                team.addPokemon(2, mLlistaPokemons.get(2));
-                team.addPokemon(3, mLlistaPokemons.get(3));
-                team.addPokemon(4, mLlistaPokemons.get(4));
-                team.addPokemon(5, mLlistaPokemons.get(5));
-                mLlistaTeams.add(team);
-
-                team = new Team(1, "Team 2");
-                team.addPokemon(0, mLlistaPokemons.get(6));
-                team.addPokemon(1, mLlistaPokemons.get(7));
-                team.addPokemon(2, mLlistaPokemons.get(8));
-                team.addPokemon(3, null);
-                team.addPokemon(4, null);
-                team.addPokemon(5, null);
-                mLlistaTeams.add(team);
-                mGetTeams.postValue(mLlistaTeams);
-                return 1;
-            }).subscribeOn(Schedulers.io()).subscribe();
-        } else {
-            mGetTeams.postValue(mLlistaTeams);
-        }
-        return mLlistaTeams;
-    }*/
-
     public void getTeams(){
         if (mLlistaTeams == null) {
             mLlistaTeams = new ArrayList<Team>();
@@ -187,21 +150,30 @@ public class MainActivityViewModel extends AndroidViewModel {
         }
     }
 
-    public Integer insertTeam(Team team){
+    public void insertTeam(Team team){
         if (mLlistaTeams == null) mLlistaTeams = new ArrayList<Team>();
         Observable.fromCallable(() -> {
             TeamDao dao = appDatabase().teamDao();
             if (dao.getTeamById(team.getId()) == null) {
                 TeamDB teamDB = new TeamDB(team.getName());
                 dao.insertTeam(teamDB);
-                Log.d("XXX", "mLlistaTeams: " + mLlistaTeams +
-                        " - " + mLlistaTeams.contains(team));
-                Log.d("XXX", "team: " + team);
                 if (!mLlistaTeams.contains(team)) mLlistaTeams.add(team);
             }
             return 1;
         }).subscribeOn(Schedulers.io()).subscribe();
-        return team.getId();
+    }
+
+    public void updateTeam(Team team){
+        if (mLlistaTeams == null) mLlistaTeams = new ArrayList<Team>();
+        Observable.fromCallable(() -> {
+            TeamDao dao = appDatabase().teamDao();
+            TeamDB teamDB = dao.getTeamById(team.getId());
+            if (teamDB != null) {
+                dao.updateTeam(teamDB);
+                mLlistaTeams.get(mLlistaTeams.indexOf(team)).setName(team.getName());
+            }
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
     }
 
     public void insertPokemonTeam (Integer posicio, Team team, Pokemon pokemon) {
@@ -217,6 +189,25 @@ public class MainActivityViewModel extends AndroidViewModel {
                 Log.d("XXX", "pokemonDB: " + pokemonDB);
                 if (teamDB != null) {
                     teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
+                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
+                }
+                return 1;
+            }).subscribeOn(Schedulers.io()).subscribe();
+        }
+    }
+
+    public void updatePokemonTeam (Integer posicio, Team team, Pokemon pokemon, Pokemon pokemonAntic) {
+        Log.d("XXX", "team: " + team);
+        Log.d("XXX", "pokemon: " + pokemon);
+        if (mLlistaTeams.contains(team)) {
+            Observable.fromCallable(() -> {
+                TeamDao teamDao = appDatabase().teamDao();
+                PokemonDao pokemonDao = appDatabase().pokemonDao();
+                TeamDB teamDB = teamDao.getTeamById(team.getId());
+                PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
+                PokemonDB pokemonAnticDB = pokemonDao.getPokemonById(pokemonAntic.getId());
+                if (teamDB != null) {
+                    teamDao.updatedeletePokemonByTeam(teamDB.id, pokemonDB.id, pokemonAnticDB.id);
                     mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
                 }
                 return 1;

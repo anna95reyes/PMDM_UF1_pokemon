@@ -92,7 +92,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> im
     }
 
     @Override
-    public void onPokemonTeamSeleccionat(Pokemon pokemon) {
+    public void onPokemonTeamSeleccionat(Integer posicio, Pokemon pokemon) {
 
     }
 }
