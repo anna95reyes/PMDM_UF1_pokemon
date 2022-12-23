@@ -21,6 +21,7 @@ import com.example.pokedexapp.adapters.PokemonTeamAdapter;
 import com.example.pokedexapp.adapters.TeamAdapter;
 import com.example.pokedexapp.databinding.FragmentTeamBinding;
 import com.example.pokedexapp.databinding.FragmentTeamPokemonBinding;
+import com.example.pokedexapp.db.entities.PokemonDB;
 import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
 import com.example.pokedexapp.model.Team;
@@ -105,7 +106,19 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
         super.onDestroy();
         if (!mTeam.getName().equals(binding.lytFitxaTeam.edtNameTeam.getText().toString())) {
             mTeam.setName(binding.lytFitxaTeam.edtNameTeam.getText().toString());
+            Log.d("XXX", "mTeam: " + mTeam);
             viewModel.updateTeam(mTeam);
+        }
+
+        int pokemonsNulls = 0;
+        for (Pokemon pokemon : mTeam.getPokemons()){
+            if (pokemon == null) pokemonsNulls++;
+        }
+
+        Log.d("XXX", "pokemons: " + pokemonsNulls + " - " + mTeam.getPokemons().size());
+        Log.d("XXX", "pokemons: " + pokemonsNulls + " - " + mTeam.getPokemons().size());
+        if (mTeam.getName().equals("") && pokemonsNulls == mTeam.getPokemons().size()) {
+            viewModel.deleteTeam(mTeam);
         }
     }
 

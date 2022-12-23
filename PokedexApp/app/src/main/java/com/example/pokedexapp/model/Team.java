@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class Team implements Serializable {
 
-    private final Integer MAX_POKEMONS = 6;
+    public static final Integer MAX_POKEMONS = 6;
     private static Integer idTeam = 0;
 
     private Integer id;

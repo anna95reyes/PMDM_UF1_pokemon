@@ -164,13 +164,29 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void updateTeam(Team team){
-        if (mLlistaTeams == null) mLlistaTeams = new ArrayList<Team>();
         Observable.fromCallable(() -> {
             TeamDao dao = appDatabase().teamDao();
             TeamDB teamDB = dao.getTeamById(team.getId());
+            Log.d("XXX", "team: " + team);
+            Log.d("XXX", "teamDB: " + teamDB.id + " - " + teamDB.name);
             if (teamDB != null) {
+                teamDB.name = team.getName();
                 dao.updateTeam(teamDB);
                 mLlistaTeams.get(mLlistaTeams.indexOf(team)).setName(team.getName());
+            }
+            return 1;
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    public void deleteTeam(Team team){
+        Observable.fromCallable(() -> {
+            TeamDao dao = appDatabase().teamDao();
+            TeamDB teamDB = dao.getTeamById(team.getId());
+            Log.d("XXX", "team: " + team);
+            Log.d("XXX", "teamDB: " + teamDB.id + " - " + teamDB.name);
+            if (teamDB != null) {
+                dao.deleteTeam(teamDB);
+                mLlistaTeams.remove(teamDB);
             }
             return 1;
         }).subscribeOn(Schedulers.io()).subscribe();
@@ -197,8 +213,8 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void updatePokemonTeam (Integer posicio, Team team, Pokemon pokemon, Pokemon pokemonAntic) {
-        Log.d("XXX", "team: " + team);
         Log.d("XXX", "pokemon: " + pokemon);
+        Log.d("XXX", "team: " + team);
         if (mLlistaTeams.contains(team)) {
             Observable.fromCallable(() -> {
                 TeamDao teamDao = appDatabase().teamDao();

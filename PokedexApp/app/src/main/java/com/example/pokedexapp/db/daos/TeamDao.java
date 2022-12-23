@@ -34,13 +34,16 @@ public interface  TeamDao {
             "WHERE tp.team_id = :idTeam")
     List<PokemonDB> getPokemonsByTeamId(int idTeam);
 
-    @Transaction
     @Update
     void updateTeam(TeamDB teamDB);
 
     @Transaction
     @Insert
     void insertTeam(TeamDB teamDB);
+
+    @Transaction
+    @Delete
+    void deleteTeam(TeamDB teamDB);
 
     @Transaction
     @Query("INSERT INTO team_pokemon (team_id, pokemon_id) VALUES (:idTeam,:idPokemon)")
