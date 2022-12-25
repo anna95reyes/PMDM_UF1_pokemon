@@ -59,10 +59,8 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("XXX", "onCreate " );
         if (getArguments() != null) {
             mTeam = (Team) getArguments().getSerializable(ARG_PARAM_TEAM);
-            Log.d("XXX", "onCreate mTeam:"+mTeam );
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             mTeam = null;
@@ -106,7 +104,6 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
         super.onDestroy();
         if (!mTeam.getName().equals(binding.lytFitxaTeam.edtNameTeam.getText().toString())) {
             mTeam.setName(binding.lytFitxaTeam.edtNameTeam.getText().toString());
-            Log.d("XXX", "mTeam: " + mTeam);
             viewModel.updateTeam(mTeam);
         }
 
@@ -115,8 +112,6 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
             if (pokemon == null) pokemonsNulls++;
         }
 
-        Log.d("XXX", "pokemons: " + pokemonsNulls + " - " + mTeam.getPokemons().size());
-        Log.d("XXX", "pokemons: " + pokemonsNulls + " - " + mTeam.getPokemons().size());
         if (mTeam.getName().equals("") && pokemonsNulls == mTeam.getPokemons().size()) {
             viewModel.deleteTeam(mTeam);
         }

@@ -167,8 +167,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         Observable.fromCallable(() -> {
             TeamDao dao = appDatabase().teamDao();
             TeamDB teamDB = dao.getTeamById(team.getId());
-            Log.d("XXX", "team: " + team);
-            Log.d("XXX", "teamDB: " + teamDB.id + " - " + teamDB.name);
             if (teamDB != null) {
                 teamDB.name = team.getName();
                 dao.updateTeam(teamDB);
@@ -182,8 +180,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         Observable.fromCallable(() -> {
             TeamDao dao = appDatabase().teamDao();
             TeamDB teamDB = dao.getTeamById(team.getId());
-            Log.d("XXX", "team: " + team);
-            Log.d("XXX", "teamDB: " + teamDB.id + " - " + teamDB.name);
             if (teamDB != null) {
                 dao.deleteTeam(teamDB);
                 mLlistaTeams.remove(teamDB);
@@ -193,16 +189,12 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void insertPokemonTeam (Integer posicio, Team team, Pokemon pokemon) {
-        Log.d("XXX", "team: " + team);
-        Log.d("XXX", "pokemon: " + pokemon);
         if (mLlistaTeams.contains(team)) {
             Observable.fromCallable(() -> {
                 TeamDao teamDao = appDatabase().teamDao();
                 PokemonDao pokemonDao = appDatabase().pokemonDao();
                 TeamDB teamDB = teamDao.getTeamById(team.getId());
                 PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
-                Log.d("XXX", "teamDB: " + teamDB);
-                Log.d("XXX", "pokemonDB: " + pokemonDB);
                 if (teamDB != null) {
                     teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
                     mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
@@ -213,8 +205,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public void updatePokemonTeam (Integer posicio, Team team, Pokemon pokemon, Pokemon pokemonAntic) {
-        Log.d("XXX", "pokemon: " + pokemon);
-        Log.d("XXX", "team: " + team);
         if (mLlistaTeams.contains(team)) {
             Observable.fromCallable(() -> {
                 TeamDao teamDao = appDatabase().teamDao();

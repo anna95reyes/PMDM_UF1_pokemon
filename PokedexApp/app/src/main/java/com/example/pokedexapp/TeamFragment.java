@@ -90,8 +90,6 @@ public class TeamFragment extends Fragment implements View.OnClickListener, Team
                 }
                 adapter = new TeamAdapter(teams, requireContext(), listener);
                 binding.rcyTeams.setAdapter(adapter);
-                for (int i = 0; i < teams.size(); i++)
-                    Log.d("POKEMON", "onCreate: " + teams.get(i).getName() + " - pokemons:" + teams.get(i).getPokemons().size());
             }
         });
 

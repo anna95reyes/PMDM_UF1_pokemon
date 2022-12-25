@@ -217,9 +217,7 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     @Override
     public void onPokemonSeleccionat(Pokemon pokemon) {
         View v = this.getView().findViewById(R.id.frgPokedex);
-        Log.d("XXX", "POKEDEX: " + v);
         if (v == null) {
-            Log.d("XXX", "POKEDEX: 1");
             Bundle args = new Bundle();
             args.putSerializable(DetallPokemonFragment.ARG_PARAM_POKEMON, pokemon);
             //binding.navHostFragment.getFragment().getParentFragment();
