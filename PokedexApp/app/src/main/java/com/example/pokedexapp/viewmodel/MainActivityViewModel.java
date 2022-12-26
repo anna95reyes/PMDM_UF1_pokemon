@@ -203,8 +203,10 @@ public class MainActivityViewModel extends AndroidViewModel {
                 TeamDB teamDB = teamDao.getTeamById(team.getId());
                 PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
                 if (teamDB != null) {
-                    teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
-                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
+                    if (!mLlistaTeams.get(mLlistaTeams.indexOf(team)).getPokemons().contains(pokemon)) {
+                        teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
+                        mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
+                    }
                 }
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
@@ -220,9 +222,11 @@ public class MainActivityViewModel extends AndroidViewModel {
                 PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
                 PokemonDB pokemonAnticDB = pokemonDao.getPokemonById(pokemonAntic.getId());
                 if (teamDB != null) {
-                    teamDao.deletePokemonByTeam(teamDB.id, pokemonAnticDB.id);;
-                    teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
-                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).updatePokemon(posicio, pokemon);
+                    if (!mLlistaTeams.get(mLlistaTeams.indexOf(team)).getPokemons().contains(pokemon)) {
+                        teamDao.deletePokemonByTeam(teamDB.id, pokemonAnticDB.id);
+                        teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
+                        mLlistaTeams.get(mLlistaTeams.indexOf(team)).updatePokemon(posicio, pokemon);
+                    }
                 }
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
