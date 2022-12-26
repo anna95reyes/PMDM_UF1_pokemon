@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,13 +18,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.pokedexapp.adapters.PokemonAdapter;
 import com.example.pokedexapp.adapters.PokemonTeamAdapter;
+import com.example.pokedexapp.adapters.TeamAdapter;
 import com.example.pokedexapp.adapters.TypeAdapter;
 import com.example.pokedexapp.databinding.FragmentPokedexBinding;
+import com.example.pokedexapp.databinding.FragmentTeamPokemonBinding;
 import com.example.pokedexapp.model.Estat;
 import com.example.pokedexapp.model.Pokemon;
+import com.example.pokedexapp.model.Team;
 import com.example.pokedexapp.model.Type;
 import com.example.pokedexapp.viewmodel.MainActivityViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -33,10 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonSelectedListener, PokemonAdapter.PokemonUpdateListener {
+public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonSelectedListener, PokemonAdapter.PokemonUpdateListener, PokemonTeamAdapter.PokemonTeamSelectedListener {
 
     private FragmentPokedexBinding binding;
-
     private PokemonAdapter adapter;
     private TypeAdapter adapterType;
     private MainActivityViewModel viewModel;
@@ -58,6 +62,7 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
     }
 
     @Override
@@ -65,12 +70,9 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentPokedexBinding.inflate(inflater, container, false);
-
         // Configuració del RecyclerView
         binding.rcyPokemons.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rcyPokemons.hasFixedSize();
-
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         nameTypeFiltre = binding.btnFilterTypes.getText().toString().toLowerCase(Locale.ROOT);
 
@@ -228,12 +230,59 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
             binding.edtFilterNameOrNumber.setText("");
             binding.btnFilterFavorites.setSelected(false);
         } else {
-            Log.d("XXX", "POKEDEX: 2");
+            Team mTeam = viewModel.getTeamSeleccionat().getValue();
+            Pokemon mPokemonTeam = viewModel.getPokemonTeamSeleccionat().getValue();
+            Integer mPos = viewModel.getIndexPokemonsTeamSeleccionat().getValue();
+
+            if (mTeam != null) {
+                if (mPokemonTeam == null) {
+                    afegirPokemon(mPos, mTeam, pokemon);
+                } else {
+                    updatePokemon(mPos, mTeam, pokemon);
+                }
+            }
+
         }
     }
 
     @Override
     public void onPokemonUpdateFavorite(Pokemon pokemon) {
         viewModel.updatePokemonFavorit(pokemon);
+    }
+
+    PokemonTeamAdapter.PokemonTeamSelectedListener listener = this;
+
+    public void afegirPokemon(Integer posicio, Team team, Pokemon pokemon) {
+        viewModel.insertPokemonTeam(posicio, team, pokemon);
+        viewModel.getTeams();
+        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
+            @Override
+            public void onChanged(List<Team> teams) {
+                updatePokemonTeamAdapter(team);
+            }
+        });
+    }
+
+    public void updatePokemon(Integer posicio, Team team, Pokemon pokemon) {
+        viewModel.updatePokemonTeam(posicio, team, pokemon, team.getPokemons().get(posicio));
+        viewModel.getTeams();
+        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
+            @Override
+            public void onChanged(List<Team> teams) {
+                updatePokemonTeamAdapter(team);
+            }
+        });
+    }
+
+    private void updatePokemonTeamAdapter(Team team) {
+        RecyclerView rcyPokemonsTeam = requireActivity().findViewById(R.id.rcyPokemonsTeam);
+        rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
+        PokemonTeamAdapter adapter = new PokemonTeamAdapter(team.getPokemons(), requireContext(), listener, Estat.UPDATE);
+        rcyPokemonsTeam.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPokemonTeamSeleccionat(Integer posicio, Pokemon pokemon) {
+
     }
 }

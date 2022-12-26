@@ -83,8 +83,8 @@ public class Team implements Serializable {
         return afegit;
     }
 
-    public boolean removePokemon(Pokemon pokemon) {
-        return pokemons.remove(pokemon);
+    public void updatePokemon(Integer posicio, Pokemon pokemon) {
+        pokemons.set(posicio, pokemon);
     }
 
     @Override

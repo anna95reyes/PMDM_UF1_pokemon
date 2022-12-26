@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
@@ -26,6 +27,8 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import androidx.lifecycle.LiveData;
+
 public class MainActivityViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Pokemon>> mGetPokemons;
@@ -37,6 +40,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     private static List<Type> mLlistaTypes;
     private static List<Type> mLlistaTypesFiltre;
     private static List<Team> mLlistaTeams;
+
+    private final MutableLiveData<Team> teamSeleccionat = new MutableLiveData<Team>();
+    private final MutableLiveData<Pokemon> pokemonTeamSeleccionat = new MutableLiveData<Pokemon>();
+    private final MutableLiveData<Integer> indexPokemonsTeamSeleccionat = new MutableLiveData<Integer>();
 
     public MainActivityViewModel (@NonNull Application application) {
         super(application);
@@ -213,12 +220,31 @@ public class MainActivityViewModel extends AndroidViewModel {
                 PokemonDB pokemonDB = pokemonDao.getPokemonById(pokemon.getId());
                 PokemonDB pokemonAnticDB = pokemonDao.getPokemonById(pokemonAntic.getId());
                 if (teamDB != null) {
-                    teamDao.updatedeletePokemonByTeam(teamDB.id, pokemonDB.id, pokemonAnticDB.id);
-                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).addPokemon(posicio, pokemon);
+                    teamDao.deletePokemonByTeam(teamDB.id, pokemonAnticDB.id);;
+                    teamDao.insertPokemonByTeam(teamDB.id, pokemonDB.id);
+                    mLlistaTeams.get(mLlistaTeams.indexOf(team)).updatePokemon(posicio, pokemon);
                 }
                 return 1;
             }).subscribeOn(Schedulers.io()).subscribe();
         }
+    }
+
+    public void seleccioTeamIPokemonTeam(Team team, Pokemon pokemon, Integer pos) {
+        teamSeleccionat.setValue(team);
+        pokemonTeamSeleccionat.setValue(pokemon);
+        indexPokemonsTeamSeleccionat.setValue(pos);
+    }
+
+    public LiveData <Team> getTeamSeleccionat() {
+        return teamSeleccionat;
+    }
+
+    public LiveData<Pokemon> getPokemonTeamSeleccionat() {
+        return pokemonTeamSeleccionat;
+    }
+
+    public LiveData<Integer> getIndexPokemonsTeamSeleccionat() {
+        return indexPokemonsTeamSeleccionat;
     }
 
     public static Pokemon getPokemonPerId(Integer idPokemon) {

@@ -42,6 +42,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener, Team
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener, Team
         binding.rcyTeams.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rcyTeams.hasFixedSize();
 
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
 
         binding.pgrDownload.setVisibility(View.VISIBLE);
 

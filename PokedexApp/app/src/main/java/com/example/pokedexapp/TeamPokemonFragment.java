@@ -59,6 +59,7 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
         if (getArguments() != null) {
             mTeam = (Team) getArguments().getSerializable(ARG_PARAM_TEAM);
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -73,8 +74,6 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
         // Inflate the layout for this fragment
 
         binding = FragmentTeamPokemonBinding.inflate(inflater, container, false);
-
-        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         if (mTeam == null) {
             binding.lytFitxaTeam.edtNameTeam.setText("");
@@ -121,35 +120,7 @@ public class TeamPokemonFragment extends Fragment implements PokemonTeamAdapter.
     public void onPokemonTeamSeleccionat(Integer posicio, Pokemon pokemon) {
         mPokemonTeam = pokemon;
         mPos = posicio;
-        Log.d("XXX", "mPokemonTeam: " + mPokemonTeam);
-        Log.d("XXX", "mPos: " + mPos);
-        Log.d("XXX", "mTeam: " + mTeam);
-    }
-    PokemonTeamAdapter.PokemonTeamSelectedListener listener = this;
-
-    public void afegirPokemon(Integer posicio, Team team, Pokemon pokemon) {
-        viewModel.insertPokemonTeam(posicio, team, pokemon);
-        viewModel.getTeams();
-        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
-            @Override
-            public void onChanged(List<Team> teams) {
-                binding.lytFitxaTeam.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
-                PokemonTeamAdapter adapter = new PokemonTeamAdapter(team.getPokemons(), requireContext(), listener, Estat.VIEW);
-                binding.lytFitxaTeam.rcyPokemonsTeam.setAdapter(adapter);
-            }
-        });
+        viewModel.seleccioTeamIPokemonTeam(mTeam, mPokemonTeam, mPos);
     }
 
-    public void updatePokemon(Integer posicio, Team team, Pokemon pokemon) {
-        viewModel.updatePokemonTeam(posicio, team, pokemon, team.getPokemons().get(posicio));
-        viewModel.getTeams();
-        viewModel.mGetTeams.observe(getViewLifecycleOwner(), new Observer<List<Team>>() {
-            @Override
-            public void onChanged(List<Team> teams) {
-                binding.lytFitxaTeam.rcyPokemonsTeam.setLayoutManager(new GridLayoutManager(requireContext(), TeamAdapter.MAX_COLUMS));
-                PokemonTeamAdapter adapter = new PokemonTeamAdapter(team.getPokemons(), requireContext(), listener, Estat.VIEW);
-                binding.lytFitxaTeam.rcyPokemonsTeam.setAdapter(adapter);
-            }
-        });
-    }
 }

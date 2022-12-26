@@ -53,10 +53,4 @@ public interface  TeamDao {
     @Query("DELETE FROM team_pokemon WHERE team_id = :idTeam and pokemon_id = :idPokemon")
     void deletePokemonByTeam(Integer idTeam, Integer idPokemon);
 
-    @Transaction
-    default void updatedeletePokemonByTeam(Integer idTeam, Integer idPokemon, Integer idPokemonAntic) {
-        deletePokemonByTeam(idTeam, idPokemonAntic);
-        insertPokemonByTeam(idTeam, idPokemon);
-    }
-
 }
