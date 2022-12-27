@@ -1,5 +1,6 @@
 package com.example.pokedexapp;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -235,14 +236,29 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
             Integer mPos = viewModel.getIndexPokemonsTeamSeleccionat().getValue();
 
             if (mTeam != null) {
-                if (mPokemonTeam == null) {
-                    afegirPokemon(mPos, mTeam, pokemon);
+
+                if (mTeam.getPokemons().contains(pokemon)) {
+                    alertDialog();
                 } else {
-                    updatePokemon(mPos, mTeam, pokemon);
+                    if (mPokemonTeam == null) {
+                        afegirPokemon(mPos, mTeam, pokemon);
+                    } else {
+                        updatePokemon(mPos, mTeam, pokemon);
+                    }
                 }
             }
 
         }
+    }
+
+    public void alertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Repeated pokemon");
+        builder.setMessage("A team cannot contain duplicate pokemons.");
+        builder.setPositiveButton("Ok", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

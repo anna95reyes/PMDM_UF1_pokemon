@@ -1,5 +1,6 @@
 package com.example.pokedexapp.viewmodel;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.util.Log;
 
