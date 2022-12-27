@@ -11,4 +11,7 @@
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="enter_name">Enter name</string>
+    <string name="title_alert_dialog">Repeated pokemon</string>
+    <string name="message_alert_dialog">A team cannot contain duplicate pokemons.</string>
+    <string name="positive_button_alert_dialog">Ok</string>
 </resources>

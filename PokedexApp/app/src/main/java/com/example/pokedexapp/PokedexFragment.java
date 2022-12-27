@@ -253,9 +253,9 @@ public class PokedexFragment extends Fragment implements PokemonAdapter.PokemonS
 
     public void alertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Repeated pokemon");
-        builder.setMessage("A team cannot contain duplicate pokemons.");
-        builder.setPositiveButton("Ok", null);
+        builder.setTitle(R.string.title_alert_dialog);
+        builder.setMessage(R.string.message_alert_dialog);
+        builder.setPositiveButton(R.string.positive_button_alert_dialog, null);
 
         AlertDialog dialog = builder.create();
         dialog.show();
